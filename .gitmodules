@@ -1,0 +1,3 @@
+[submodule "src/Fools.spec"]
+	path = src/Fools.spec
+	url = https://github.com/Minions/Fools.spec.git
