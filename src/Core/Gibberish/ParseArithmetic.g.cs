@@ -1,5 +1,5 @@
 ﻿//
-// IronMeta Calc Parser; Generated 2015-12-20 22:34:18Z UTC
+// IronMeta ParseArithmetic Parser; Generated 2015-12-20 22:40:49Z UTC
 //
 
 using System;
@@ -14,23 +14,23 @@ using IronMeta.Matcher;
 namespace Gibberish
 {
 
-    using _Calc_Inputs = IEnumerable<char>;
-    using _Calc_Results = IEnumerable<int>;
-    using _Calc_Item = IronMeta.Matcher.MatchItem<char, int>;
-    using _Calc_Args = IEnumerable<IronMeta.Matcher.MatchItem<char, int>>;
-    using _Calc_Memo = IronMeta.Matcher.MatchState<char, int>;
-    using _Calc_Rule = System.Action<IronMeta.Matcher.MatchState<char, int>, int, IEnumerable<IronMeta.Matcher.MatchItem<char, int>>>;
-    using _Calc_Base = IronMeta.Matcher.Matcher<char, int>;
+    using _ParseArithmetic_Inputs = IEnumerable<char>;
+    using _ParseArithmetic_Results = IEnumerable<int>;
+    using _ParseArithmetic_Item = IronMeta.Matcher.MatchItem<char, int>;
+    using _ParseArithmetic_Args = IEnumerable<IronMeta.Matcher.MatchItem<char, int>>;
+    using _ParseArithmetic_Memo = IronMeta.Matcher.MatchState<char, int>;
+    using _ParseArithmetic_Rule = System.Action<IronMeta.Matcher.MatchState<char, int>, int, IEnumerable<IronMeta.Matcher.MatchItem<char, int>>>;
+    using _ParseArithmetic_Base = IronMeta.Matcher.Matcher<char, int>;
 
-    public partial class Calc : IronMeta.Matcher.Matcher<char, int>
+    public partial class ParseArithmetic : IronMeta.Matcher.Matcher<char, int>
     {
-        public Calc()
+        public ParseArithmetic()
             : base()
         {
             _setTerminals();
         }
 
-        public Calc(bool handle_left_recursion)
+        public ParseArithmetic(bool handle_left_recursion)
             : base(handle_left_recursion)
         {
             _setTerminals();
@@ -47,11 +47,11 @@ namespace Gibberish
         }
 
 
-        public void Expression(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Expression(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             // CALLORVAR Additive
-            _Calc_Item _r0;
+            _ParseArithmetic_Item _r0;
 
             _r0 = _MemoCall(_memo, "Additive", _index, Additive, null);
 
@@ -60,7 +60,7 @@ namespace Gibberish
         }
 
 
-        public void Additive(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Additive(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             // OR 0
@@ -70,7 +70,7 @@ namespace Gibberish
             int _start_i1 = _index;
 
             // CALLORVAR Add
-            _Calc_Item _r2;
+            _ParseArithmetic_Item _r2;
 
             _r2 = _MemoCall(_memo, "Add", _index, Add, null);
 
@@ -80,7 +80,7 @@ namespace Gibberish
             if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR Sub
-            _Calc_Item _r3;
+            _ParseArithmetic_Item _r3;
 
             _r3 = _MemoCall(_memo, "Sub", _index, Sub, null);
 
@@ -93,7 +93,7 @@ namespace Gibberish
             if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i0; } else goto label0;
 
             // CALLORVAR Multiplicative
-            _Calc_Item _r4;
+            _ParseArithmetic_Item _r4;
 
             _r4 = _MemoCall(_memo, "Multiplicative", _index, Multiplicative, null);
 
@@ -105,15 +105,15 @@ namespace Gibberish
         }
 
 
-        public void Add(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Add(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             // CALL BinaryOp
             var _start_i1 = _index;
-            _Calc_Item _r1;
+            _ParseArithmetic_Item _r1;
             var _arg1_0 = '+';
 
-            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _Calc_Item[] { new _Calc_Item(Additive), new _Calc_Item(_arg1_0), new _Calc_Item(Multiplicative) });
+            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _ParseArithmetic_Item[] { new _ParseArithmetic_Item(Additive), new _ParseArithmetic_Item(_arg1_0), new _ParseArithmetic_Item(Multiplicative) });
 
             if (_r1 != null) _index = _r1.NextIndex;
 
@@ -122,21 +122,21 @@ namespace Gibberish
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((total, n) => total + n); }, _r0), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((total, n) => total + n); }, _r0), true) );
             }
 
         }
 
 
-        public void Sub(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Sub(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             // CALL BinaryOp
             var _start_i1 = _index;
-            _Calc_Item _r1;
+            _ParseArithmetic_Item _r1;
             var _arg1_0 = '-';
 
-            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _Calc_Item[] { new _Calc_Item(Additive), new _Calc_Item(_arg1_0), new _Calc_Item(Multiplicative) });
+            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _ParseArithmetic_Item[] { new _ParseArithmetic_Item(Additive), new _ParseArithmetic_Item(_arg1_0), new _ParseArithmetic_Item(Multiplicative) });
 
             if (_r1 != null) _index = _r1.NextIndex;
 
@@ -145,13 +145,13 @@ namespace Gibberish
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((total, n) => total - n); }, _r0), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((total, n) => total - n); }, _r0), true) );
             }
 
         }
 
 
-        public void Multiplicative(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Multiplicative(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             // OR 0
@@ -161,7 +161,7 @@ namespace Gibberish
             int _start_i1 = _index;
 
             // CALLORVAR Multiply
-            _Calc_Item _r2;
+            _ParseArithmetic_Item _r2;
 
             _r2 = _MemoCall(_memo, "Multiply", _index, Multiply, null);
 
@@ -171,7 +171,7 @@ namespace Gibberish
             if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i1; } else goto label1;
 
             // CALLORVAR Divide
-            _Calc_Item _r3;
+            _ParseArithmetic_Item _r3;
 
             _r3 = _MemoCall(_memo, "Divide", _index, Divide, null);
 
@@ -185,9 +185,9 @@ namespace Gibberish
 
             // CALL Number
             var _start_i4 = _index;
-            _Calc_Item _r4;
+            _ParseArithmetic_Item _r4;
 
-            _r4 = _MemoCall(_memo, "Number", _index, Number, new _Calc_Item[] { new _Calc_Item(DecimalDigit) });
+            _r4 = _MemoCall(_memo, "Number", _index, Number, new _ParseArithmetic_Item[] { new _ParseArithmetic_Item(DecimalDigit) });
 
             if (_r4 != null) _index = _r4.NextIndex;
 
@@ -197,15 +197,15 @@ namespace Gibberish
         }
 
 
-        public void Multiply(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Multiply(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             // CALL BinaryOp
             var _start_i1 = _index;
-            _Calc_Item _r1;
+            _ParseArithmetic_Item _r1;
             var _arg1_0 = "*";
 
-            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _Calc_Item[] { new _Calc_Item(Multiplicative), new _Calc_Item(_arg1_0), new _Calc_Item(Number), new _Calc_Item(DecimalDigit) });
+            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _ParseArithmetic_Item[] { new _ParseArithmetic_Item(Multiplicative), new _ParseArithmetic_Item(_arg1_0), new _ParseArithmetic_Item(Number), new _ParseArithmetic_Item(DecimalDigit) });
 
             if (_r1 != null) _index = _r1.NextIndex;
 
@@ -214,21 +214,21 @@ namespace Gibberish
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((p, n) => p * n); }, _r0), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((p, n) => p * n); }, _r0), true) );
             }
 
         }
 
 
-        public void Divide(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Divide(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             // CALL BinaryOp
             var _start_i1 = _index;
-            _Calc_Item _r1;
+            _ParseArithmetic_Item _r1;
             var _arg1_0 = "/";
 
-            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _Calc_Item[] { new _Calc_Item(Multiplicative), new _Calc_Item(_arg1_0), new _Calc_Item(Number), new _Calc_Item(DecimalDigit) });
+            _r1 = _MemoCall(_memo, "BinaryOp", _index, BinaryOp, new _ParseArithmetic_Item[] { new _ParseArithmetic_Item(Multiplicative), new _ParseArithmetic_Item(_arg1_0), new _ParseArithmetic_Item(Number), new _ParseArithmetic_Item(DecimalDigit) });
 
             if (_r1 != null) _index = _r1.NextIndex;
 
@@ -237,24 +237,24 @@ namespace Gibberish
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((q, n) => q / n); }, _r0), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return _IM_Result.Results.Aggregate((q, n) => q / n); }, _r0), true) );
             }
 
         }
 
 
-        public void BinaryOp(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void BinaryOp(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             int _arg_index = 0;
             int _arg_input_index = 0;
 
-            _Calc_Item first = null;
-            _Calc_Item op = null;
-            _Calc_Item second = null;
-            _Calc_Item type = null;
-            _Calc_Item a = null;
-            _Calc_Item b = null;
+            _ParseArithmetic_Item first = null;
+            _ParseArithmetic_Item op = null;
+            _ParseArithmetic_Item second = null;
+            _ParseArithmetic_Item type = null;
+            _ParseArithmetic_Item a = null;
+            _ParseArithmetic_Item b = null;
 
             // ARGS 0
             _arg_index = 0;
@@ -290,7 +290,7 @@ namespace Gibberish
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.ArgResults.Push(new _Calc_Item(_start_i3, _arg_index, _r3_1.Inputs.Concat(_r3_2.Inputs), _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), false));
+                _memo.ArgResults.Push(new _ParseArithmetic_Item(_start_i3, _arg_index, _r3_1.Inputs.Concat(_r3_2.Inputs), _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), false));
             }
             else
             {
@@ -313,7 +313,7 @@ namespace Gibberish
 
             if (_r2_1 != null && _r2_2 != null)
             {
-                _memo.ArgResults.Push(new _Calc_Item(_start_i2, _arg_index, _r2_1.Inputs.Concat(_r2_2.Inputs), _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), false));
+                _memo.ArgResults.Push(new _ParseArithmetic_Item(_start_i2, _arg_index, _r2_1.Inputs.Concat(_r2_2.Inputs), _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), false));
             }
             else
             {
@@ -328,7 +328,7 @@ namespace Gibberish
             _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
 
             // QUES
-            if (_memo.ArgResults.Peek() == null) { _memo.ArgResults.Pop(); _memo.ArgResults.Push(new _Calc_Item(_arg_index, _memo.InputEnumerable)); }
+            if (_memo.ArgResults.Peek() == null) { _memo.ArgResults.Pop(); _memo.ArgResults.Push(new _ParseArithmetic_Item(_arg_index, _memo.InputEnumerable)); }
 
             // BIND type
             type = _memo.ArgResults.Peek();
@@ -339,7 +339,7 @@ namespace Gibberish
 
             if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.ArgResults.Push(new _Calc_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+                _memo.ArgResults.Push(new _ParseArithmetic_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
             }
             else
             {
@@ -360,11 +360,11 @@ namespace Gibberish
             int _start_i15 = _index;
 
             // CALLORVAR first
-            _Calc_Item _r17;
+            _ParseArithmetic_Item _r17;
 
             if (first.Production != null)
             {
-                var _p17 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)first.Production; // what type safety?
+                var _p17 = (System.Action<_ParseArithmetic_Memo, int, IEnumerable<_ParseArithmetic_Item>>)(object)first.Production; // what type safety?
                 _r17 = _MemoCall(_memo, first.Production.Method.Name, _index, _p17, null);
             }
             else
@@ -382,9 +382,9 @@ namespace Gibberish
 
             // CALL KW
             var _start_i18 = _index;
-            _Calc_Item _r18;
+            _ParseArithmetic_Item _r18;
 
-            _r18 = _MemoCall(_memo, "KW", _index, KW, new _Calc_Item[] { op });
+            _r18 = _MemoCall(_memo, "KW", _index, KW, new _ParseArithmetic_Item[] { op });
 
             if (_r18 != null) _index = _r18.NextIndex;
 
@@ -394,7 +394,7 @@ namespace Gibberish
 
             if (_r15_1 != null && _r15_2 != null)
             {
-                _memo.Results.Push( new _Calc_Item(_start_i15, _index, _memo.InputEnumerable, _r15_1.Results.Concat(_r15_2.Results).Where(_NON_NULL), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_start_i15, _index, _memo.InputEnumerable, _r15_1.Results.Concat(_r15_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -407,9 +407,9 @@ namespace Gibberish
 
             // CALL second
             var _start_i20 = _index;
-            _Calc_Item _r20;
+            _ParseArithmetic_Item _r20;
 
-            _r20 = _MemoCall(_memo, second.ProductionName, _index, second.Production, new _Calc_Item[] { type });
+            _r20 = _MemoCall(_memo, second.ProductionName, _index, second.Production, new _ParseArithmetic_Item[] { type });
 
             if (_r20 != null) _index = _r20.NextIndex;
 
@@ -422,7 +422,7 @@ namespace Gibberish
 
             if (_r14_1 != null && _r14_2 != null)
             {
-                _memo.Results.Push( new _Calc_Item(_start_i14, _index, _memo.InputEnumerable, _r14_1.Results.Concat(_r14_2.Results).Where(_NON_NULL), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_start_i14, _index, _memo.InputEnumerable, _r14_1.Results.Concat(_r14_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -435,7 +435,7 @@ namespace Gibberish
             if (_r13 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Calc_Item(_r13.StartIndex, _r13.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new List<int> { a, b }; }, _r13), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_r13.StartIndex, _r13.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new List<int> { a, b }; }, _r13), true) );
             }
 
         label0: // ARGS 0
@@ -444,14 +444,14 @@ namespace Gibberish
         }
 
 
-        public void Number(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Number(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             int _arg_index = 0;
             int _arg_input_index = 0;
 
-            _Calc_Item type = null;
-            _Calc_Item n = null;
+            _ParseArithmetic_Item type = null;
+            _ParseArithmetic_Item n = null;
 
             // ARGS 0
             _arg_index = 0;
@@ -474,9 +474,9 @@ namespace Gibberish
 
             // CALL Digits
             var _start_i6 = _index;
-            _Calc_Item _r6;
+            _ParseArithmetic_Item _r6;
 
-            _r6 = _MemoCall(_memo, "Digits", _index, Digits, new _Calc_Item[] { type });
+            _r6 = _MemoCall(_memo, "Digits", _index, Digits, new _ParseArithmetic_Item[] { type });
 
             if (_r6 != null) _index = _r6.NextIndex;
 
@@ -492,7 +492,7 @@ namespace Gibberish
         label7:
 
             // CALLORVAR WS
-            _Calc_Item _r8;
+            _ParseArithmetic_Item _r8;
 
             _r8 = _MemoCall(_memo, "WS", _index, WS, null);
 
@@ -507,7 +507,7 @@ namespace Gibberish
             }
             else
             {
-                _memo.Results.Push(new _Calc_Item(_start_i7, _index, _memo.InputEnumerable, _res7.Where(_NON_NULL), true));
+                _memo.Results.Push(new _ParseArithmetic_Item(_start_i7, _index, _memo.InputEnumerable, _res7.Where(_NON_NULL), true));
             }
 
         label4: // AND
@@ -516,7 +516,7 @@ namespace Gibberish
 
             if (_r4_1 != null && _r4_2 != null)
             {
-                _memo.Results.Push( new _Calc_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -529,7 +529,7 @@ namespace Gibberish
             if (_r3 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Calc_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return n; }, _r3), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return n; }, _r3), true) );
             }
 
         label0: // ARGS 0
@@ -538,15 +538,15 @@ namespace Gibberish
         }
 
 
-        public void Digits(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void Digits(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             int _arg_index = 0;
             int _arg_input_index = 0;
 
-            _Calc_Item type = null;
-            _Calc_Item a = null;
-            _Calc_Item b = null;
+            _ParseArithmetic_Item type = null;
+            _ParseArithmetic_Item a = null;
+            _ParseArithmetic_Item b = null;
 
             // OR 0
             int _start_i0 = _index;
@@ -572,9 +572,9 @@ namespace Gibberish
 
             // CALL Digits
             var _start_i7 = _index;
-            _Calc_Item _r7;
+            _ParseArithmetic_Item _r7;
 
-            _r7 = _MemoCall(_memo, "Digits", _index, Digits, new _Calc_Item[] { type });
+            _r7 = _MemoCall(_memo, "Digits", _index, Digits, new _ParseArithmetic_Item[] { type });
 
             if (_r7 != null) _index = _r7.NextIndex;
 
@@ -585,11 +585,11 @@ namespace Gibberish
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label5; }
 
             // CALLORVAR type
-            _Calc_Item _r9;
+            _ParseArithmetic_Item _r9;
 
             if (type.Production != null)
             {
-                var _p9 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)type.Production; // what type safety?
+                var _p9 = (System.Action<_ParseArithmetic_Memo, int, IEnumerable<_ParseArithmetic_Item>>)(object)type.Production; // what type safety?
                 _r9 = _MemoCall(_memo, type.Production.Method.Name, _index, _p9, null);
             }
             else
@@ -608,7 +608,7 @@ namespace Gibberish
 
             if (_r5_1 != null && _r5_2 != null)
             {
-                _memo.Results.Push( new _Calc_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -621,7 +621,7 @@ namespace Gibberish
             if (_r4 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Calc_Item(_r4.StartIndex, _r4.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return a*10 + b; }, _r4), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_r4.StartIndex, _r4.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return a*10 + b; }, _r4), true) );
             }
 
         label1: // ARGS 1
@@ -647,11 +647,11 @@ namespace Gibberish
             }
 
             // CALLORVAR type
-            _Calc_Item _r13;
+            _ParseArithmetic_Item _r13;
 
             if (type.Production != null)
             {
-                var _p13 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)type.Production; // what type safety?
+                var _p13 = (System.Action<_ParseArithmetic_Memo, int, IEnumerable<_ParseArithmetic_Item>>)(object)type.Production; // what type safety?
                 _r13 = _MemoCall(_memo, type.Production.Method.Name, _index, _p13, null);
             }
             else
@@ -670,10 +670,10 @@ namespace Gibberish
         }
 
 
-        public void DecimalDigit(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void DecimalDigit(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
-            _Calc_Item c = null;
+            _ParseArithmetic_Item c = null;
 
             // COND 1
             int _start_i1 = _index;
@@ -692,19 +692,19 @@ namespace Gibberish
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _Calc_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return (char)c - '0'; }, _r0), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return (char)c - '0'; }, _r0), true) );
             }
 
         }
 
 
-        public void KW(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void KW(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             int _arg_index = 0;
             int _arg_input_index = 0;
 
-            _Calc_Item str = null;
+            _ParseArithmetic_Item str = null;
 
             // ARGS 0
             _arg_index = 0;
@@ -726,11 +726,11 @@ namespace Gibberish
             int _start_i3 = _index;
 
             // CALLORVAR str
-            _Calc_Item _r4;
+            _ParseArithmetic_Item _r4;
 
             if (str.Production != null)
             {
-                var _p4 = (System.Action<_Calc_Memo, int, IEnumerable<_Calc_Item>>)(object)str.Production; // what type safety?
+                var _p4 = (System.Action<_ParseArithmetic_Memo, int, IEnumerable<_ParseArithmetic_Item>>)(object)str.Production; // what type safety?
                 _r4 = _MemoCall(_memo, str.Production.Method.Name, _index, _p4, null);
             }
             else
@@ -749,7 +749,7 @@ namespace Gibberish
         label5:
 
             // CALLORVAR WS
-            _Calc_Item _r6;
+            _ParseArithmetic_Item _r6;
 
             _r6 = _MemoCall(_memo, "WS", _index, WS, null);
 
@@ -764,7 +764,7 @@ namespace Gibberish
             }
             else
             {
-                _memo.Results.Push(new _Calc_Item(_start_i5, _index, _memo.InputEnumerable, _res5.Where(_NON_NULL), true));
+                _memo.Results.Push(new _ParseArithmetic_Item(_start_i5, _index, _memo.InputEnumerable, _res5.Where(_NON_NULL), true));
             }
 
         label3: // AND
@@ -773,7 +773,7 @@ namespace Gibberish
 
             if (_r3_1 != null && _r3_2 != null)
             {
-                _memo.Results.Push( new _Calc_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
+                _memo.Results.Push( new _ParseArithmetic_Item(_start_i3, _index, _memo.InputEnumerable, _r3_1.Results.Concat(_r3_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
@@ -787,7 +787,7 @@ namespace Gibberish
         }
 
 
-        public void WS(_Calc_Memo _memo, int _index, _Calc_Args _args)
+        public void WS(_ParseArithmetic_Memo _memo, int _index, _ParseArithmetic_Args _args)
         {
 
             // OR 0
@@ -832,7 +832,7 @@ namespace Gibberish
         }
 
 
-    } // class Calc
+    } // class ParseArithmetic
 
 } // namespace Gibberish
 

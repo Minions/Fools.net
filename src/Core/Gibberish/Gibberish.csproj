@@ -48,18 +48,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="MyParser.g.cs">
+    <Compile Include="ParseArithmetic.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MyParser.ironmeta</DependentUpon>
+      <DependentUpon>ParseArithmetic.ironmeta</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MyParser.ironmeta">
+    <None Include="ParseArithmetic.ironmeta">
       <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>MyParser.g.cs</LastGenOutput>
+      <LastGenOutput>ParseArithmetic.g.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

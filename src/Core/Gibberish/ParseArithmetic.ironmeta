@@ -3,7 +3,7 @@
 using System;
 using System.Linq;
 
-ironmeta Calc<char, int> : IronMeta.Matcher.Matcher<char, int>
+ironmeta ParseArithmetic<char, int> : IronMeta.Matcher.Matcher<char, int>
 {
     Expression = Additive;
 

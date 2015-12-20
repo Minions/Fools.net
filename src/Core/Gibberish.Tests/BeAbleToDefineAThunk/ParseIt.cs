@@ -2,10 +2,10 @@
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Gibberish.Tests
+namespace Gibberish.Tests.BeAbleToDefineAThunk
 {
     [TestFixture]
-    public class Class1
+    public class ParseIt
     {
         [Ignore("It will be a while.")]
         [Test]
@@ -33,14 +33,9 @@ namespace Gibberish.Tests
         [Test]
         public void We_can_parse_arithmetic_expressions()
         {
-            var subject = new Calc();
+            var subject = new ParseArithmetic();
             var result = subject.GetMatch("2 * 7", subject.Expression).Result;
             result.Should().Be(14);
         }
-    }
-
-    internal class ParseTree
-    {
-        public static readonly ParseTree Empty = new ParseTree();
     }
 }
