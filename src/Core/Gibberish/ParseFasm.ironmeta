@@ -1,0 +1,10 @@
+﻿using System;
+using System.Linq;
+
+ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
+{
+	FasmFile = "use language fasm" '\n' -> { return ParseTree.Empty; };
+
+	KW :str = str WS*;
+    WS = '\n';
+}

@@ -1,6 +1,6 @@
-﻿namespace Gibberish.Tests
+﻿namespace Gibberish
 {
-    internal class ParseTree
+    public class ParseTree
     {
         public static readonly ParseTree Empty = new ParseTree();
     }

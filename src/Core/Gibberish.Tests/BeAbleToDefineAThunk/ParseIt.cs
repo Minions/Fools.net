@@ -20,14 +20,10 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
         [Test]
         public void Can_read_a_uselanguage_statement_and_parse_it_to_do_nothing()
         {
-            var input = "use language fool\n";
-            ParseTree parseTree = Parse(input);
-            parseTree.Should().Be(ParseTree.Empty);
-        }
-
-        private ParseTree Parse(string input)
-        {
-            return ParseTree.Empty;
+            var input = "use language fasm\n";
+            var subject = new ParseFasm();
+            var result = subject.GetMatch(input, subject.FasmFile).Result;
+            result.Should().Be(ParseTree.Empty);
         }
 
         [Test]

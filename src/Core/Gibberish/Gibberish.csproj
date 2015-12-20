@@ -53,9 +53,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParseArithmetic.ironmeta</DependentUpon>
     </Compile>
+    <Compile Include="ParseFasm.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParseFasm.ironmeta</DependentUpon>
+    </Compile>
+    <Compile Include="ParseTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ParseFasm.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>ParseFasm.g.cs</LastGenOutput>
+    </None>
     <None Include="ParseArithmetic.ironmeta">
       <Generator>IronMetaGenerator</Generator>
       <LastGenOutput>ParseArithmetic.g.cs</LastGenOutput>
