@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibberish", "Gibberish\Gibberish.csproj", "{706A822C-C45E-4B09-BCAE-34A71DED812D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibberish.Tests", "Gibberish.Tests\Gibberish.Tests.csproj", "{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{706A822C-C45E-4B09-BCAE-34A71DED812D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{706A822C-C45E-4B09-BCAE-34A71DED812D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{706A822C-C45E-4B09-BCAE-34A71DED812D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{706A822C-C45E-4B09-BCAE-34A71DED812D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
