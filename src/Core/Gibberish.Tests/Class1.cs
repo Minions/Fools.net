@@ -29,6 +29,14 @@ namespace Gibberish.Tests
         {
             return ParseTree.Empty;
         }
+
+        [Test]
+        public void We_can_parse_arithmetic_expressions()
+        {
+            var subject = new Calc();
+            var result = subject.GetMatch("2 * 7", subject.Expression).Result;
+            result.Should().Be(14);
+        }
     }
 
     internal class ParseTree
