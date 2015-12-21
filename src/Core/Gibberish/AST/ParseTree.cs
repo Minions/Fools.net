@@ -1,4 +1,4 @@
-﻿namespace Gibberish
+﻿namespace Gibberish.AST
 {
     public class ParseTree
     {

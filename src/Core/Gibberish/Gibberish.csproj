@@ -34,6 +34,10 @@
       <HintPath>..\packages\IronMeta.4.2.3\lib\net45\IronMeta.Library.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +52,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\BodyNode.cs" />
+    <Compile Include="AST\DefineThunkNode.cs" />
+    <Compile Include="AST\NameNode.cs" />
     <Compile Include="ParseArithmetic.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -58,8 +65,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParseFasm.ironmeta</DependentUpon>
     </Compile>
-    <Compile Include="ParseTree.cs" />
+    <Compile Include="AST\ParseTree.cs" />
+    <Compile Include="AST\PassStatement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AST\Statement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParseFasm.ironmeta">
