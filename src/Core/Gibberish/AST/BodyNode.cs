@@ -2,13 +2,10 @@
 
 namespace Gibberish.AST
 {
-    internal class BodyNode : ParseTree
-    {
-        public readonly List<Statement> Statements = new List<Statement>();
+	internal class BodyNode : ParseTree
+	{
+		public BodyNode(PassStatement statement) { Statements.Add(statement); }
 
-        public BodyNode(PassStatement statement)
-        {
-            Statements.Add(statement);
-        }
-    }
+		public readonly List<Statement> Statements = new List<Statement>();
+	}
 }
