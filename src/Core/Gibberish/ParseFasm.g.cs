@@ -1,5 +1,5 @@
 ﻿//
-// IronMeta ParseFasm Parser; Generated 2015-12-22 03:20:09Z UTC
+// IronMeta ParseFasm Parser; Generated 2015-12-22 03:27:40Z UTC
 //
 
 using System;
@@ -307,15 +307,20 @@ namespace Gibberish
         public void Name(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
         {
 
-            // LITERAL "some.name"
-            _ParseLiteralString(_memo, ref _index, "some.name");
+            _ParseFasm_Item name = null;
+
+            // REGEXP [a-zA-z0-9_.]+
+            _ParseRegexp(_memo, ref _index, _re0);
+
+            // BIND name
+            name = _memo.Results.Peek();
 
             // ACT
             var _r0 = _memo.Results.Peek();
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _ParseFasm_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new NameNode("some.name"); }, _r0), true) );
+                _memo.Results.Push( new _ParseFasm_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new NameNode(name.Inputs); }, _r0), true) );
             }
 
         }
@@ -662,6 +667,7 @@ namespace Gibberish
 
         }
 
+        static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[a-zA-z0-9_.]+");
 
     } // class ParseFasm
 
