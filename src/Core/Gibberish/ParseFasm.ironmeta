@@ -1,0 +1,14 @@
+﻿using System;
+using System.Linq;
+
+ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
+{
+	FasmFile = "use language fasm" NL -> { return ParseTree.Empty; };
+	DefineThunk = "define.thunk" WS Name:name ":" NL Body:body -> { return new DefineThunkNode(((NameNode)name).Name, ((BodyNode)body).Statements); };
+	Name = "some.name" -> { return new NameNode("some.name"); };
+	Body = '\t' "pass" NL -> { return new BodyNode(new PassStatement()); };
+
+	KW :str = str WS*;
+    WS = ' ';
+	NL = "\r\n" | "\n" | "\r";
+}
