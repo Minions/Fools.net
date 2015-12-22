@@ -5,9 +5,15 @@ using Gibberish.AST;
 ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 {
 	FasmFile = "use language fasm" NL -> { return ParseTree.Empty; };
-	DefineThunk = KW("define.thunk") Name:name ":" NL Body:body -> { return new DefineThunkNode(((NameNode)name).Name, ((BodyNode)body).Statements); };
+
+	TopLevelStatement = DefineThunk(AtRoot);
+
+	DefineThunk :indentation = indentation KW("define.thunk") Name:name ":" NL Body(indentation):body -> { return new DefineThunkNode(((NameNode)name).Name, ((BodyNode)body).Statements); };
 	Name = "some.name" -> { return new NameNode("some.name"); };
-	Body = '\t' "pass" NL -> { return new BodyNode(new PassStatement()); };
+	Body :indentation = Indent(indentation) "pass" NL -> { return new BodyNode(new PassStatement()); };
+
+	AtRoot = &.?;
+	Indent :indents = '\t' indents;
 
 	KW :str = str (WS+ | &NL);
 	WS = ' ';

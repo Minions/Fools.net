@@ -19,7 +19,7 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 	pass
 ";
 			var subject = new ParseFasm();
-			var result = subject.GetMatch(input, subject.DefineThunk);
+			var result = subject.GetMatch(input, subject.TopLevelStatement);
 			Approvals.VerifyJson(result.PrettyPrint());
 		}
 
