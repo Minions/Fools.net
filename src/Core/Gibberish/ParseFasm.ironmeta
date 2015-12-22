@@ -8,9 +8,11 @@ ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 
 	TopLevelStatement = DefineThunk(AtRoot);
 
-	DefineThunk :indentation = indentation KW("define.thunk") Name:name ":" NL Body(indentation):body -> { return new DefineThunkNode(((NameNode)name).Name, ((BodyNode)body).Statements); };
+	DefineThunk :indentation = DefineThunkPrelude(indentation):name Body(indentation):body -> { return new DefineThunkNode(((NameNode)name).Name, ((BodyNode)body).Statements); };
+	DefineThunkPrelude :indentation = indentation KW("define.thunk") Name:name ":" NL -> { return name; };
 	Name = /[a-zA-z0-9_.]+/:name -> { return new NameNode(name.Inputs); };
-	Body :indentation = Indent(indentation) "pass" NL -> { return new BodyNode(new PassStatement()); };
+	Body :indentation = PassStatement(indentation):pass -> { return pass; };
+	PassStatement :indentation = Indent(indentation) "pass" NL -> { return new BodyNode(new PassStatement()); };
 
 	AtRoot = &.?;
 	Indent :indents = '\t' indents;
