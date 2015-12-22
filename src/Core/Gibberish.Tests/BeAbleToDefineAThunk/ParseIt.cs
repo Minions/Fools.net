@@ -13,7 +13,7 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 	public class ParseIt
 	{
 		[Test]
-		public void Can_parse_definethunk()
+		public void definethunk_statement_should_match_whole_block()
 		{
 			var input = @"define.thunk some.name:
 	pass
@@ -24,7 +24,7 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 		}
 
 		[Test]
-		public void Can_read_a_uselanguage_statement_and_parse_it_to_do_nothing()
+		public void just_a_uselanguage_statement_should_be_empty_parse()
 		{
 			var input = "use language fasm\n";
 			var subject = new ParseFasm();

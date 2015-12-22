@@ -1,12 +1,13 @@
 ﻿//
-// IronMeta ParseFasm Parser; Generated 2015-12-21 00:19:02Z UTC
+// IronMeta ParseFasm Parser; Generated 2015-12-22 03:02:12Z UTC
 //
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gibberish.AST;
+
 using IronMeta.Matcher;
+using Gibberish.AST;
 
 #pragma warning disable 0219
 #pragma warning disable 1591
@@ -41,7 +42,6 @@ namespace Gibberish
             this.Terminals = new HashSet<string>()
             {
                 "Body",
-                "DefineThunk",
                 "FasmFile",
                 "Name",
                 "NL",
@@ -112,45 +112,24 @@ namespace Gibberish
             // AND 4
             int _start_i4 = _index;
 
-            // AND 5
-            int _start_i5 = _index;
+            // CALL KW
+            var _start_i5 = _index;
+            _ParseFasm_Item _r5;
+            var _arg5_0 = "define.thunk";
 
-            // LITERAL "define.thunk"
-            _ParseLiteralString(_memo, ref _index, "define.thunk");
+            _r5 = _MemoCall(_memo, "KW", _index, KW, new _ParseFasm_Item[] { new _ParseFasm_Item(_arg5_0) });
 
-            // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label5; }
-
-            // CALLORVAR WS
-            _ParseFasm_Item _r7;
-
-            _r7 = _MemoCall(_memo, "WS", _index, WS, null);
-
-            if (_r7 != null) _index = _r7.NextIndex;
-
-        label5: // AND
-            var _r5_2 = _memo.Results.Pop();
-            var _r5_1 = _memo.Results.Pop();
-
-            if (_r5_1 != null && _r5_2 != null)
-            {
-                _memo.Results.Push( new _ParseFasm_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
-            }
-            else
-            {
-                _memo.Results.Push(null);
-                _index = _start_i5;
-            }
+            if (_r5 != null) _index = _r5.NextIndex;
 
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label4; }
 
             // CALLORVAR Name
-            _ParseFasm_Item _r9;
+            _ParseFasm_Item _r7;
 
-            _r9 = _MemoCall(_memo, "Name", _index, Name, null);
+            _r7 = _MemoCall(_memo, "Name", _index, Name, null);
 
-            if (_r9 != null) _index = _r9.NextIndex;
+            if (_r7 != null) _index = _r7.NextIndex;
 
             // BIND name
             name = _memo.Results.Peek();
@@ -193,11 +172,11 @@ namespace Gibberish
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label2; }
 
             // CALLORVAR NL
-            _ParseFasm_Item _r11;
+            _ParseFasm_Item _r9;
 
-            _r11 = _MemoCall(_memo, "NL", _index, NL, null);
+            _r9 = _MemoCall(_memo, "NL", _index, NL, null);
 
-            if (_r11 != null) _index = _r11.NextIndex;
+            if (_r9 != null) _index = _r9.NextIndex;
 
         label2: // AND
             var _r2_2 = _memo.Results.Pop();
@@ -217,11 +196,11 @@ namespace Gibberish
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
             // CALLORVAR Body
-            _ParseFasm_Item _r13;
+            _ParseFasm_Item _r11;
 
-            _r13 = _MemoCall(_memo, "Body", _index, Body, null);
+            _r11 = _MemoCall(_memo, "Body", _index, Body, null);
 
-            if (_r13 != null) _index = _r13.NextIndex;
+            if (_r11 != null) _index = _r11.NextIndex;
 
             // BIND body
             body = _memo.Results.Peek();
@@ -380,29 +359,56 @@ namespace Gibberish
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label3; }
 
-            // STAR 5
+            // OR 5
             int _start_i5 = _index;
-            var _res5 = Enumerable.Empty<ParseTree>();
-        label5:
+
+            // PLUS 6
+            int _start_i6 = _index;
+            var _res6 = Enumerable.Empty<ParseTree>();
+        label6:
 
             // CALLORVAR WS
-            _ParseFasm_Item _r6;
+            _ParseFasm_Item _r7;
 
-            _r6 = _MemoCall(_memo, "WS", _index, WS, null);
+            _r7 = _MemoCall(_memo, "WS", _index, WS, null);
 
-            if (_r6 != null) _index = _r6.NextIndex;
+            if (_r7 != null) _index = _r7.NextIndex;
 
-            // STAR 5
-            var _r5 = _memo.Results.Pop();
-            if (_r5 != null)
+            // PLUS 6
+            var _r6 = _memo.Results.Pop();
+            if (_r6 != null)
             {
-                _res5 = _res5.Concat(_r5.Results);
-                goto label5;
+                _res6 = _res6.Concat(_r6.Results);
+                goto label6;
             }
             else
             {
-                _memo.Results.Push(new _ParseFasm_Item(_start_i5, _index, _memo.InputEnumerable, _res5.Where(_NON_NULL), true));
+                if (_index > _start_i6)
+                    _memo.Results.Push(new _ParseFasm_Item(_start_i6, _index, _memo.InputEnumerable, _res6.Where(_NON_NULL), true));
+                else
+                    _memo.Results.Push(null);
             }
+
+            // OR shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i5; } else goto label5;
+
+            // LOOK 8
+            int _start_i8 = _index;
+
+            // CALLORVAR NL
+            _ParseFasm_Item _r9;
+
+            _r9 = _MemoCall(_memo, "NL", _index, NL, null);
+
+            if (_r9 != null) _index = _r9.NextIndex;
+
+            // LOOK 8
+            var _r8 = _memo.Results.Pop();
+            _memo.Results.Push( _r8 != null ? new _ParseFasm_Item(_start_i8, _memo.InputEnumerable) : null );
+            _index = _start_i8;
+
+        label5: // OR
+            int _dummy_i5 = _index; // no-op for label
 
         label3: // AND
             var _r3_2 = _memo.Results.Pop();
