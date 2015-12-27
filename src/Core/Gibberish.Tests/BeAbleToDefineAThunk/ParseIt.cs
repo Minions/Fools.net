@@ -1,10 +1,9 @@
 ﻿using System.IO;
+using System.Linq;
 using ApprovalTests;
 using FluentAssertions;
 using Gibberish.AST;
-using IronMeta.Matcher;
 using MatchResultExtensions;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace Gibberish.Tests.BeAbleToDefineAThunk
@@ -26,12 +25,10 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 		[Test]
 		public void just_a_uselanguage_statement_should_be_empty_parse()
 		{
-			var input = "use language fasm\n";
+			var input = "use language fasm\r\n";
 			var subject = new ParseFasm();
-			var result = subject.GetMatch(input, subject.FasmFile)
-				.Result;
-			result.Should()
-				.Be(ParseTree.Empty);
+			var result = subject.GetMatch(input, subject.FasmFile);
+			Approvals.VerifyJson(result.PrettyPrint());
 		}
 
 		[Ignore("It will be a while.")]
@@ -53,18 +50,6 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 				.Result;
 			result.Should()
 				.Be(14);
-		}
-	}
-}
-
-namespace MatchResultExtensions
-{
-	internal static class _
-	{
-		public static string PrettyPrint(this MatchResult<char, ParseTree> self)
-		{
-			if (self.Success) { return "Success:\n" + (self.Result == null ? "<null>" : JsonConvert.SerializeObject(self.Result)); }
-			return "Error: " + (self.Error ?? "<null>");
 		}
 	}
 }

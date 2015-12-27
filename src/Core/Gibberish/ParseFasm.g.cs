@@ -1,5 +1,5 @@
 ﻿//
-// IronMeta ParseFasm Parser; Generated 2015-12-22 03:47:18Z UTC
+// IronMeta ParseFasm Parser; Generated 2015-12-22 07:35:10Z UTC
 //
 
 using System;
@@ -41,8 +41,8 @@ namespace Gibberish
         {
             this.Terminals = new HashSet<string>()
             {
+                "AllowedStatementsInDefineThunk",
                 "AtRoot",
-                "FasmFile",
                 "Name",
                 "NL",
                 "TopLevelStatement",
@@ -54,21 +54,54 @@ namespace Gibberish
         public void FasmFile(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
         {
 
+            // CALL Statement
+            var _start_i1 = _index;
+            _ParseFasm_Item _r1;
+
+            _r1 = _MemoCall(_memo, "Statement", _index, Statement, new _ParseFasm_Item[] { new _ParseFasm_Item(UseLanguage) });
+
+            if (_r1 != null) _index = _r1.NextIndex;
+
+            // ACT
+            var _r0 = _memo.Results.Peek();
+            if (_r0 != null)
+            {
+                _memo.Results.Pop();
+                _memo.Results.Push( new _ParseFasm_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new DeclarationSet(); }, _r0), true) );
+            }
+
+        }
+
+
+        public void UseLanguage(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
+        {
+
+            _ParseFasm_Item lang = null;
+
             // AND 1
             int _start_i1 = _index;
 
-            // LITERAL "use language fasm"
-            _ParseLiteralString(_memo, ref _index, "use language fasm");
+            // CALL KW
+            var _start_i2 = _index;
+            _ParseFasm_Item _r2;
+            var _arg2_0 = "use language";
+
+            _r2 = _MemoCall(_memo, "KW", _index, KW, new _ParseFasm_Item[] { new _ParseFasm_Item(_arg2_0) });
+
+            if (_r2 != null) _index = _r2.NextIndex;
 
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
-            // CALLORVAR NL
-            _ParseFasm_Item _r3;
+            // CALLORVAR Name
+            _ParseFasm_Item _r4;
 
-            _r3 = _MemoCall(_memo, "NL", _index, NL, null);
+            _r4 = _MemoCall(_memo, "Name", _index, Name, null);
 
-            if (_r3 != null) _index = _r3.NextIndex;
+            if (_r4 != null) _index = _r4.NextIndex;
+
+            // BIND lang
+            lang = _memo.Results.Peek();
 
         label1: // AND
             var _r1_2 = _memo.Results.Pop();
@@ -89,7 +122,7 @@ namespace Gibberish
             if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _ParseFasm_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return ParseTree.Empty; }, _r0), true) );
+                _memo.Results.Push( new _ParseFasm_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return lang; }, _r0), true) );
             }
 
         }
@@ -116,7 +149,6 @@ namespace Gibberish
             int _arg_input_index = 0;
 
             _ParseFasm_Item indentation = null;
-            _ParseFasm_Item name = null;
             _ParseFasm_Item body = null;
 
             // ARGS 0
@@ -135,54 +167,24 @@ namespace Gibberish
                 goto label0;
             }
 
-            // AND 4
-            int _start_i4 = _index;
+            // CALL Block
+            var _start_i5 = _index;
+            _ParseFasm_Item _r5;
 
-            // CALL DefineThunkPrelude
-            var _start_i6 = _index;
-            _ParseFasm_Item _r6;
+            _r5 = _MemoCall(_memo, "Block", _index, Block, new _ParseFasm_Item[] { indentation, new _ParseFasm_Item(DefineThunkPrelude), new _ParseFasm_Item(AllowedStatementsInDefineThunk) });
 
-            _r6 = _MemoCall(_memo, "DefineThunkPrelude", _index, DefineThunkPrelude, new _ParseFasm_Item[] { indentation });
-
-            if (_r6 != null) _index = _r6.NextIndex;
-
-            // BIND name
-            name = _memo.Results.Peek();
-
-            // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label4; }
-
-            // CALL Body
-            var _start_i8 = _index;
-            _ParseFasm_Item _r8;
-
-            _r8 = _MemoCall(_memo, "Body", _index, Body, new _ParseFasm_Item[] { indentation });
-
-            if (_r8 != null) _index = _r8.NextIndex;
+            if (_r5 != null) _index = _r5.NextIndex;
 
             // BIND body
             body = _memo.Results.Peek();
-
-        label4: // AND
-            var _r4_2 = _memo.Results.Pop();
-            var _r4_1 = _memo.Results.Pop();
-
-            if (_r4_1 != null && _r4_2 != null)
-            {
-                _memo.Results.Push( new _ParseFasm_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
-            }
-            else
-            {
-                _memo.Results.Push(null);
-                _index = _start_i4;
-            }
 
             // ACT
             var _r3 = _memo.Results.Peek();
             if (_r3 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _ParseFasm_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new DefineThunkNode(((NameNode)name).Name, ((BodyNode)body).Statements); }, _r3), true) );
+                _memo.Results.Push( new _ParseFasm_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { var inner = (Block) body;
+         return new DefineThunkNode(((NameNode)inner.Prelude).Name, inner.Statements); }, _r3), true) );
             }
 
         label0: // ARGS 0
@@ -194,162 +196,74 @@ namespace Gibberish
         public void DefineThunkPrelude(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
         {
 
-            int _arg_index = 0;
-            int _arg_input_index = 0;
-
-            _ParseFasm_Item indentation = null;
             _ParseFasm_Item name = null;
 
-            // ARGS 0
-            _arg_index = 0;
-            _arg_input_index = 0;
-
-            // ANY
-            _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
-
-            // BIND indentation
-            indentation = _memo.ArgResults.Peek();
-
-            if (_memo.ArgResults.Pop() == null)
-            {
-                _memo.Results.Push(null);
-                goto label0;
-            }
-
-            // AND 4
-            int _start_i4 = _index;
-
-            // AND 5
-            int _start_i5 = _index;
-
-            // AND 6
-            int _start_i6 = _index;
-
-            // AND 7
-            int _start_i7 = _index;
-
-            // CALLORVAR indentation
-            _ParseFasm_Item _r8;
-
-            if (indentation.Production != null)
-            {
-                var _p8 = (System.Action<_ParseFasm_Memo, int, IEnumerable<_ParseFasm_Item>>)(object)indentation.Production; // what type safety?
-                _r8 = _MemoCall(_memo, indentation.Production.Method.Name, _index, _p8, null);
-            }
-            else
-            {
-                _r8 = _ParseLiteralObj(_memo, ref _index, indentation.Inputs);
-            }
-
-            if (_r8 != null) _index = _r8.NextIndex;
-
-            // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label7; }
+            // AND 1
+            int _start_i1 = _index;
 
             // CALL KW
-            var _start_i9 = _index;
-            _ParseFasm_Item _r9;
-            var _arg9_0 = "define.thunk";
+            var _start_i2 = _index;
+            _ParseFasm_Item _r2;
+            var _arg2_0 = "define.thunk";
 
-            _r9 = _MemoCall(_memo, "KW", _index, KW, new _ParseFasm_Item[] { new _ParseFasm_Item(_arg9_0) });
+            _r2 = _MemoCall(_memo, "KW", _index, KW, new _ParseFasm_Item[] { new _ParseFasm_Item(_arg2_0) });
 
-            if (_r9 != null) _index = _r9.NextIndex;
-
-        label7: // AND
-            var _r7_2 = _memo.Results.Pop();
-            var _r7_1 = _memo.Results.Pop();
-
-            if (_r7_1 != null && _r7_2 != null)
-            {
-                _memo.Results.Push( new _ParseFasm_Item(_start_i7, _index, _memo.InputEnumerable, _r7_1.Results.Concat(_r7_2.Results).Where(_NON_NULL), true) );
-            }
-            else
-            {
-                _memo.Results.Push(null);
-                _index = _start_i7;
-            }
+            if (_r2 != null) _index = _r2.NextIndex;
 
             // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label6; }
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
             // CALLORVAR Name
-            _ParseFasm_Item _r11;
+            _ParseFasm_Item _r4;
 
-            _r11 = _MemoCall(_memo, "Name", _index, Name, null);
+            _r4 = _MemoCall(_memo, "Name", _index, Name, null);
 
-            if (_r11 != null) _index = _r11.NextIndex;
+            if (_r4 != null) _index = _r4.NextIndex;
 
             // BIND name
             name = _memo.Results.Peek();
 
-        label6: // AND
-            var _r6_2 = _memo.Results.Pop();
-            var _r6_1 = _memo.Results.Pop();
+        label1: // AND
+            var _r1_2 = _memo.Results.Pop();
+            var _r1_1 = _memo.Results.Pop();
 
-            if (_r6_1 != null && _r6_2 != null)
+            if (_r1_1 != null && _r1_2 != null)
             {
-                _memo.Results.Push( new _ParseFasm_Item(_start_i6, _index, _memo.InputEnumerable, _r6_1.Results.Concat(_r6_2.Results).Where(_NON_NULL), true) );
+                _memo.Results.Push( new _ParseFasm_Item(_start_i1, _index, _memo.InputEnumerable, _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), true) );
             }
             else
             {
                 _memo.Results.Push(null);
-                _index = _start_i6;
-            }
-
-            // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label5; }
-
-            // LITERAL ":"
-            _ParseLiteralString(_memo, ref _index, ":");
-
-        label5: // AND
-            var _r5_2 = _memo.Results.Pop();
-            var _r5_1 = _memo.Results.Pop();
-
-            if (_r5_1 != null && _r5_2 != null)
-            {
-                _memo.Results.Push( new _ParseFasm_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
-            }
-            else
-            {
-                _memo.Results.Push(null);
-                _index = _start_i5;
-            }
-
-            // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label4; }
-
-            // CALLORVAR NL
-            _ParseFasm_Item _r13;
-
-            _r13 = _MemoCall(_memo, "NL", _index, NL, null);
-
-            if (_r13 != null) _index = _r13.NextIndex;
-
-        label4: // AND
-            var _r4_2 = _memo.Results.Pop();
-            var _r4_1 = _memo.Results.Pop();
-
-            if (_r4_1 != null && _r4_2 != null)
-            {
-                _memo.Results.Push( new _ParseFasm_Item(_start_i4, _index, _memo.InputEnumerable, _r4_1.Results.Concat(_r4_2.Results).Where(_NON_NULL), true) );
-            }
-            else
-            {
-                _memo.Results.Push(null);
-                _index = _start_i4;
+                _index = _start_i1;
             }
 
             // ACT
-            var _r3 = _memo.Results.Peek();
-            if (_r3 != null)
+            var _r0 = _memo.Results.Peek();
+            if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _ParseFasm_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return name; }, _r3), true) );
+                _memo.Results.Push( new _ParseFasm_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return name; }, _r0), true) );
             }
 
-        label0: // ARGS 0
-            _arg_input_index = _arg_index; // no-op for label
+        }
+
+
+        public void AllowedStatementsInDefineThunk(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
+        {
+
+            // NOT 0
+            int _start_i0 = _index;
+
+            // ANY
+            _ParseAny(_memo, ref _index);
+
+            // QUES
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _memo.Results.Push(new _ParseFasm_Item(_index, _memo.InputEnumerable)); }
+
+            // NOT 0
+            var _r0 = _memo.Results.Pop();
+            _memo.Results.Push( _r0 == null ? new _ParseFasm_Item(_start_i0, _memo.InputEnumerable) : null);
+            _index = _start_i0;
 
         }
 
@@ -376,63 +290,37 @@ namespace Gibberish
         }
 
 
-        public void Body(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
+        public void PassStatement(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
         {
 
-            int _arg_index = 0;
-            int _arg_input_index = 0;
+            // CALL Statement
+            var _start_i1 = _index;
+            _ParseFasm_Item _r1;
+            var _arg1_0 = "pass";
 
-            _ParseFasm_Item indentation = null;
-            _ParseFasm_Item pass = null;
+            _r1 = _MemoCall(_memo, "Statement", _index, Statement, new _ParseFasm_Item[] { new _ParseFasm_Item(_arg1_0) });
 
-            // ARGS 0
-            _arg_index = 0;
-            _arg_input_index = 0;
-
-            // ANY
-            _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
-
-            // BIND indentation
-            indentation = _memo.ArgResults.Peek();
-
-            if (_memo.ArgResults.Pop() == null)
-            {
-                _memo.Results.Push(null);
-                goto label0;
-            }
-
-            // CALL PassStatement
-            var _start_i5 = _index;
-            _ParseFasm_Item _r5;
-
-            _r5 = _MemoCall(_memo, "PassStatement", _index, PassStatement, new _ParseFasm_Item[] { indentation });
-
-            if (_r5 != null) _index = _r5.NextIndex;
-
-            // BIND pass
-            pass = _memo.Results.Peek();
+            if (_r1 != null) _index = _r1.NextIndex;
 
             // ACT
-            var _r3 = _memo.Results.Peek();
-            if (_r3 != null)
+            var _r0 = _memo.Results.Peek();
+            if (_r0 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _ParseFasm_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return pass; }, _r3), true) );
+                _memo.Results.Push( new _ParseFasm_Item(_r0.StartIndex, _r0.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new PassStatement(); }, _r0), true) );
             }
-
-        label0: // ARGS 0
-            _arg_input_index = _arg_index; // no-op for label
 
         }
 
 
-        public void PassStatement(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
+        public void Statement(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
         {
 
             int _arg_index = 0;
             int _arg_input_index = 0;
 
-            _ParseFasm_Item indentation = null;
+            _ParseFasm_Item rule = null;
+            _ParseFasm_Item r = null;
 
             // ARGS 0
             _arg_index = 0;
@@ -441,8 +329,8 @@ namespace Gibberish
             // ANY
             _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
 
-            // BIND indentation
-            indentation = _memo.ArgResults.Peek();
+            // BIND rule
+            rule = _memo.ArgResults.Peek();
 
             if (_memo.ArgResults.Pop() == null)
             {
@@ -453,46 +341,33 @@ namespace Gibberish
             // AND 4
             int _start_i4 = _index;
 
-            // AND 5
-            int _start_i5 = _index;
-
-            // CALL Indent
-            var _start_i6 = _index;
+            // CALLORVAR rule
             _ParseFasm_Item _r6;
 
-            _r6 = _MemoCall(_memo, "Indent", _index, Indent, new _ParseFasm_Item[] { indentation });
-
-            if (_r6 != null) _index = _r6.NextIndex;
-
-            // AND shortcut
-            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label5; }
-
-            // LITERAL "pass"
-            _ParseLiteralString(_memo, ref _index, "pass");
-
-        label5: // AND
-            var _r5_2 = _memo.Results.Pop();
-            var _r5_1 = _memo.Results.Pop();
-
-            if (_r5_1 != null && _r5_2 != null)
+            if (rule.Production != null)
             {
-                _memo.Results.Push( new _ParseFasm_Item(_start_i5, _index, _memo.InputEnumerable, _r5_1.Results.Concat(_r5_2.Results).Where(_NON_NULL), true) );
+                var _p6 = (System.Action<_ParseFasm_Memo, int, IEnumerable<_ParseFasm_Item>>)(object)rule.Production; // what type safety?
+                _r6 = _MemoCall(_memo, rule.Production.Method.Name, _index, _p6, null);
             }
             else
             {
-                _memo.Results.Push(null);
-                _index = _start_i5;
+                _r6 = _ParseLiteralObj(_memo, ref _index, rule.Inputs);
             }
+
+            if (_r6 != null) _index = _r6.NextIndex;
+
+            // BIND r
+            r = _memo.Results.Peek();
 
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label4; }
 
             // CALLORVAR NL
-            _ParseFasm_Item _r8;
+            _ParseFasm_Item _r7;
 
-            _r8 = _MemoCall(_memo, "NL", _index, NL, null);
+            _r7 = _MemoCall(_memo, "NL", _index, NL, null);
 
-            if (_r8 != null) _index = _r8.NextIndex;
+            if (_r7 != null) _index = _r7.NextIndex;
 
         label4: // AND
             var _r4_2 = _memo.Results.Pop();
@@ -513,7 +388,410 @@ namespace Gibberish
             if (_r3 != null)
             {
                 _memo.Results.Pop();
-                _memo.Results.Push( new _ParseFasm_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new BodyNode(new PassStatement()); }, _r3), true) );
+                _memo.Results.Push( new _ParseFasm_Item(_r3.StartIndex, _r3.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return r; }, _r3), true) );
+            }
+
+        label0: // ARGS 0
+            _arg_input_index = _arg_index; // no-op for label
+
+        }
+
+
+        public void Block(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            _ParseFasm_Item indentation = null;
+            _ParseFasm_Item prelude = null;
+            _ParseFasm_Item allowed_statements = null;
+            _ParseFasm_Item body = null;
+
+            // ARGS 0
+            _arg_index = 0;
+            _arg_input_index = 0;
+
+            // AND 1
+            int _start_i1 = _arg_index;
+
+            // AND 2
+            int _start_i2 = _arg_index;
+
+            // ANY
+            _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
+
+            // BIND indentation
+            indentation = _memo.ArgResults.Peek();
+
+            // AND shortcut
+            if (_memo.ArgResults.Peek() == null) { _memo.ArgResults.Push(null); goto label2; }
+
+            // ANY
+            _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
+
+            // BIND prelude
+            prelude = _memo.ArgResults.Peek();
+
+        label2: // AND
+            var _r2_2 = _memo.ArgResults.Pop();
+            var _r2_1 = _memo.ArgResults.Pop();
+
+            if (_r2_1 != null && _r2_2 != null)
+            {
+                _memo.ArgResults.Push(new _ParseFasm_Item(_start_i2, _arg_index, _r2_1.Inputs.Concat(_r2_2.Inputs), _r2_1.Results.Concat(_r2_2.Results).Where(_NON_NULL), false));
+            }
+            else
+            {
+                _memo.ArgResults.Push(null);
+                _arg_index = _start_i2;
+            }
+
+            // AND shortcut
+            if (_memo.ArgResults.Peek() == null) { _memo.ArgResults.Push(null); goto label1; }
+
+            // ANY
+            _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
+
+            // BIND allowed_statements
+            allowed_statements = _memo.ArgResults.Peek();
+
+        label1: // AND
+            var _r1_2 = _memo.ArgResults.Pop();
+            var _r1_1 = _memo.ArgResults.Pop();
+
+            if (_r1_1 != null && _r1_2 != null)
+            {
+                _memo.ArgResults.Push(new _ParseFasm_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+            }
+            else
+            {
+                _memo.ArgResults.Push(null);
+                _arg_index = _start_i1;
+            }
+
+            if (_memo.ArgResults.Pop() == null)
+            {
+                _memo.Results.Push(null);
+                goto label0;
+            }
+
+            // AND 10
+            int _start_i10 = _index;
+
+            // AND 11
+            int _start_i11 = _index;
+
+            // AND 12
+            int _start_i12 = _index;
+
+            // AND 13
+            int _start_i13 = _index;
+
+            // CALLORVAR indentation
+            _ParseFasm_Item _r14;
+
+            if (indentation.Production != null)
+            {
+                var _p14 = (System.Action<_ParseFasm_Memo, int, IEnumerable<_ParseFasm_Item>>)(object)indentation.Production; // what type safety?
+                _r14 = _MemoCall(_memo, indentation.Production.Method.Name, _index, _p14, null);
+            }
+            else
+            {
+                _r14 = _ParseLiteralObj(_memo, ref _index, indentation.Inputs);
+            }
+
+            if (_r14 != null) _index = _r14.NextIndex;
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label13; }
+
+            // CALLORVAR prelude
+            _ParseFasm_Item _r16;
+
+            if (prelude.Production != null)
+            {
+                var _p16 = (System.Action<_ParseFasm_Memo, int, IEnumerable<_ParseFasm_Item>>)(object)prelude.Production; // what type safety?
+                _r16 = _MemoCall(_memo, prelude.Production.Method.Name, _index, _p16, null);
+            }
+            else
+            {
+                _r16 = _ParseLiteralObj(_memo, ref _index, prelude.Inputs);
+            }
+
+            if (_r16 != null) _index = _r16.NextIndex;
+
+            // BIND prelude
+            prelude = _memo.Results.Peek();
+
+        label13: // AND
+            var _r13_2 = _memo.Results.Pop();
+            var _r13_1 = _memo.Results.Pop();
+
+            if (_r13_1 != null && _r13_2 != null)
+            {
+                _memo.Results.Push( new _ParseFasm_Item(_start_i13, _index, _memo.InputEnumerable, _r13_1.Results.Concat(_r13_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i13;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label12; }
+
+            // LITERAL ":"
+            _ParseLiteralString(_memo, ref _index, ":");
+
+        label12: // AND
+            var _r12_2 = _memo.Results.Pop();
+            var _r12_1 = _memo.Results.Pop();
+
+            if (_r12_1 != null && _r12_2 != null)
+            {
+                _memo.Results.Push( new _ParseFasm_Item(_start_i12, _index, _memo.InputEnumerable, _r12_1.Results.Concat(_r12_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i12;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label11; }
+
+            // CALLORVAR NL
+            _ParseFasm_Item _r18;
+
+            _r18 = _MemoCall(_memo, "NL", _index, NL, null);
+
+            if (_r18 != null) _index = _r18.NextIndex;
+
+        label11: // AND
+            var _r11_2 = _memo.Results.Pop();
+            var _r11_1 = _memo.Results.Pop();
+
+            if (_r11_1 != null && _r11_2 != null)
+            {
+                _memo.Results.Push( new _ParseFasm_Item(_start_i11, _index, _memo.InputEnumerable, _r11_1.Results.Concat(_r11_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i11;
+            }
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label10; }
+
+            // CALL Body
+            var _start_i20 = _index;
+            _ParseFasm_Item _r20;
+
+            _r20 = _MemoCall(_memo, "Body", _index, Body, new _ParseFasm_Item[] { indentation, allowed_statements });
+
+            if (_r20 != null) _index = _r20.NextIndex;
+
+            // BIND body
+            body = _memo.Results.Peek();
+
+        label10: // AND
+            var _r10_2 = _memo.Results.Pop();
+            var _r10_1 = _memo.Results.Pop();
+
+            if (_r10_1 != null && _r10_2 != null)
+            {
+                _memo.Results.Push( new _ParseFasm_Item(_start_i10, _index, _memo.InputEnumerable, _r10_1.Results.Concat(_r10_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i10;
+            }
+
+            // ACT
+            var _r9 = _memo.Results.Peek();
+            if (_r9 != null)
+            {
+                _memo.Results.Pop();
+                _memo.Results.Push( new _ParseFasm_Item(_r9.StartIndex, _r9.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return new Block(prelude.Results.Single(), body.Results.Cast<Statement>()); }, _r9), true) );
+            }
+
+        label0: // ARGS 0
+            _arg_input_index = _arg_index; // no-op for label
+
+        }
+
+
+        public void Body(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
+        {
+
+            int _arg_index = 0;
+            int _arg_input_index = 0;
+
+            _ParseFasm_Item indentation = null;
+            _ParseFasm_Item allowed_statements = null;
+            _ParseFasm_Item statements = null;
+
+            // ARGS 0
+            _arg_index = 0;
+            _arg_input_index = 0;
+
+            // AND 1
+            int _start_i1 = _arg_index;
+
+            // ANY
+            _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
+
+            // BIND indentation
+            indentation = _memo.ArgResults.Peek();
+
+            // AND shortcut
+            if (_memo.ArgResults.Peek() == null) { _memo.ArgResults.Push(null); goto label1; }
+
+            // ANY
+            _ParseAnyArgs(_memo, ref _arg_index, ref _arg_input_index, _args);
+
+            // BIND allowed_statements
+            allowed_statements = _memo.ArgResults.Peek();
+
+        label1: // AND
+            var _r1_2 = _memo.ArgResults.Pop();
+            var _r1_1 = _memo.ArgResults.Pop();
+
+            if (_r1_1 != null && _r1_2 != null)
+            {
+                _memo.ArgResults.Push(new _ParseFasm_Item(_start_i1, _arg_index, _r1_1.Inputs.Concat(_r1_2.Inputs), _r1_1.Results.Concat(_r1_2.Results).Where(_NON_NULL), false));
+            }
+            else
+            {
+                _memo.ArgResults.Push(null);
+                _arg_index = _start_i1;
+            }
+
+            if (_memo.ArgResults.Pop() == null)
+            {
+                _memo.Results.Push(null);
+                goto label0;
+            }
+
+            // OR 8
+            int _start_i8 = _index;
+
+            // AND 9
+            int _start_i9 = _index;
+
+            // CALL Indent
+            var _start_i10 = _index;
+            _ParseFasm_Item _r10;
+
+            _r10 = _MemoCall(_memo, "Indent", _index, Indent, new _ParseFasm_Item[] { indentation });
+
+            if (_r10 != null) _index = _r10.NextIndex;
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label9; }
+
+            // CALLORVAR PassStatement
+            _ParseFasm_Item _r11;
+
+            _r11 = _MemoCall(_memo, "PassStatement", _index, PassStatement, null);
+
+            if (_r11 != null) _index = _r11.NextIndex;
+
+        label9: // AND
+            var _r9_2 = _memo.Results.Pop();
+            var _r9_1 = _memo.Results.Pop();
+
+            if (_r9_1 != null && _r9_2 != null)
+            {
+                _memo.Results.Push( new _ParseFasm_Item(_start_i9, _index, _memo.InputEnumerable, _r9_1.Results.Concat(_r9_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i9;
+            }
+
+            // OR shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _index = _start_i8; } else goto label8;
+
+            // PLUS 12
+            int _start_i12 = _index;
+            var _res12 = Enumerable.Empty<ParseTree>();
+        label12:
+
+            // AND 13
+            int _start_i13 = _index;
+
+            // CALL Indent
+            var _start_i14 = _index;
+            _ParseFasm_Item _r14;
+
+            _r14 = _MemoCall(_memo, "Indent", _index, Indent, new _ParseFasm_Item[] { indentation });
+
+            if (_r14 != null) _index = _r14.NextIndex;
+
+            // AND shortcut
+            if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label13; }
+
+            // CALLORVAR allowed_statements
+            _ParseFasm_Item _r15;
+
+            if (allowed_statements.Production != null)
+            {
+                var _p15 = (System.Action<_ParseFasm_Memo, int, IEnumerable<_ParseFasm_Item>>)(object)allowed_statements.Production; // what type safety?
+                _r15 = _MemoCall(_memo, allowed_statements.Production.Method.Name, _index, _p15, null);
+            }
+            else
+            {
+                _r15 = _ParseLiteralObj(_memo, ref _index, allowed_statements.Inputs);
+            }
+
+            if (_r15 != null) _index = _r15.NextIndex;
+
+        label13: // AND
+            var _r13_2 = _memo.Results.Pop();
+            var _r13_1 = _memo.Results.Pop();
+
+            if (_r13_1 != null && _r13_2 != null)
+            {
+                _memo.Results.Push( new _ParseFasm_Item(_start_i13, _index, _memo.InputEnumerable, _r13_1.Results.Concat(_r13_2.Results).Where(_NON_NULL), true) );
+            }
+            else
+            {
+                _memo.Results.Push(null);
+                _index = _start_i13;
+            }
+
+            // PLUS 12
+            var _r12 = _memo.Results.Pop();
+            if (_r12 != null)
+            {
+                _res12 = _res12.Concat(_r12.Results);
+                goto label12;
+            }
+            else
+            {
+                if (_index > _start_i12)
+                    _memo.Results.Push(new _ParseFasm_Item(_start_i12, _index, _memo.InputEnumerable, _res12.Where(_NON_NULL), true));
+                else
+                    _memo.Results.Push(null);
+            }
+
+        label8: // OR
+            int _dummy_i8 = _index; // no-op for label
+
+            // BIND statements
+            statements = _memo.Results.Peek();
+
+            // ACT
+            var _r6 = _memo.Results.Peek();
+            if (_r6 != null)
+            {
+                _memo.Results.Pop();
+                _memo.Results.Push( new _ParseFasm_Item(_r6.StartIndex, _r6.NextIndex, _memo.InputEnumerable, _Thunk(_IM_Result => { return statements; }, _r6), true) );
             }
 
         label0: // ARGS 0
@@ -769,7 +1047,9 @@ namespace Gibberish
 
         static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[a-zA-z0-9_.]+");
 
-    } // class ParseFasm
+    }
+
+	// class ParseFasm
 
 } // namespace Gibberish
 

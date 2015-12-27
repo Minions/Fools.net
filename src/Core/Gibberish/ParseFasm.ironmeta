@@ -4,15 +4,26 @@ using Gibberish.AST;
 
 ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 {
-	FasmFile = "use language fasm" NL -> { return ParseTree.Empty; };
+	FasmFile = Statement(UseLanguage) -> { return new DeclarationSet(); };
 
+	UseLanguage = KW("use language") Name:lang -> { return lang; };
+	
 	TopLevelStatement = DefineThunk(AtRoot);
 
-	DefineThunk :indentation = DefineThunkPrelude(indentation):name Body(indentation):body -> { return new DefineThunkNode(((NameNode)name).Name, ((BodyNode)body).Statements); };
-	DefineThunkPrelude :indentation = indentation KW("define.thunk") Name:name ":" NL -> { return name; };
+	DefineThunk :indentation = Block(indentation, DefineThunkPrelude, AllowedStatementsInDefineThunk):body -> {
+		 var inner = (Block) body;
+		 return new DefineThunkNode(((NameNode)inner.Prelude).Name, inner.Statements);
+	 };
+	DefineThunkPrelude = KW("define.thunk") Name:name -> { return name; };
+	AllowedStatementsInDefineThunk = (~(.?)); // This is the fail match - it matches nothing.
+
 	Name = /[a-zA-z0-9_.]+/:name -> { return new NameNode(name.Inputs); };
-	Body :indentation = PassStatement(indentation):pass -> { return pass; };
-	PassStatement :indentation = Indent(indentation) "pass" NL -> { return new BodyNode(new PassStatement()); };
+
+	PassStatement = Statement("pass") -> { return new PassStatement(); };
+
+	Statement :rule = rule:r NL -> { return r; };
+	Block :indentation :prelude :allowed_statements = indentation prelude:prelude ":" NL Body(indentation, allowed_statements):body -> { return new Block(prelude.Results.Single(), body.Results.Cast<Statement>()); };
+	Body :indentation :allowed_statements = ((Indent(indentation) PassStatement) | ((Indent(indentation) allowed_statements)+)):statements -> { return statements; };
 
 	AtRoot = &.?;
 	Indent :indents = '\t' indents;

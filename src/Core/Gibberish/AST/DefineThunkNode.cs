@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Gibberish.AST
 {
 	internal class DefineThunkNode : ParseTree
 	{
-		public DefineThunkNode(string name, List<Statement> body)
+		public DefineThunkNode(string name, IEnumerable<Statement> body)
 		{
 			this.name = name;
-			this.body = body;
+			this.body = body.ToList();
 		}
 
 		public readonly List<Statement> body;
