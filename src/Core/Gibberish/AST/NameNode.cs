@@ -1,12 +1,12 @@
-﻿namespace Gibberish.AST
-{
-    internal class NameNode : ParseTree
-    {
-        public NameNode(string value)
-        {
-            Name = value;
-        }
+﻿using System.Collections.Generic;
+using System.Linq;
 
-        public string Name { get; }
-    }
+namespace Gibberish.AST
+{
+	internal class NameNode : ParseTree
+	{
+		public NameNode(IEnumerable<char> value) { Name = new string(value.ToArray()); }
+
+		public string Name { get; }
+	}
 }

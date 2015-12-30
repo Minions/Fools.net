@@ -1,19 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Gibberish.AST
 {
-    internal class DefineThunkNode : ParseTree
-    {
-        public readonly List<Statement> body;
+	internal class DefineThunkNode : ParseTree
+	{
+		public DefineThunkNode(string name, IEnumerable<Statement> body)
+		{
+			this.name = name;
+			this.body = body.ToList();
+		}
 
-        public readonly string name;
-        // ReSharper disable once UnusedMember.Global
-        public readonly string type = "define.thunk";
+		public readonly List<Statement> body;
 
-        public DefineThunkNode(string name, List<Statement> body)
-        {
-            this.name = name;
-            this.body = body;
-        }
-    }
+		public readonly string name;
+
+		// ReSharper disable once UnusedMember.Global
+		public readonly string type = "define.thunk";
+	}
 }

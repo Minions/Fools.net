@@ -1,6 +1,4 @@
 ﻿namespace Gibberish.AST
 {
-    internal class Statement : ParseTree
-    {
-    }
+	public class Statement : ParseTree {}
 }
