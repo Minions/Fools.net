@@ -1,5 +1,5 @@
-﻿//
-// IronMeta ParseFasm Parser; Generated 2015-12-22 07:35:10Z UTC
+//
+// IronMeta ParseFasm Parser; Generated 2015-12-31 13:10:24Z UTC
 //
 
 using System;
@@ -1047,9 +1047,7 @@ namespace Gibberish
 
         static readonly Verophyle.Regexp.StringRegexp _re0 = new Verophyle.Regexp.StringRegexp(@"[a-zA-z0-9_.]+");
 
-    }
-
-	// class ParseFasm
+    } // class ParseFasm
 
 } // namespace Gibberish
 
