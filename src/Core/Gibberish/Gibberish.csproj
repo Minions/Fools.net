@@ -84,6 +84,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
-    <Exec Command="..\packages\IronMeta.4.2.3\tools\IronMeta.exe -o ParseFasm.g.cs ParseFasm.ironmeta" />
+    <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -o ParseFasm.g.cs ParseFasm.ironmeta" />
+    <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -o ParseFasm.g.cs ParseFasm.ironmeta" />
   </Target>
 </Project>
