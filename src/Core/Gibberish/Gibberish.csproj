@@ -83,7 +83,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="BeforeBuild">
+  <Target Name="BeforeBuild" Condition="$(NCrunch) != '1'">
     <Exec Command="..\packages\IronMeta.4.2.3\tools\IronMeta.exe -o ParseFasm.g.cs ParseFasm.ironmeta" />
   </Target>
 </Project>
