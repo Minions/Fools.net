@@ -34,6 +34,10 @@
       <HintPath>..\packages\IronMeta.4.2.3\lib\net45\IronMeta.Library.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="JetBrains.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -53,14 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST\DefineThunkNode.cs" />
+    <Compile Include="AST\FasmAst.cs" />
     <Compile Include="AST\NameNode.cs" />
     <Compile Include="AST\Block.cs" />
     <Compile Include="AST\DeclarationSet.cs" />
-    <Compile Include="ParseArithmetic.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParseArithmetic.ironmeta</DependentUpon>
-    </Compile>
+    <Compile Include="Execution\City.cs" />
+    <Compile Include="Compiler.cs" />
+    <Compile Include="Execution\District.cs" />
+    <Compile Include="Execution\FasmCompiler.cs" />
+    <Compile Include="Execution\ThunkDescriptor.cs" />
+    <Compile Include="LanguageTools.cs" />
     <Compile Include="AST\ParseTree.cs" />
     <Compile Include="AST\PassStatement.cs" />
     <Compile Include="ParseFasm.g.cs">
@@ -70,15 +76,12 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AST\Statement.cs" />
+    <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ParseFasm.ironmeta">
       <Generator>IronMetaGenerator</Generator>
       <LastGenOutput>ParseFasm.g.cs</LastGenOutput>
-    </None>
-    <None Include="ParseArithmetic.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>ParseArithmetic.g.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
