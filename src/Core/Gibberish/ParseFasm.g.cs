@@ -43,7 +43,7 @@ namespace Gibberish
             {
                 "AllowedStatementsInDefineThunk",
                 "AtRoot",
-                "Name",
+                "name",
                 "NL",
                 "TopLevelStatement",
                 "WS",
@@ -93,10 +93,10 @@ namespace Gibberish
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
-            // CALLORVAR Name
+            // CALLORVAR name
             _ParseFasm_Item _r4;
 
-            _r4 = _MemoCall(_memo, "Name", _index, Name, null);
+            _r4 = _MemoCall(_memo, "name", _index, Name, null);
 
             if (_r4 != null) _index = _r4.NextIndex;
 
@@ -213,10 +213,10 @@ namespace Gibberish
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
-            // CALLORVAR Name
+            // CALLORVAR name
             _ParseFasm_Item _r4;
 
-            _r4 = _MemoCall(_memo, "Name", _index, Name, null);
+            _r4 = _MemoCall(_memo, "name", _index, Name, null);
 
             if (_r4 != null) _index = _r4.NextIndex;
 
