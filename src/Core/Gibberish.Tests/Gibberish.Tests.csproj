@@ -77,8 +77,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BeAbleToDefineAThunk\CompileThunks.cs" />
     <Compile Include="ZzTestHelpers\MatchResultExtensions.cs" />
-    <Compile Include="BeAbleToDefineAThunk\ParseIt.cs" />
+    <Compile Include="BeAbleToDefineAThunk\ParseThunkDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

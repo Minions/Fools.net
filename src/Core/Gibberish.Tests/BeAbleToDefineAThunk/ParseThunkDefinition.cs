@@ -1,15 +1,13 @@
 ﻿using System.IO;
-using System.Linq;
 using ApprovalTests;
 using FluentAssertions;
-using Gibberish.AST;
 using MatchResultExtensions;
 using NUnit.Framework;
 
 namespace Gibberish.Tests.BeAbleToDefineAThunk
 {
 	[TestFixture]
-	public class ParseIt
+	public class ParseThunkDefinition
 	{
 		[Test]
 		public void definethunk_statement_should_match_whole_block()
@@ -40,16 +38,6 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 			// work hard to parse & stuff
 			// emit something
 			// assert that what was emitted is what we expected
-		}
-
-		[Test]
-		public void We_can_parse_arithmetic_expressions()
-		{
-			var subject = new ParseArithmetic();
-			var result = subject.GetMatch("2 * 7", subject.Expression)
-				.Result;
-			result.Should()
-				.Be(14);
 		}
 	}
 }

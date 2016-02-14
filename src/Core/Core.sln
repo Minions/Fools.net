@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibberish", "Gibberish\Gibberish.csproj", "{706A822C-C45E-4B09-BCAE-34A71DED812D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibberish.Tests", "Gibberish.Tests\Gibberish.Tests.csproj", "{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "acceptance tests", "acceptance tests", "{6470C4D9-7692-4599-AECA-FFE5F82802E1}"
+	ProjectSection(SolutionItems) = preProject
+		..\Fools.spec\compile_fragments\define_thunk.assertions.fool = ..\Fools.spec\compile_fragments\define_thunk.assertions.fool
+		..\Fools.spec\compile_fragments\define_thunk.fool = ..\Fools.spec\compile_fragments\define_thunk.fool
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
