@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using ApprovalTests;
-using FluentAssertions;
 using MatchResultExtensions;
 using NUnit.Framework;
 
@@ -12,7 +11,7 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 		[Test]
 		public void definethunk_statement_should_match_whole_block()
 		{
-			var input = @"define.thunk some.name:
+			var input = @"define.named.thunk some.name:
 	pass
 ";
 			var subject = new ParseFasm();

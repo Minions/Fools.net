@@ -14,8 +14,8 @@ ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 		 var inner = (Block) body;
 		 return new DefineThunkNode(((NameNode)inner.Prelude).Name, inner.Statements);
 	 };
-	DefineThunkPrelude = KW("define.thunk") Name:name -> { return name; };
-	AllowedStatementsInDefineThunk = (~(.?)); // This is the fail match - it matches nothing.
+	DefineThunkPrelude = KW("define.named.thunk") Name:name -> { return name; };
+	AllowedStatementsInDefineThunk = Nothing;
 
 	Name = /[a-zA-z0-9_.]+/:name -> { return new NameNode(name.Inputs); };
 
@@ -31,4 +31,5 @@ ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 	KW :str = str (WS+ | &NL);
 	WS = ' ';
 	NL = "\r\n" | "\n" | "\r";
+	Nothing = (~(.?));
 }

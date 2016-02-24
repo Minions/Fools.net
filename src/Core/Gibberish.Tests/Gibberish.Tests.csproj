@@ -83,7 +83,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BeAbleToDefineAThunk\_approvals\ParseIt.Can_parse_definethunk.approved.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +90,9 @@
       <Project>{706a822c-c45e-4b09-bcae-34a71ded812d}</Project>
       <Name>Gibberish</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BeAbleToDefineAThunk\_approvals\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
