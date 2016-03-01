@@ -1,6 +1,5 @@
-﻿using System.IO;
-using ApprovalTests;
-using MatchResultExtensions;
+﻿using ApprovalTests;
+using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
 
 namespace Gibberish.Tests.BeAbleToDefineAThunk
@@ -26,17 +25,6 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 			var subject = new ParseFasm();
 			var result = subject.GetMatch(input, subject.FasmFile);
 			Approvals.VerifyJson(result.PrettyPrint());
-		}
-
-		[Ignore("It will be a while.")]
-		[Test]
-		public void FullAcceptanceTest()
-		{
-			var contents = File.ReadAllText("...");
-
-			// work hard to parse & stuff
-			// emit something
-			// assert that what was emitted is what we expected
 		}
 	}
 }
