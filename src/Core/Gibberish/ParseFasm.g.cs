@@ -1,5 +1,5 @@
-//
-// IronMeta ParseFasm Parser; Generated 2015-12-31 13:10:24Z UTC
+﻿//
+// IronMeta ParseFasm Parser; Generated 2016-02-24 16:10:51Z UTC
 //
 
 using System;
@@ -43,8 +43,9 @@ namespace Gibberish
             {
                 "AllowedStatementsInDefineThunk",
                 "AtRoot",
-                "name",
+                "Name",
                 "NL",
+                "Nothing",
                 "TopLevelStatement",
                 "WS",
             };
@@ -93,10 +94,10 @@ namespace Gibberish
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
-            // CALLORVAR name
+            // CALLORVAR Name
             _ParseFasm_Item _r4;
 
-            _r4 = _MemoCall(_memo, "name", _index, Name, null);
+            _r4 = _MemoCall(_memo, "Name", _index, Name, null);
 
             if (_r4 != null) _index = _r4.NextIndex;
 
@@ -204,7 +205,7 @@ namespace Gibberish
             // CALL KW
             var _start_i2 = _index;
             _ParseFasm_Item _r2;
-            var _arg2_0 = "define.thunk";
+            var _arg2_0 = "define.named.thunk";
 
             _r2 = _MemoCall(_memo, "KW", _index, KW, new _ParseFasm_Item[] { new _ParseFasm_Item(_arg2_0) });
 
@@ -213,10 +214,10 @@ namespace Gibberish
             // AND shortcut
             if (_memo.Results.Peek() == null) { _memo.Results.Push(null); goto label1; }
 
-            // CALLORVAR name
+            // CALLORVAR Name
             _ParseFasm_Item _r4;
 
-            _r4 = _MemoCall(_memo, "name", _index, Name, null);
+            _r4 = _MemoCall(_memo, "Name", _index, Name, null);
 
             if (_r4 != null) _index = _r4.NextIndex;
 
@@ -251,19 +252,12 @@ namespace Gibberish
         public void AllowedStatementsInDefineThunk(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
         {
 
-            // NOT 0
-            int _start_i0 = _index;
+            // CALLORVAR Nothing
+            _ParseFasm_Item _r0;
 
-            // ANY
-            _ParseAny(_memo, ref _index);
+            _r0 = _MemoCall(_memo, "Nothing", _index, Nothing, null);
 
-            // QUES
-            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _memo.Results.Push(new _ParseFasm_Item(_index, _memo.InputEnumerable)); }
-
-            // NOT 0
-            var _r0 = _memo.Results.Pop();
-            _memo.Results.Push( _r0 == null ? new _ParseFasm_Item(_start_i0, _memo.InputEnumerable) : null);
-            _index = _start_i0;
+            if (_r0 != null) _index = _r0.NextIndex;
 
         }
 
@@ -1042,6 +1036,26 @@ namespace Gibberish
 
         label0: // OR
             int _dummy_i0 = _index; // no-op for label
+
+        }
+
+
+        public void Nothing(_ParseFasm_Memo _memo, int _index, _ParseFasm_Args _args)
+        {
+
+            // NOT 0
+            int _start_i0 = _index;
+
+            // ANY
+            _ParseAny(_memo, ref _index);
+
+            // QUES
+            if (_memo.Results.Peek() == null) { _memo.Results.Pop(); _memo.Results.Push(new _ParseFasm_Item(_index, _memo.InputEnumerable)); }
+
+            // NOT 0
+            var _r0 = _memo.Results.Pop();
+            _memo.Results.Push( _r0 == null ? new _ParseFasm_Item(_start_i0, _memo.InputEnumerable) : null);
+            _index = _start_i0;
 
         }
 

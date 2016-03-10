@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using System.Diagnostics.CodeAnalysis;
 using Gibberish.AST;
 using Gibberish.Execution;
+using Gibberish.Tests.ZzTestHelpers;
+using JetBrains.Annotations;
 using NUnit.Framework;
 
 namespace Gibberish.Tests.BeAbleToDefineAThunk
@@ -12,13 +14,26 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 		public void CompilingATrivialDefineThunkNodeShouldCreateThunkInNameTable()
 		{
 			var testSubject = Tools.Fasm.Compiler;
-			var city = new City();
-			var district = city.District("CompileTest");
-			var parse = FasmAst.Thunk("the.name", FasmAst.Pass);
-			testSubject.CompileFragment(parse, district);
-			district.Name("the.name")
-				.Should()
-				.NotBeNull();
+			var parse = FasmAst.Thunk(ArbitraryName, FasmAst.Pass);
+			testSubject.CompileFragment(parse, _arbitraryDistrict);
+			_arbitraryDistrict.Name(ArbitraryName)
+				.ShouldHave(
+					new
+					{
+						name = ArbitraryName
+					});
+		}
+
+		private const string ArbitraryName = "the.name";
+
+		[NotNull] [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private City _city;
+		[NotNull] [SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private District _arbitraryDistrict;
+
+		[SetUp]
+		public void Setup()
+		{
+			_city = new City();
+			_arbitraryDistrict = _city.District("CompileTest");
 		}
 	}
 }

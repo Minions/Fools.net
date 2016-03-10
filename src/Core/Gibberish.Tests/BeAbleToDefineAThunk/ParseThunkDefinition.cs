@@ -1,7 +1,5 @@
-﻿using System.IO;
-using ApprovalTests;
-using FluentAssertions;
-using MatchResultExtensions;
+﻿using ApprovalTests;
+using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
 
 namespace Gibberish.Tests.BeAbleToDefineAThunk
@@ -12,7 +10,7 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 		[Test]
 		public void definethunk_statement_should_match_whole_block()
 		{
-			var input = @"define.thunk some.name:
+			var input = @"define.named.thunk some.name:
 	pass
 ";
 			var subject = new ParseFasm();
@@ -27,17 +25,6 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 			var subject = new ParseFasm();
 			var result = subject.GetMatch(input, subject.FasmFile);
 			Approvals.VerifyJson(result.PrettyPrint());
-		}
-
-		[Ignore("It will be a while.")]
-		[Test]
-		public void FullAcceptanceTest()
-		{
-			var contents = File.ReadAllText("...");
-
-			// work hard to parse & stuff
-			// emit something
-			// assert that what was emitted is what we expected
 		}
 	}
 }
