@@ -4,10 +4,8 @@ using Gibberish.AST;
 
 ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 {
-	FasmFile = Statement(UseLanguage) -> { return new DeclarationSet(); };
+	Declarations = (TopLevelStatement*):statements -> { return new DeclarationSet(statements.Results); };
 
-	UseLanguage = KW("use language") Name:lang -> { return lang; };
-	
 	TopLevelStatement = DefineThunk(AtRoot);
 
 	DefineThunk :indentation = Block(indentation, DefineThunkPrelude, AllowedStatementsInDefineThunk):body -> {

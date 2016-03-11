@@ -4,13 +4,11 @@ using Gibberish.AST;
 
 ironmeta ParseLanguageFile<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 {
-	File = Statement(UseLanguage) -> { return new DeclarationSet(); };
+	File = UseLanguage("fasm") _fasmParser.Declarations:decls -> { return decls; };
 
-	UseLanguage = KW("use language") Name:lang -> { return lang; };
+	UseLanguage :lang = KW("use language") lang NL;
 
 	Name = /[a-zA-z0-9_.]+/:name -> { return new NameNode(name.Inputs); };
-
-	Statement :rule = rule:r NL -> { return r; };
 
 	KW :str = str (WS+ | &NL);
 	WS = ' ';

@@ -2,6 +2,6 @@
 {
 	partial class ParseLanguageFile
 	{
-		private ParseFasm fasm_parser = new ParseFasm();
+		private readonly ParseFasm _fasmParser = new ParseFasm();
 	}
 }

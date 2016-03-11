@@ -9,8 +9,10 @@ namespace Gibberish.Tests.ZzTestHelpers
 {
 	internal static class ResultExtensions
 	{
-		public static string PrettyPrint(this MatchResult<char, ParseTree> self)
+		[NotNull]
+		public static string PrettyPrint([CanBeNull] this MatchResult<char, ParseTree> self)
 		{
+			if (self == null) { return "No match result"; }
 			if (self.Success) { return "Success:\r\n" + (self.Result == null ? "<null>" : JsonConvert.SerializeObject(self.Result)); }
 			return "Error: " + (self.Error ?? "<null>");
 		}
