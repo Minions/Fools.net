@@ -1,0 +1,18 @@
+﻿using System;
+using System.Linq;
+using Gibberish.AST;
+
+ironmeta ParseLanguageFile<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
+{
+	File = Statement(UseLanguage) -> { return new DeclarationSet(); };
+
+	UseLanguage = KW("use language") Name:lang -> { return lang; };
+
+	Name = /[a-zA-z0-9_.]+/:name -> { return new NameNode(name.Inputs); };
+
+	Statement :rule = rule:r NL -> { return r; };
+
+	KW :str = str (WS+ | &NL);
+	WS = ' ';
+	NL = "\r\n" | "\n" | "\r";
+}

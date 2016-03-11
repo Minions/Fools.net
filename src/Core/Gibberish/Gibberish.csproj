@@ -74,6 +74,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParseFasm.ironmeta</DependentUpon>
     </Compile>
+    <Compile Include="ParseLanguageFile.cs" />
+    <Compile Include="ParseLanguageFile.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParseLanguageFile.ironmeta</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AST\Statement.cs" />
     <Compile Include="Tools.cs" />
@@ -84,10 +90,16 @@
       <LastGenOutput>ParseFasm.g.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="ParseLanguageFile.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>ParseLanguageFile.g.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
     <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -o ParseFasm.g.cs ParseFasm.ironmeta" />
     <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -o ParseFasm.g.cs ParseFasm.ironmeta" />
+    <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -o ParseLanguageFile.g.cs ParseLanguageFile.ironmeta" />
+    <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -o ParseLanguageFile.g.cs ParseLanguageFile.ironmeta" />
   </Target>
 </Project>
