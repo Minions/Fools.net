@@ -1,0 +1,12 @@
+﻿using System;
+using System.Linq;
+using Gibberish.AST;
+
+ironmeta ParseBlockLanguage<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
+{
+	Name = /[a-zA-z0-9_.]+/:name -> { return new NameNode(name.Inputs); };
+
+	KW :str = str (WS+ | &NL);
+	WS = ' ';
+	NL = "\r\n" | "\n" | "\r";
+}
