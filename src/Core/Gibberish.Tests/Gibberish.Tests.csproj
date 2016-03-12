@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeAbleToDefineAThunk\CompileThunks.cs" />
+    <Compile Include="PickTheRightLanguageForFile\ParserChooseLanguageBasedOnUseLanguageStatement.cs" />
     <Compile Include="ZzTestHelpers\ResultExtensions.cs" />
     <Compile Include="BeAbleToDefineAThunk\ParseThunkDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,9 +95,7 @@
       <Name>Gibberish</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BeAbleToDefineAThunk\_approvals\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

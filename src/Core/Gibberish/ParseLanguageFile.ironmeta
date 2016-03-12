@@ -1,0 +1,10 @@
+﻿using System;
+using System.Linq;
+using Gibberish.AST;
+
+ironmeta ParseLanguageFile<char, ParseTree> : ParseBlockLanguage
+{
+	File = UseLanguage("fasm") _fasmParser.Declarations:decls -> { return decls; };
+
+	UseLanguage :lang = KW("use language") lang NL;
+}
