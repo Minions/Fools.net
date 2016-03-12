@@ -1,6 +1,6 @@
 ﻿namespace Gibberish.AST
 {
-	public class Declaration : ParseTree
+	public class Declaration
 	{
 	}
 }

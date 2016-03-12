@@ -9,6 +9,6 @@ namespace Gibberish
 		[NotNull]
 		public abstract City CreateCity();
 
-		public abstract void CompileFragment([NotNull] ParseTree parse, [NotNull] District @where);
+		public abstract void CompileFragment([NotNull] Parse parse, [NotNull] District @where);
 	}
 }

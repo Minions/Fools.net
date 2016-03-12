@@ -1,10 +1,16 @@
-﻿Success: 
-{
-    "body": [
+﻿{
+    "Declarations": [
         {
-            "type": "pass"
+            "body": [
+                {
+                    "type": "pass"
+                }
+            ],
+            "name": "some.name",
+            "type": "define.thunk"
         }
     ],
-    "name": "some.name",
-    "type": "define.thunk"
+    "Statements": [],
+    "MaybeName": null,
+    "Errors": []
 }

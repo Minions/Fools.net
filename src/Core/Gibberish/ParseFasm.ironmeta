@@ -2,15 +2,15 @@
 using System.Linq;
 using Gibberish.AST;
 
-ironmeta ParseFasm<char, ParseTree> : ParseBlockLanguage
+ironmeta ParseFasm<char, Parse> : ParseBlockLanguage
 {
-	Declarations = ((BlankLine* OneDeclaration)*):statements -> { return new DeclarationSet(statements.Results); };
+	Declarations = ((BlankLine* OneDeclaration)*):statements -> { return Parse.MergeAll(statements.Results); };
 
 	OneDeclaration = DefineThunk(AtRoot);
 
 	DefineThunk :indentation = Block(indentation, DefineThunkPrelude, AllowedStatementsInDefineThunk):body -> {
-		 var inner = (Block) body;
-		 return new DefineThunkNode(((NameNode)inner.Prelude).Name, inner.Statements);
+		 var block = (Block) body.Results.Single().Statements.Single();
+		 return DefineThunkNode.From(block);
 	 };
 	DefineThunkPrelude = KW("define.named.thunk") Name:name -> { return name; };
 	AllowedStatementsInDefineThunk = Nothing;

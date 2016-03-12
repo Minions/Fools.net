@@ -2,15 +2,15 @@
 
 namespace Gibberish.AST
 {
-	internal class Block : ParseTree
+	internal class Block : Statement
 	{
-		public Block(ParseTree prelude, IEnumerable<Statement> statements)
+		public Block(Parse prelude, IEnumerable<Parse> body)
 		{
 			Prelude = prelude;
-			Statements = statements;
+			Body = body;
 		}
 
-		public ParseTree Prelude;
-		public IEnumerable<Statement> Statements;
+		public readonly Parse Prelude;
+		public readonly IEnumerable<Parse> Body;
 	}
 }

@@ -1,5 +1,6 @@
-﻿Success: 
-{
-    "type": "declarations",
-    "declarations": []
+﻿{
+    "Declarations": [],
+    "Statements": [],
+    "MaybeName": null,
+    "Errors": []
 }

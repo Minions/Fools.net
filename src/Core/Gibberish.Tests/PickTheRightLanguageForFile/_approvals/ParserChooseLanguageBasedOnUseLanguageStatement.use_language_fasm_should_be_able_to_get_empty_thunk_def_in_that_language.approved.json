@@ -1,7 +1,5 @@
-﻿Success: 
-{
-    "type": "declarations",
-    "declarations": [
+﻿{
+    "Declarations": [
         {
             "body": [
                 {
@@ -11,5 +9,8 @@
             "name": "some.name",
             "type": "define.thunk"
         }
-    ]
+    ],
+    "Statements": [],
+    "MaybeName": null,
+    "Errors": []
 }

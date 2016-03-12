@@ -1,8 +1,14 @@
-﻿namespace Gibberish.AST
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Gibberish.AST
 {
 	public class FasmAst
 	{
-		public static ParseTree Thunk(string name, params Statement[] body) { return new DefineThunkNode(name, body); }
+		public static Parse Thunk(string name, params Statement[] body)
+		{
+			return Parse.Valid(new DefineThunkNode(name, body), Parse.NoErrors);
+		}
 
 		public static Statement Pass { get; private set; } = new PassStatement();
 	}

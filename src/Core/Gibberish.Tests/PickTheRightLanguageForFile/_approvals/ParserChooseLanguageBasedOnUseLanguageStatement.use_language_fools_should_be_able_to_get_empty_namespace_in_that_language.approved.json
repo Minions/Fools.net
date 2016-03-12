@@ -1,0 +1,10 @@
+﻿{
+    "Declarations": [],
+    "Statements": [],
+    "MaybeName": null,
+    "Errors": [
+        {
+            "message": "We couldn't recognize the language specified in the use language statement. You used language `fools`. We only recognize the languages `{fasm}`."
+        }
+    ]
+}
