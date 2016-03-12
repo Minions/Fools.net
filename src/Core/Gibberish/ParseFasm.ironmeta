@@ -4,7 +4,7 @@ using Gibberish.AST;
 
 ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 {
-	Declarations = (TopLevelStatement*):statements -> { return new DeclarationSet(statements.Results); };
+	Declarations = ((BlankLine* TopLevelStatement)*):statements -> { return new DeclarationSet(statements.Results); };
 
 	TopLevelStatement = DefineThunk(AtRoot);
 
@@ -22,6 +22,8 @@ ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 	Statement :rule = rule:r NL -> { return r; };
 	Block :indentation :prelude :allowed_statements = indentation prelude:prelude ":" NL Body(indentation, allowed_statements):body -> { return new Block(prelude.Results.Single(), body.Results.Cast<Statement>()); };
 	Body :indentation :allowed_statements = ((Indent(indentation) PassStatement) | ((Indent(indentation) allowed_statements)+)):statements -> { return statements; };
+
+	BlankLine = '\t'* NL;
 
 	AtRoot = &.?;
 	Indent :indents = '\t' indents;
