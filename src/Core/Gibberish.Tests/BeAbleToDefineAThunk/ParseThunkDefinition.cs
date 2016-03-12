@@ -14,7 +14,7 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 	pass
 ";
 			var subject = new ParseFasm();
-			var result = subject.GetMatch(input, subject.TopLevelStatement);
+			var result = subject.GetMatch(input, subject.OneDeclaration);
 			Approvals.VerifyJson(result.PrettyPrint());
 		}
 	}
