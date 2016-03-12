@@ -1,0 +1,14 @@
+﻿using System;
+using System.Linq;
+using Gibberish.AST;
+
+ironmeta ParseFools<char, Parse> : ParseBlockLanguage
+{
+	Declarations = ((BlankLine* OneDeclaration)*):statements -> { return Parse.MergeAll(statements.Results); };
+
+	OneDeclaration = InNamespace(AtRoot);
+
+	InNamespace :indentation = Block(indentation, InNamespacePrelude, AllowedStatementsInNamespace);
+	InNamespacePrelude = KW("in.namespace") Name:name -> { return name; };
+	AllowedStatementsInNamespace = Nothing;
+}

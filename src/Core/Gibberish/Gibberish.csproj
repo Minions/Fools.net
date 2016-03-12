@@ -80,6 +80,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ParseFasm.ironmeta</DependentUpon>
     </Compile>
+    <Compile Include="ParseFools.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParseFools.ironmeta</DependentUpon>
+    </Compile>
     <Compile Include="ParseLanguageFile.cs" />
     <Compile Include="ParseLanguageFile.g.cs">
       <AutoGen>True</AutoGen>
@@ -106,6 +111,10 @@
       <LastGenOutput>ParseFasm.g.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="ParseFools.ironmeta">
+      <Generator>IronMetaGenerator</Generator>
+      <LastGenOutput>ParseFools.g.cs</LastGenOutput>
+    </None>
     <None Include="ParseLanguageFile.ironmeta">
       <Generator>IronMetaGenerator</Generator>
       <LastGenOutput>ParseLanguageFile.g.cs</LastGenOutput>

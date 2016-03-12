@@ -1,10 +1,29 @@
 ﻿{
     "Declarations": [],
-    "Statements": [],
-    "MaybeName": null,
-    "Errors": [
+    "Statements": [
         {
-            "message": "We couldn't recognize the language specified in the use language statement. You used language `fools`. We only recognize the languages `{fasm}`."
+            "Prelude": {
+                "Declarations": [],
+                "Statements": [],
+                "MaybeName": {
+                    "Name": "some.name"
+                },
+                "Errors": []
+            },
+            "Body": [
+                {
+                    "Declarations": [],
+                    "Statements": [
+                        {
+                            "type": "pass"
+                        }
+                    ],
+                    "MaybeName": null,
+                    "Errors": []
+                }
+            ]
         }
-    ]
+    ],
+    "MaybeName": null,
+    "Errors": []
 }
