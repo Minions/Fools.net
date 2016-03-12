@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Gibberish.AST
 {
-	internal class DefineThunkNode : ParseTree
+	internal class DefineThunkNode : Declaration
 	{
 		public DefineThunkNode(string name, IEnumerable<Statement> body)
 		{

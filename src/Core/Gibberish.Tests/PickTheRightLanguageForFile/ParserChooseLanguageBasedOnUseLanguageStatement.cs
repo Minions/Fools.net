@@ -1,4 +1,5 @@
 ﻿using ApprovalTests;
+using ApprovalTests.Reporters;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
 
@@ -24,8 +25,11 @@ namespace Gibberish.Tests.PickTheRightLanguageForFile
 define.named.thunk some.name:
 	pass
 ";
-			var subject = new ParseLanguageFile();
-			var result = subject.GetMatch(input, subject.File);
+			var partial_input = @"define.named.thunk some.name:
+	pass
+";
+			var subject = new ParseFasm();
+			var result = subject.GetMatch(partial_input, subject.Declarations);
 			Approvals.VerifyJson(result.PrettyPrint());
 		}
 

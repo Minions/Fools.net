@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\DefineThunkNode.cs" />
     <Compile Include="AST\FasmAst.cs" />
     <Compile Include="AST\NameNode.cs" />

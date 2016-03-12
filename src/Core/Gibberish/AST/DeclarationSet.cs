@@ -7,11 +7,11 @@ namespace Gibberish.AST
 	public class DeclarationSet : ParseTree
 	{
 		public readonly string type = "declarations";
-		public List<Statement> declarations;
+		public List<Declaration> declarations;
 
 		public DeclarationSet(IEnumerable<ParseTree> declarations)
 		{
-			this.declarations = declarations.Cast<Statement>().ToList();
+			this.declarations = declarations.Cast<Declaration>().ToList();
 		}
 	}
 }
