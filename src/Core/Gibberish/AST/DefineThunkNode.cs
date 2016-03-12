@@ -29,7 +29,7 @@ namespace Gibberish.AST
 					ParseError.MissingThunkName()
 				}.Concat(parseErrors);
 			}
-			return Parse.Valid(new DefineThunkNode(maybeName.Name, block.Body.SelectMany(b => b.Statements)), parseErrors);
+			return Parse.Valid(new DefineThunkNode(maybeName.Name, block.Body.SelectMany(b => b.Statements)), parseErrors.ToList());
 		}
 	}
 }

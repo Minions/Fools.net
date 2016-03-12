@@ -1,5 +1,4 @@
 ﻿using ApprovalTests;
-using ApprovalTests.Reporters;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
 
@@ -53,6 +52,6 @@ in.namespace some.name:
 		}
 
 		[Test, Ignore("Not implemented; should be in lang spec.")]
-		public void missing_use_language_should_give_nice_error() { }
+		public void missing_use_language_should_give_nice_error() {}
 	}
 }
