@@ -2,7 +2,7 @@
 using System.Linq;
 using Gibberish.AST;
 
-ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
+ironmeta ParseFasm<char, ParseTree> : ParseBlockLanguage
 {
 	Declarations = ((BlankLine* TopLevelStatement)*):statements -> { return new DeclarationSet(statements.Results); };
 
@@ -15,8 +15,6 @@ ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 	DefineThunkPrelude = KW("define.named.thunk") Name:name -> { return name; };
 	AllowedStatementsInDefineThunk = Nothing;
 
-	Name = /[a-zA-z0-9_.]+/:name -> { return new NameNode(name.Inputs); };
-
 	PassStatement = Statement("pass") -> { return new PassStatement(); };
 
 	Statement :rule = rule:r NL -> { return r; };
@@ -28,8 +26,5 @@ ironmeta ParseFasm<char, ParseTree> : IronMeta.Matcher.Matcher<char, ParseTree>
 	AtRoot = &.?;
 	Indent :indents = '\t' indents;
 
-	KW :str = str (WS+ | &NL);
-	WS = ' ';
-	NL = "\r\n" | "\n" | "\r";
 	Nothing = (~(.?));
 }
