@@ -41,7 +41,7 @@ in.namespace the.name:
 ";
 			var subject = new ParseLanguageFile();
 			var result = subject.GetMatch(input, subject.File);
-			result.Should().Declare(FoolsAst.Namespace("the.name"));
+			result.Should().ParseAs(FoolsAst.Namespace("the.name"));
 		}
 
 		[Test, Timeout(1000)]

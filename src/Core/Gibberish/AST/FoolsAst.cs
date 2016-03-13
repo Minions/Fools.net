@@ -6,9 +6,9 @@ namespace Gibberish.AST
 	public static class FoolsAst
 	{
 		[NotNull]
-		public static Declaration Namespace([NotNull] string name)
+		public static Parse Namespace([NotNull] string name)
 		{
-			return new Namespace(name, Enumerable.Empty<Declaration>());
+			return Parse.Valid(new Namespace(name, Enumerable.Empty<Declaration>()), Parse.NoErrors);
 		}
 	}
 }

@@ -19,7 +19,7 @@ in.namespace some.name:
 ";
 			var subject = new ParseFools();
 			var result = subject.GetMatch(input, subject.Declarations);
-			result.Should().Declare(FoolsAst.Namespace("some.name"));
+			result.Should().ParseAs(FoolsAst.Namespace("some.name"));
 		}
 	}
 }

@@ -12,11 +12,9 @@ namespace Gibberish.AST
 			this.body = body.ToList();
 		}
 
-		public List<Statement> body;
-
-		public string name;
-
-		public string type = "define.thunk";
+		[NotNull] public readonly string type = "define.thunk";
+		[NotNull] public readonly string name;
+		[NotNull] public readonly List<Statement> body;
 
 		[NotNull]
 		public static Parse From([NotNull] Block block)

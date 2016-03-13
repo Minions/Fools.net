@@ -1,13 +1,13 @@
 ﻿{
     "Declarations": [
         {
+            "type": "define.thunk",
+            "name": "some.name",
             "body": [
                 {
                     "type": "pass"
                 }
-            ],
-            "name": "some.name",
-            "type": "define.thunk"
+            ]
         }
     ],
     "Statements": [],
