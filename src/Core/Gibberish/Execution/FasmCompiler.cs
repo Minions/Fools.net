@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Gibberish.AST;
 
 namespace Gibberish.Execution
@@ -7,9 +8,9 @@ namespace Gibberish.Execution
 	{
 		public override City CreateCity() { return new City(); }
 
-		public override void CompileFragment(ParseTree parse, District @where)
+		public override void CompileFragment(Parse parse, District @where)
 		{
-			var defineThunkNode = parse as DefineThunkNode;
+			var defineThunkNode = parse.Declarations.Cast<DefineThunkNode>().Single();
 			where.define_name(new ThunkDescriptor(defineThunkNode.name));
 		}
 	}

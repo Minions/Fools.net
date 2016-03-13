@@ -1,0 +1,14 @@
+﻿using System;
+using System.Linq;
+using Gibberish.AST;
+
+ironmeta ParseFasm<char, Parse> : ParseBlockLanguage
+{
+	Declarations = ((BlankLine* OneDeclaration)*):statements -> { return Parse.MergeAll(statements.Results); };
+
+	OneDeclaration = DefineThunk(AtRoot);
+
+	DefineThunk :indentation = Block(indentation, DefineThunkPrelude, AllowedStatementsInDefineThunk):block -> { return DefineThunkNode.From(block.ExtractBlock()); };
+	DefineThunkPrelude = KW("define.named.thunk") Name:name -> { return name; };
+	AllowedStatementsInDefineThunk = Nothing;
+}

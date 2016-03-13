@@ -1,13 +1,14 @@
-﻿using ApprovalTests;
+﻿using Gibberish.AST;
+using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
 
-namespace Gibberish.Tests.BeAbleToDefineAThunk
+namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 {
 	[TestFixture]
 	public class ParseThunkDefinition
 	{
-		[Test]
+		[Test, Timeout(1000)]
 		public void definethunk_statement_should_match_whole_block()
 		{
 			var input = @"define.named.thunk some.name:
@@ -15,7 +16,8 @@ namespace Gibberish.Tests.BeAbleToDefineAThunk
 ";
 			var subject = new ParseFasm();
 			var result = subject.GetMatch(input, subject.OneDeclaration);
-			Approvals.VerifyJson(result.PrettyPrint());
+			result.Should()
+				.ParseAs(FasmAst.Thunk("some.name", FasmAst.PassRaw));
 		}
 	}
 }
