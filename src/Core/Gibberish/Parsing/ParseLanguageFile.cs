@@ -1,4 +1,4 @@
-﻿namespace Gibberish
+﻿namespace Gibberish.Parsing
 {
 	partial class ParseLanguageFile
 	{
