@@ -31,7 +31,7 @@ define.named.thunk some.name:
 			Approvals.VerifyJson(result.PrettyPrint());
 		}
 
-		[Test, Timeout(100)]
+		[Test]
 		public void use_language_fools_should_be_able_to_get_empty_namespace_in_that_language()
 		{
 			var input = @"use language fools

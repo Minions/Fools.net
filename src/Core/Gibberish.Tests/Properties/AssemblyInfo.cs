@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using ApprovalTests.Namers;
 using ApprovalTests.Reporters;
+using NUnit.Framework;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -39,5 +40,6 @@ using ApprovalTests.Reporters;
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: Timeout(100)]
 [assembly: UseReporter(typeof(DiffReporter))]
 [assembly: UseApprovalSubdirectory("_approvals")]

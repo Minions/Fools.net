@@ -12,16 +12,16 @@ namespace Gibberish.AST
 			this.body = body.ToList();
 		}
 
-		public readonly List<Statement> body;
+		public List<Statement> body;
 
-		public readonly string name;
+		public string name;
 
-		public readonly string type = "define.thunk";
+		public string type = "define.thunk";
 
 		[NotNull]
 		public static Parse From([NotNull] Block block)
 		{
-			var parseErrors = block.Prelude.Errors.Concat(block.Body.SelectMany(p=>p.Errors));
+			var parseErrors = block.Prelude.Errors.Concat(block.Body.SelectMany(p => p.Errors));
 			var maybeName = block.Prelude.MaybeName;
 			if (maybeName == null)
 			{
