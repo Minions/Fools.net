@@ -14,8 +14,10 @@ namespace Gibberish.AST
 			Errors = parseErrors;
 		}
 
-		[NotNull] public static readonly Parse Empty = WithErrors();
 		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
+		[NotNull] private static readonly IEnumerable<Declaration> NoDeclarations = Enumerable.Empty<Declaration>();
+		[NotNull] private static readonly IEnumerable<Statement> NoStatements = Enumerable.Empty<Statement>();
+		[NotNull] public static readonly Parse Empty = WithErrors();
 
 		[NotNull] public readonly IEnumerable<Declaration> Declarations;
 		[NotNull] public readonly IEnumerable<Statement> Statements;
@@ -63,8 +65,5 @@ namespace Gibberish.AST
 		{
 			return new Parse(NoDeclarations, NoStatements, name, parseErrors);
 		}
-
-		[NotNull] private static readonly IEnumerable<Declaration> NoDeclarations = Enumerable.Empty<Declaration>();
-		[NotNull] private static readonly IEnumerable<Statement> NoStatements = Enumerable.Empty<Statement>();
 	}
 }
