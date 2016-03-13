@@ -8,7 +8,7 @@ ironmeta ParseFools<char, Parse> : ParseBlockLanguage
 
 	OneDeclaration = InNamespace(AtRoot);
 
-	InNamespace :indentation = Block(indentation, InNamespacePrelude, AllowedStatementsInNamespace);
+	InNamespace :indentation = Block(indentation, InNamespacePrelude, AllowedStatementsInNamespace):block -> { return Namespace.From(block.ExtractBlock()); };
 	InNamespacePrelude = KW("in.namespace") Name:name -> { return name; };
 	AllowedStatementsInNamespace = Nothing;
 }

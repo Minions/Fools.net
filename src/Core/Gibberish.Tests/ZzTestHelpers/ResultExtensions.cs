@@ -25,5 +25,24 @@ namespace Gibberish.Tests.ZzTestHelpers
 		{
 			subject.ShouldBeEquivalentTo(expectation, c => c.ExcludingMissingMembers());
 		}
+
+		[NotNull]
+		public static ParseResultAssertions Declare([NotNull] this ParseResultAssertions target, [NotNull] Declaration declaration)
+		{
+			target.Subject.ShouldBeEquivalentTo(
+				new
+				{
+					Success = true,
+					Result = Parse.Valid(declaration, Parse.NoErrors)
+				},
+				options => options.ExcludingMissingMembers());
+			return target;
+		}
+
+		[NotNull]
+		public static ParseResultAssertions Should([NotNull] this MatchResult<char, Parse> parseResult)
+		{
+			return new ParseResultAssertions(parseResult);
+		}
 	}
 }

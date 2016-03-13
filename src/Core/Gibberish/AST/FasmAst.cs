@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using JetBrains.Annotations;
 
 namespace Gibberish.AST
 {
-	public class FasmAst
+	public static class FasmAst
 	{
-		public static Parse Thunk(string name, params Statement[] body)
+		[NotNull]
+		public static Parse Thunk([NotNull] string name, [NotNull] params Statement[] body)
 		{
-			return Parse.Valid(new DefineThunkNode(name, body), Parse.NoErrors);
+			return DefineThunkNode.From(name, body);
 		}
 
-		public static Statement Pass { get; private set; } = new PassStatement();
+		public static Statement PassRaw { get; } = new PassStatement();
+		public static Parse Pass { get; } = Parse.Valid(PassRaw, Parse.NoErrors);
 	}
 }

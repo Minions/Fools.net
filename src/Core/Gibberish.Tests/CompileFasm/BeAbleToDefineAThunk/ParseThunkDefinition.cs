@@ -3,7 +3,7 @@ using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
 
-namespace Gibberish.Tests.BeAbleToDefineAThunk
+namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 {
 	[TestFixture]
 	public class ParseThunkDefinition

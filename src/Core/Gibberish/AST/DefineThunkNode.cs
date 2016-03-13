@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Gibberish.AST
 {
 	internal class DefineThunkNode : Declaration
 	{
-		public DefineThunkNode(string name, IEnumerable<Statement> body)
+		private DefineThunkNode(string name, IEnumerable<Statement> body)
 		{
 			this.name = name;
 			this.body = body.ToList();
@@ -15,10 +16,10 @@ namespace Gibberish.AST
 
 		public readonly string name;
 
-		// ReSharper disable once UnusedMember.Global
 		public readonly string type = "define.thunk";
 
-		public static Parse From(Block block)
+		[NotNull]
+		public static Parse From([NotNull] Block block)
 		{
 			var parseErrors = block.Prelude.Errors.Concat(block.Body.SelectMany(p=>p.Errors));
 			var maybeName = block.Prelude.MaybeName;
@@ -30,6 +31,12 @@ namespace Gibberish.AST
 				}.Concat(parseErrors);
 			}
 			return Parse.Valid(new DefineThunkNode(maybeName.Name, block.Body.SelectMany(b => b.Statements)), parseErrors.ToList());
+		}
+
+		[NotNull]
+		public static Parse From([NotNull] string name, [NotNull] IEnumerable<Statement> body)
+		{
+			return Parse.Valid(new DefineThunkNode(name, body), Parse.NoErrors);
 		}
 	}
 }

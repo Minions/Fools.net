@@ -1,29 +1,12 @@
 ﻿{
-    "Declarations": [],
-    "Statements": [
+    "Declarations": [
         {
-            "Prelude": {
-                "Declarations": [],
-                "Statements": [],
-                "MaybeName": {
-                    "Name": "some.name"
-                },
-                "Errors": []
-            },
-            "Body": [
-                {
-                    "Declarations": [],
-                    "Statements": [
-                        {
-                            "type": "pass"
-                        }
-                    ],
-                    "MaybeName": null,
-                    "Errors": []
-                }
-            ]
+            "type": "namespace",
+            "name": "some.name",
+            "declarations": []
         }
     ],
+    "Statements": [],
     "MaybeName": null,
     "Errors": []
 }
