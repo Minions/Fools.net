@@ -46,7 +46,7 @@ in.namespace the.name:
 			result.Should().ParseAs(FoolsAst.Namespace("the.name"));
 		}
 
-		[Test, Timeout(1000)]
+		[Test]
 		public void unknown_lang_should_give_nice_error()
 		{
 			var input = "use language unknown\r\n";
