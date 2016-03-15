@@ -13,12 +13,9 @@ namespace Gibberish.Tests.ZzTestHelpers
 		public static string PrettyPrint([CanBeNull] this MatchResult<char, Parse> self)
 		{
 			if (self == null) { return "No match result"; }
-			if (self.Success)
-			{
-				if (self.Result == null) { return "Low-level parser matched, but result was <null>"; }
-				return JsonConvert.SerializeObject(self.Result);
-			}
-			return "Unhandled low-level error: " + (self.Error ?? "<null>");
+			if (!self.Success) { return "Unhandled low-level error: " + (self.Error ?? "<null>"); }
+			if (self.Result == null) { return "Low-level parser matched, but result was <null>"; }
+			return JsonConvert.SerializeObject(self.Result);
 		}
 
 		public static void ShouldHave([CanBeNull] this ThunkDescriptor subject, object expectation)
