@@ -17,7 +17,7 @@ namespace Gibberish
 			return new ParseError(UiStrings.UnknownLanguage, new string(lang.ToArray()), KnownLanguages.ToSetDisplayString());
 		}
 
-		public string message;
+		public readonly string message;
 
 		public static ParseError MissingThunkName()
 		{
