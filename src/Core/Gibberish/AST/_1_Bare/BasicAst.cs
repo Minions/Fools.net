@@ -107,7 +107,7 @@ namespace Gibberish.AST._1_Bare
 			{
 				var body = new List<LanguageConstruct>();
 				foreach (var statement in Body) { statement.Build(body); }
-				destination.Add(new UnknownBlock(Prelude, body));
+				destination.Add(new UnknownBlock(Prelude, body, Errors));
 			}
 		}
 	}

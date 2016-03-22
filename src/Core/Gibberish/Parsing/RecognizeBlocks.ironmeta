@@ -6,18 +6,19 @@ using Gibberish.AST._1_Bare;
 ironmeta RecognizeBlocks<char, Recognition> : IronMeta.Matcher.Matcher<char, Recognition>
 {
 	LanguageConstruct = Block(AtRoot) | Statement;
-	Statement = /[^\r\n:]/*:content NL -> { return _ExtractStatementAndErrors(content); };
-	Block :indentation = indentation /[^\r\n:]/*:prelude ":" NL Body(indentation):body -> { return _ExtractBlockAndErrors(prelude, body); };
+
+	Statement = LineContent:content NL -> { return _ExtractStatementAndErrors(content); };
+	
+	Block :indentation = indentation LineContent:prelude ":" NotNL:trailingWhitespace NL Body(indentation):body -> { return _ExtractBlockAndErrors(prelude, body, trailingWhitespace); };
 	Body :indentation = (Indent(indentation) Statement)+:statements -> { return statements; };
 
-	BlankLine = '\t'* NL;
+	LineContent = /[^\r\n:]/*;
+	NotNL = /[^\r\n]/*;
 
+	BlankLine = '\t'* NL;
 	AtRoot = &.?;
 	Indent :indents = '\t' indents;
 
 	Nothing = (~(.?));
-	KW :str = str (WS+ | &NL);
-	WS = ' ';
-	NotNL = /[^\r\n]/;
 	NL = "\r\n" | "\n" | "\r";
 }

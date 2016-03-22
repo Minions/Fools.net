@@ -13,18 +13,25 @@ namespace Gibberish.Parsing
 		{
 			var rawContent = content.AsString();
 			var coreContent = rawContent.TrimEnd();
-			var errors = rawContent.Length != coreContent.Length
-				? new[]
+			var errors = rawContent.Length == coreContent.Length
+				? Recognition.NoErrors
+				: new[]
 				{
 					ParseError.IllegalWhitespaceAtEnd(rawContent.Substring(coreContent.Length))
-				}
-				: Recognition.NoErrors;
+				};
 			return Recognition.With(new UnknownStatement(coreContent, errors.ToArray()));
 		}
 
-		private static Recognition _ExtractBlockAndErrors(_RecognizeBlocks_Item prelude, _RecognizeBlocks_Item body)
+		private static Recognition _ExtractBlockAndErrors(_RecognizeBlocks_Item prelude, _RecognizeBlocks_Item body, _RecognizeBlocks_Item trailingWhitespace)
 		{
-			return new UnknownBlock(prelude.AsString(), body.Results.SelectMany(r => r.Items)).AsRecognition();
+			var extraAtEnd = trailingWhitespace.AsString();
+			var preludeErrors = extraAtEnd.Length == 0
+				? Recognition.NoErrors
+				: new[]
+				{
+					ParseError.IllegalWhitespaceAtEnd(extraAtEnd)
+				};
+			return new UnknownBlock(prelude.AsString(), body.Results.SelectMany(r => r.Items), preludeErrors).AsRecognition();
 		}
 	}
 }
