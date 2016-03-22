@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare
@@ -20,7 +21,13 @@ namespace Gibberish.AST._1_Bare
 			[NotNull]
 			public string Content { get; set; }
 			[NotNull]
-			public IEnumerable<ParseError> Errors { get; set; } = Recognition.NoErrors;
+			public List<ParseError> Errors { get; set; } = Recognition.NoErrors.ToList();
+
+			public Builder WithError(ParseError error)
+			{
+				Errors.Add(error);
+				return this;
+			}
 
 			internal override void Build(List<BareStatement> list)
 			{

@@ -5,7 +5,7 @@ using Gibberish.AST._1_Bare;
 
 ironmeta RecognizeBlocks<char, Recognition> : IronMeta.Matcher.Matcher<char, Recognition>
 {
-	Statement = /[^\r\n:]/*:content NL:errs -> { return Recognition.With(new BareStatement(content.AsString(), ((Recognition) errs).UnattachedErrors)); };
+	Statement = /[^\r\n\t:]/*:content NL:errs -> { return Recognition.With(new BareStatement(content.AsString(), ((Recognition) errs).UnattachedErrors)); };
 /*	Block :indentation :prelude :allowed_statements = indentation prelude:prelude ":" NL:errs Body(indentation, allowed_statements):body -> { return Parse.Valid(new Block(prelude.Results.Single().WithErrorsFrom(errs), body.Results), Parse.NoErrors); };
 	Body :indentation :allowed_statements = ((Indent(indentation) PassStatement) | ((Indent(indentation) allowed_statements)+)):statements -> { return statements; };
 	*/
