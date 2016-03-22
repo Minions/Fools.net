@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -12,36 +13,17 @@ namespace Gibberish.AST._1_Bare
 			return new StatementBuilder(content);
 		}
 
-		public class StatementBuilder : Builder
+		public static BlockBuilder Block(string prelude)
 		{
-			public StatementBuilder(string content)
-			{
-				Content = content;
-			}
-
-			[NotNull]
-			public string Content { get; set; }
-			[NotNull]
-			public List<ParseError> Errors { get; set; } = Recognition.NoErrors.ToList();
-
-			public Builder WithError(ParseError error)
-			{
-				Errors.Add(error);
-				return this;
-			}
-
-			internal override void Build(List<BareStatement> list)
-			{
-				list.Add(new BareStatement(Content, Errors));
-			}
+			return new BlockBuilder(prelude);
 		}
 
 		public abstract class Builder
 		{
 			[NotNull]
-			public List<BareStatement> Build()
+			public List<LanguageConstruct> Build()
 			{
-				var statements = new List<BareStatement>();
+				var statements = new List<LanguageConstruct>();
 				Build(statements);
 				return statements;
 			}
@@ -51,12 +33,82 @@ namespace Gibberish.AST._1_Bare
 				return JsonConvert.SerializeObject(this, NoWhitespace);
 			}
 
-			internal abstract void Build([NotNull] List<BareStatement> list);
+			[NotNull]
+			public List<ParseError> Errors { get; set; } = Recognition.NoErrors.ToList();
+
+			public Builder WithError(ParseError error)
+			{
+				Errors.Add(error);
+				return this;
+			}
+
+			internal abstract void Build([NotNull] List<LanguageConstruct> destination);
 
 			private static readonly JsonSerializerSettings NoWhitespace = new JsonSerializerSettings
 			{
 				Formatting = Formatting.None
 			};
+		}
+
+		public class StatementBuilder : Builder
+		{
+			public StatementBuilder(string content)
+			{
+				Content = content;
+			}
+
+			[NotNull]
+			public string Content { get; set; }
+
+			internal override void Build(List<LanguageConstruct> destination)
+			{
+				destination.Add(new UnknownStatement(Content, Errors));
+			}
+		}
+
+		public class BlockBuilder : Builder
+		{
+			public BlockBuilder(string prelude)
+			{
+				Prelude = prelude;
+			}
+
+			[NotNull]
+			public string Prelude { get; set; }
+
+			[NotNull]
+			public BlockBuilder WithBody([NotNull] Action<BodyBuilder> options)
+			{
+				options(new BodyBuilder(this));
+				return this;
+			}
+
+			public class BodyBuilder
+			{
+				public BodyBuilder(BlockBuilder self)
+				{
+					_self = self;
+				}
+
+				public StatementBuilder AddStatement(string content)
+				{
+					var statement = Statement(content);
+					_self.Body.Add(statement);
+					return statement;
+				}
+
+				[NotNull] private readonly BlockBuilder _self;
+			}
+
+			[NotNull]
+			public List<StatementBuilder> Body { get; } = new List<StatementBuilder>();
+
+			internal override void Build(List<LanguageConstruct> destination)
+			{
+				var body = new List<LanguageConstruct>();
+				foreach (var statement in Body) { statement.Build(body); }
+				destination.Add(new UnknownBlock(Prelude, body));
+			}
 		}
 	}
 }

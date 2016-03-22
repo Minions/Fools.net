@@ -65,6 +65,8 @@
     <Compile Include="AST\Namespace.cs" />
     <Compile Include="AST\SpecificationSection.cs" />
     <Compile Include="AST\_1_Bare\BasicAst.cs" />
+    <Compile Include="AST\_1_Bare\LanguageConstruct.cs" />
+    <Compile Include="AST\_1_Bare\UnknownBlock.cs" />
     <Compile Include="Execution\City.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="Execution\District.cs" />
@@ -73,7 +75,7 @@
     <Compile Include="LanguageTools.cs" />
     <Compile Include="AST\Parse.cs" />
     <Compile Include="AST\PassStatement.cs" />
-    <Compile Include="AST\_1_Bare\BareStatement.cs" />
+    <Compile Include="AST\_1_Bare\UnknownStatement.cs" />
     <Compile Include="Parsing\ParseBlockLanguage.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

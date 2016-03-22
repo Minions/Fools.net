@@ -35,6 +35,12 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull]
+		public static Recognition AsRecognition([NotNull] this LanguageConstruct item)
+		{
+			return Recognition.With(item);
+		}
+
+		[NotNull]
 		public static string ToSetDisplayString([NotNull] this IEnumerable<string> values)
 		{
 			return "{" + String.Join(", ", values) + "}";

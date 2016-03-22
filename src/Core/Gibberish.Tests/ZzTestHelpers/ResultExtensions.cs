@@ -111,7 +111,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 			var statements = expected.Build();
 			Success.Should()
 				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
-			Result.Statements.ShouldBeEquivalentTo(
+			Result.Items.ShouldBeEquivalentTo(
 				statements,
 				options => options.IncludingFields()
 					.IncludingProperties()

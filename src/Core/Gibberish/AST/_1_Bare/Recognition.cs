@@ -6,22 +6,22 @@ namespace Gibberish.AST._1_Bare
 {
 	public class Recognition
 	{
-		private Recognition(BareStatement[] statements, IEnumerable<ParseError> unattachedErrors)
+		private Recognition(LanguageConstruct[] items, IEnumerable<ParseError> unattachedErrors)
 		{
-			Statements = statements;
+			Items = items;
 			UnattachedErrors = unattachedErrors;
 		}
 
 		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
-		[NotNull] public static readonly BareStatement[] NoStatements = {};
+		[NotNull] public static readonly LanguageConstruct[] NoStatements = {};
 		[NotNull] public static readonly Recognition Empty = new Recognition(NoStatements, NoErrors);
 
 		[NotNull]
-		public BareStatement[] Statements { get; }
+		public LanguageConstruct[] Items { get; }
 		[NotNull]
 		public IEnumerable<ParseError> UnattachedErrors { get; }
 
-		public static Recognition With(BareStatement statement)
+		public static Recognition With(LanguageConstruct statement)
 		{
 			return new Recognition(
 				new[]

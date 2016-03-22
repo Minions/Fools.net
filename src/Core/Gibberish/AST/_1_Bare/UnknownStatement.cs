@@ -4,9 +4,9 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare
 {
-	public class BareStatement
+	public class UnknownStatement : LanguageConstruct
 	{
-		public BareStatement(string content, IEnumerable<ParseError> errors)
+		public UnknownStatement(string content, IEnumerable<ParseError> errors)
 		{
 			Content = content;
 			Errors = errors.ToArray();

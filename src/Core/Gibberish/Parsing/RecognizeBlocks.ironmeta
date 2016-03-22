@@ -5,10 +5,10 @@ using Gibberish.AST._1_Bare;
 
 ironmeta RecognizeBlocks<char, Recognition> : IronMeta.Matcher.Matcher<char, Recognition>
 {
+	LanguageConstruct = Block(AtRoot) | Statement;
 	Statement = /[^\r\n:]/*:content NL -> { return _ExtractStatementAndErrors(content); };
-/*	Block :indentation :prelude :allowed_statements = indentation prelude:prelude ":" NL Body(indentation, allowed_statements):body -> { return Parse.Valid(new Block(prelude.Results.Single().WithErrorsFrom(errs), body.Results), Parse.NoErrors); };
-	Body :indentation :allowed_statements = ((Indent(indentation) PassStatement) | ((Indent(indentation) allowed_statements)+)):statements -> { return statements; };
-	*/
+	Block :indentation = indentation /[^\r\n:]/*:prelude ":" NL Body(indentation):body -> { return _ExtractBlockAndErrors(prelude, body); };
+	Body :indentation = (Indent(indentation) Statement)+:statements -> { return statements; };
 
 	BlankLine = '\t'* NL;
 

@@ -19,7 +19,12 @@ namespace Gibberish.Parsing
 					ParseError.IllegalWhitespaceAtEnd(rawContent.Substring(coreContent.Length))
 				}
 				: Recognition.NoErrors;
-			return Recognition.With(new BareStatement(coreContent, errors.ToArray()));
+			return Recognition.With(new UnknownStatement(coreContent, errors.ToArray()));
+		}
+
+		private static Recognition _ExtractBlockAndErrors(_RecognizeBlocks_Item prelude, _RecognizeBlocks_Item body)
+		{
+			return new UnknownBlock(prelude.AsString(), body.Results.SelectMany(r => r.Items)).AsRecognition();
 		}
 	}
 }
