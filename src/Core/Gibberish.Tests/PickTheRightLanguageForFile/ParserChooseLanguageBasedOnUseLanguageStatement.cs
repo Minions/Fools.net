@@ -53,7 +53,7 @@ in.namespace the.name:
 			var subject = new ParseLanguageFile();
 			var result = subject.GetMatch(input, subject.File);
 			result.Should()
-				.BeError(ParseError.UnknownLanguage("unknown"));
+				.ParseWithErrors(ParseError.UnknownLanguage("unknown"));
 		}
 
 		[Test, Ignore("Not implemented; should be in lang spec.")]

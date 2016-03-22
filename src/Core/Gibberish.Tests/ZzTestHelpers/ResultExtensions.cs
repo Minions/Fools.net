@@ -54,7 +54,8 @@ namespace Gibberish.Tests.ZzTestHelpers
 			return target;
 		}
 
-		public static ParseResultAssertions BeError(this ParseResultAssertions target, ParseError expected)
+		[NotNull]
+		public static ParseResultAssertions ParseWithErrors([NotNull] this ParseResultAssertions target, [NotNull] ParseError expected)
 		{
 			target.Subject.ShouldBeEquivalentTo(
 				new
@@ -63,8 +64,15 @@ namespace Gibberish.Tests.ZzTestHelpers
 				},
 				options => options.ExcludingMissingMembers());
 			target.Parse.ShouldBeEquivalentTo(
-				Parse.WithErrors(expected),
-				options => options.IncludingFields()
+				new
+				{
+					Errors = new[]
+					{
+						expected
+					}
+				},
+				options => options.ExcludingMissingMembers()
+					.IncludingFields()
 					.IncludingNestedObjects()
 					.RespectingRuntimeTypes());
 			return target;

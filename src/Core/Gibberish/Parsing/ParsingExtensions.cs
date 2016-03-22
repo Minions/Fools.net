@@ -15,6 +15,12 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull]
+		public static Parse AsParse([NotNull] this IEnumerable<ParseError> parseErrors)
+		{
+			return Parse.WithErrors(parseErrors.ToArray());
+		}
+
+		[NotNull]
 		public static string ToSetDisplayString([NotNull] this IEnumerable<string> values)
 		{
 			return "{" + string.Join(", ", values) + "}";
@@ -25,6 +31,28 @@ namespace Gibberish.Parsing
 		{
 			return (Block) matchItem.Results.Single()
 				.Statements.Single();
+		}
+
+		[NotNull]
+		public static Parse WithErrorsFrom([NotNull] this Parse main, [NotNull] params MatchItem<char, Parse>[] errorSources)
+		{
+			return Parse.MergeAll(
+				main,
+				Parse.WithErrors(
+					errorSources.SelectMany(p => p.ParseErrors())
+						.ToArray()));
+		}
+
+		[NotNull]
+		public static string AsString([NotNull] this MatchItem<char, Parse> sp)
+		{
+			return new string(sp.Inputs.ToArray());
+		}
+
+		[NotNull]
+		public static IEnumerable<ParseError> ParseErrors([NotNull] this MatchItem<char, Parse> errs)
+		{
+			return errs.Results.SelectMany(p => p.Errors);
 		}
 	}
 }

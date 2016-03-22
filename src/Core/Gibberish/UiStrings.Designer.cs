@@ -61,6 +61,24 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We were confused by whitespace `{0}` at the end of line. Each line must end with a newline and no other whitespace. Please double-check your whitespace..
+        /// </summary>
+        internal static string IllegalWhitespaceAtEnd {
+            get {
+                return ResourceManager.GetString("IllegalWhitespaceAtEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We were confused by whitespace `{0}` at the start of line. Each line must start with the right number of indentations, each a single tab character, and no other whitespace. Please double-check your whitespace..
+        /// </summary>
+        internal static string IllegalWhitespaceAtStart {
+            get {
+                return ResourceManager.GetString("IllegalWhitespaceAtStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We couldn&apos;t find a name for your {0} block. Please name your new thunk..
         /// </summary>
         internal static string MissingNameForBlock {

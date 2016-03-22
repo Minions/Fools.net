@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompileFasm\BeAbleToDefineAThunk\CompileThunks.cs" />
+    <Compile Include="CompileFools\CanGiveDecentSyntaxErrors.cs" />
     <Compile Include="CompileFools\RecognizeDeclarations\CanParseANamespace.cs" />
     <Compile Include="CompileFools\RecognizeDeclarations\CanParseASpecification.cs" />
     <Compile Include="PickTheRightLanguageForFile\ParserChooseLanguageBasedOnUseLanguageStatement.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="ZzTestHelpers\ResultExtensions.cs" />
     <Compile Include="CompileFasm\BeAbleToDefineAThunk\ParseThunkDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZzTestHelpers\TestsShouldBeClean.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

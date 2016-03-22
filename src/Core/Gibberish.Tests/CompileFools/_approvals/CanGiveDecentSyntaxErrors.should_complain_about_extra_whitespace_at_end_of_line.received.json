@@ -1,0 +1,21 @@
+﻿{
+    "$type": "Gibberish.AST.Parse, Gibberish",
+    "Declarations": [
+        {
+            "$type": "Gibberish.AST.SpecificationSection, Gibberish",
+            "headers": [
+                "whatever"
+            ],
+            "paragraphs": []
+        }
+    ],
+    "Statements": [],
+    "MaybeName": null,
+    "Texts": [],
+    "Errors": [
+        {
+            "$type": "Gibberish.Parsing.ParseError, Gibberish",
+            "message": "We were confused by whitespace `\t` at the end of line. Each line must end with a newline and no other whitespace. Please double-check your whitespace."
+        }
+    ]
+}

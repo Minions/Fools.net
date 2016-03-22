@@ -16,5 +16,5 @@ ironmeta ParseFools<char, Parse> : ParseBlockLanguage
 	SpecificationPrelude = KW("specify") Description*:headers -> { return Parse.MergeAll(headers.Results); };
 	AllowedDeclarationsInSpecification = Nothing;
 
-	Description = /[\-a-zA-z0-9_. ]+/:desc (&':' | '/') -> { return Parse.Text(new string(desc.Inputs.ToArray()).Trim()); };
+	Description = /[\-a-zA-z0-9_. ]+/:desc (&':' | '/') -> { return Parse.Text(desc.AsString().Trim()); };
 }

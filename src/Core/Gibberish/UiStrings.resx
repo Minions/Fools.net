@@ -123,4 +123,10 @@
   <data name="MissingNameForBlock" xml:space="preserve">
     <value>We couldn't find a name for your {0} block. Please name your new thunk.</value>
   </data>
+  <data name="IllegalWhitespaceAtEnd" xml:space="preserve">
+    <value>We were confused by whitespace `{0}` at the end of line. Each line must end with a newline and no other whitespace. Please double-check your whitespace.</value>
+  </data>
+  <data name="IllegalWhitespaceAtStart" xml:space="preserve">
+    <value>We were confused by whitespace `{0}` at the start of line. Each line must start with the right number of indentations, each a single tab character, and no other whitespace. Please double-check your whitespace.</value>
+  </data>
 </root>

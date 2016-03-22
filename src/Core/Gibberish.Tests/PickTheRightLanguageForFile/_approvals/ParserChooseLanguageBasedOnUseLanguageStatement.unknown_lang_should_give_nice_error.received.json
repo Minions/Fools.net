@@ -1,0 +1,13 @@
+﻿{
+    "$type": "Gibberish.AST.Parse, Gibberish",
+    "Declarations": [],
+    "Statements": [],
+    "MaybeName": null,
+    "Texts": [],
+    "Errors": [
+        {
+            "$type": "Gibberish.Parsing.ParseError, Gibberish",
+            "message": "We couldn't recognize the language specified in the use language statement. You used language `unknown`. We only recognize the languages `{fasm, fools}`."
+        }
+    ]
+}

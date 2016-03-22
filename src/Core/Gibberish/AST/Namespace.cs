@@ -28,7 +28,7 @@ namespace Gibberish.AST
 					ParseError.BlockWithMissingName("`in.namespace`")
 				}.Concat(parseErrors);
 			}
-			return Parse.Valid(new Namespace(maybeName.Name, block.Body.SelectMany(b => b.Declarations)), parseErrors.ToList());
+			return Parse.Valid(new Namespace(maybeName?.Name ?? string.Empty, block.Body.SelectMany(b => b.Declarations)), parseErrors.ToList());
 		}
 	}
 }

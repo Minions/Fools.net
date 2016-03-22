@@ -47,13 +47,6 @@ namespace Gibberish.AST
 				parseErrors);
 		}
 
-		[NotNull]
-		public static Parse MergeAll([NotNull] IEnumerable<Parse> parses)
-		{
-			var enumOnce = parses as IList<Parse> ?? parses.ToList();
-			return new Parse(enumOnce.SelectMany(p => p.Declarations), enumOnce.SelectMany(p => p.Statements), null, enumOnce.SelectMany(p => p.Texts), enumOnce.SelectMany(p => p.Errors));
-		}
-
 		public static Parse Valid(Statement statement, IEnumerable<ParseError> parseErrors)
 		{
 			return new Parse(
@@ -84,6 +77,31 @@ namespace Gibberish.AST
 					data
 				},
 				NoErrors);
+		}
+
+		[NotNull]
+		public static ParseError[] AllErrors([NotNull] params Parse[] parses)
+		{
+			return parses.SelectMany(p => p.Errors)
+				.ToArray();
+		}
+
+		[CanBeNull]
+		public static Parse MergeAll([NotNull] params Parse[] parses)
+		{
+			return MergeAll((IEnumerable<Parse>) parses);
+		}
+
+		[NotNull]
+		public static Parse MergeAll([NotNull] IEnumerable<Parse> parses)
+		{
+			var enumOnce = parses as Parse[] ?? parses.ToArray();
+			return new Parse(
+				enumOnce.SelectMany(p => p.Declarations),
+				enumOnce.SelectMany(p => p.Statements),
+				enumOnce.Aggregate((NameNode) null, (current, next) => current == null ? next.MaybeName : current),
+				enumOnce.SelectMany(p => p.Texts),
+				enumOnce.SelectMany(p => p.Errors));
 		}
 	}
 }
