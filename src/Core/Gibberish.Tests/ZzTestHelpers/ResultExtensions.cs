@@ -1,8 +1,10 @@
 using System.Runtime.Serialization.Formatters;
 using FluentAssertions;
+using FluentAssertions.Primitives;
 using Gibberish.AST;
+using Gibberish.AST._1_Bare;
 using Gibberish.Execution;
-using Gibberish.Parsing;
+using Gibberish.Tests.RecognizeBlockSyntax;
 using IronMeta.Matcher;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -12,7 +14,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 	internal static class ResultExtensions
 	{
 		[NotNull]
-		public static string PrettyPrint([CanBeNull] this MatchResult<char, Parse> self)
+		public static string PrettyPrint<T>([CanBeNull] this MatchResult<char, T> self)
 		{
 			if (self == null) { return "No match result"; }
 			if (!self.Success) { return "Unhandled low-level error: " + (self.Error ?? "<null>"); }
@@ -35,6 +37,13 @@ namespace Gibberish.Tests.ZzTestHelpers
 		public static ParseResultAssertions Should([NotNull] this MatchResult<char, Parse> parseResult)
 		{
 			return new ParseResultAssertions(parseResult);
+		}
+
+		[NotNull]
+		public static RecognitionAssertions Should([NotNull] this MatchResult<char, Recognition> result)
+		{
+			var recognition = result.Success ? result.Result : null;
+			return new RecognitionAssertions(result.Success, recognition);
 		}
 
 		[NotNull]
@@ -83,5 +92,32 @@ namespace Gibberish.Tests.ZzTestHelpers
 			TypeNameHandling = TypeNameHandling.Objects,
 			TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
 		};
+	}
+
+	internal class RecognitionAssertions : ObjectAssertions
+	{
+		public RecognitionAssertions(bool success, [NotNull] Recognition result) : base(result)
+		{
+			Success = success;
+			Result = result;
+		}
+
+		public bool Success { get; }
+		[NotNull]
+		public Recognition Result { get; }
+
+		public void BeRecognizedAs(BasicAst.Builder expected)
+		{
+			var statements = expected.Build();
+			Success.Should()
+				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
+			Result.Statements.ShouldBeEquivalentTo(
+				statements,
+				options => options.IncludingFields()
+					.IncludingProperties()
+					.IncludingNestedObjects()
+					.RespectingRuntimeTypes()
+					.IncludingAllRuntimeProperties());
+		}
 	}
 }

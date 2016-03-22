@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Gibberish.Parsing;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.AST
 {
 	public class ParseError
 	{

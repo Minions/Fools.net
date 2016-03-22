@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gibberish.AST;
+using Gibberish.AST._1_Bare;
 using IronMeta.Matcher;
 using JetBrains.Annotations;
 
@@ -21,9 +23,21 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull]
+		public static Recognition AsRecognition([NotNull] this ParseError parseErrors)
+		{
+			return Recognition.WithUnattachedErrors(new []{parseErrors});
+		}
+
+		[NotNull]
+		public static Recognition AsRecognition([NotNull] this IEnumerable<ParseError> parseErrors)
+		{
+			return Recognition.WithUnattachedErrors(parseErrors);
+		}
+
+		[NotNull]
 		public static string ToSetDisplayString([NotNull] this IEnumerable<string> values)
 		{
-			return "{" + string.Join(", ", values) + "}";
+			return "{" + String.Join(", ", values) + "}";
 		}
 
 		[NotNull]
@@ -44,7 +58,7 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull]
-		public static string AsString([NotNull] this MatchItem<char, Parse> sp)
+		public static string AsString<T>([NotNull] this MatchItem<char, T> sp)
 		{
 			return new string(sp.Inputs.ToArray());
 		}
