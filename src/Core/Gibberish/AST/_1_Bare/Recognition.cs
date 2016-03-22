@@ -18,6 +18,7 @@ namespace Gibberish.AST._1_Bare
 
 		[NotNull]
 		public BareStatement[] Statements { get; }
+		[NotNull]
 		public IEnumerable<ParseError> UnattachedErrors { get; }
 
 		public static Recognition With(BareStatement statement)

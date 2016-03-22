@@ -1,19 +1,20 @@
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare
 {
 	public class BareStatement
 	{
-		[NotNull]
-		public string Content { get; }
-		[NotNull]
-		public IEnumerable<ParseError> Errors { get; }
-
 		public BareStatement(string content, IEnumerable<ParseError> errors)
 		{
 			Content = content;
-			Errors = errors;
+			Errors = errors.ToArray();
 		}
+
+		[NotNull]
+		public string Content { get; }
+		[NotNull]
+		public ParseError[] Errors { get; }
 	}
 }

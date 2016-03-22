@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Newtonsoft.Json;
 
 namespace Gibberish.AST._1_Bare
 {
@@ -45,7 +46,17 @@ namespace Gibberish.AST._1_Bare
 				return statements;
 			}
 
+			public override string ToString()
+			{
+				return JsonConvert.SerializeObject(this, NoWhitespace);
+			}
+
 			internal abstract void Build([NotNull] List<BareStatement> list);
+
+			private static readonly JsonSerializerSettings NoWhitespace = new JsonSerializerSettings
+			{
+				Formatting = Formatting.None
+			};
 		}
 	}
 }
