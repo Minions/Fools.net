@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 
-namespace Gibberish
+namespace Gibberish.Parsing
 {
 	public class ParseError
 	{
@@ -17,15 +17,15 @@ namespace Gibberish
 			return new ParseError(UiStrings.UnknownLanguage, new string(lang.ToArray()), KnownLanguages.ToSetDisplayString());
 		}
 
-		public readonly string message;
+		[NotNull] public readonly string message;
 
-		public static ParseError MissingThunkName()
+		public static ParseError BlockWithMissingName(string block_type)
 		{
-			return new ParseError(UiStrings.MissingDefineThunkName);
+			return new ParseError(UiStrings.MissingNameForBlock, block_type);
 		}
 
 		[NotNull] private static readonly string[] KnownLanguages = {
-			"fasm"
+			"fasm", "fools"
 		};
 	}
 }

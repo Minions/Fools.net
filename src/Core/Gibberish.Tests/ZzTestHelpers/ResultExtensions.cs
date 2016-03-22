@@ -1,6 +1,8 @@
+using System.Runtime.Serialization.Formatters;
 using FluentAssertions;
 using Gibberish.AST;
 using Gibberish.Execution;
+using Gibberish.Parsing;
 using IronMeta.Matcher;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -15,7 +17,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 			if (self == null) { return "No match result"; }
 			if (!self.Success) { return "Unhandled low-level error: " + (self.Error ?? "<null>"); }
 			if (self.Result == null) { return "Low-level parser matched, but result was <null>"; }
-			return JsonConvert.SerializeObject(self.Result);
+			return JsonConvert.SerializeObject(self.Result, WithTypeNames);
 		}
 
 		public static void ShouldHave([CanBeNull] this ThunkDescriptor subject, object expectation)
@@ -51,5 +53,27 @@ namespace Gibberish.Tests.ZzTestHelpers
 					.RespectingRuntimeTypes());
 			return target;
 		}
+
+		public static ParseResultAssertions BeError(this ParseResultAssertions target, ParseError expected)
+		{
+			target.Subject.ShouldBeEquivalentTo(
+				new
+				{
+					Success = true
+				},
+				options => options.ExcludingMissingMembers());
+			target.Parse.ShouldBeEquivalentTo(
+				Parse.WithErrors(expected),
+				options => options.IncludingFields()
+					.IncludingNestedObjects()
+					.RespectingRuntimeTypes());
+			return target;
+		}
+
+		private static readonly JsonSerializerSettings WithTypeNames = new JsonSerializerSettings
+		{
+			TypeNameHandling = TypeNameHandling.Objects,
+			TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+		};
 	}
 }

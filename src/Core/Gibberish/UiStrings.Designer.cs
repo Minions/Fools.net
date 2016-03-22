@@ -61,11 +61,11 @@ namespace Gibberish {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We couldn&apos;t find a name for your `define.thunk` block. Please name your new thunk..
+        ///   Looks up a localized string similar to We couldn&apos;t find a name for your {0} block. Please name your new thunk..
         /// </summary>
-        internal static string MissingDefineThunkName {
+        internal static string MissingNameForBlock {
             get {
-                return ResourceManager.GetString("MissingDefineThunkName", resourceCulture);
+                return ResourceManager.GetString("MissingNameForBlock", resourceCulture);
             }
         }
         

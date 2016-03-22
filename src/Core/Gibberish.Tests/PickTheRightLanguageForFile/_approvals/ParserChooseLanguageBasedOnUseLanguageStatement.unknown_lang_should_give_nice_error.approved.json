@@ -2,9 +2,10 @@
     "Declarations": [],
     "Statements": [],
     "MaybeName": null,
+    "Texts": [],
     "Errors": [
         {
-            "message": "We couldn't recognize the language specified in the use language statement. You used language `unknown`. We only recognize the languages `{fasm}`."
+            "message": "We couldn't recognize the language specified in the use language statement. You used language `unknown`. We only recognize the languages `{fasm, fools}`."
         }
     ]
 }

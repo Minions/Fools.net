@@ -120,7 +120,7 @@
   <data name="UnknownLanguage" xml:space="preserve">
     <value>We couldn't recognize the language specified in the use language statement. You used language `{0}`. We only recognize the languages `{1}`.</value>
   </data>
-  <data name="MissingDefineThunkName" xml:space="preserve">
-    <value>We couldn't find a name for your `define.thunk` block. Please name your new thunk.</value>
+  <data name="MissingNameForBlock" xml:space="preserve">
+    <value>We couldn't find a name for your {0} block. Please name your new thunk.</value>
   </data>
 </root>

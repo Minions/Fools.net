@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="CompileFasm\BeAbleToDefineAThunk\CompileThunks.cs" />
     <Compile Include="CompileFools\RecognizeDeclarations\CanParseANamespace.cs" />
+    <Compile Include="CompileFools\RecognizeDeclarations\CanParseASpecification.cs" />
     <Compile Include="PickTheRightLanguageForFile\ParserChooseLanguageBasedOnUseLanguageStatement.cs" />
     <Compile Include="ZzTestHelpers\ParseResultAssertions.cs" />
     <Compile Include="ZzTestHelpers\ResultExtensions.cs" />

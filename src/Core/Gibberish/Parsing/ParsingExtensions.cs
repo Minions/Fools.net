@@ -4,7 +4,7 @@ using Gibberish.AST;
 using IronMeta.Matcher;
 using JetBrains.Annotations;
 
-namespace Gibberish
+namespace Gibberish.Parsing
 {
 	internal static class ParsingExtensions
 	{

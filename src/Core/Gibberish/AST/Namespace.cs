@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Gibberish.Parsing;
 using JetBrains.Annotations;
 
 namespace Gibberish.AST
@@ -12,7 +13,6 @@ namespace Gibberish.AST
 			this.declarations = declarations;
 		}
 
-		[NotNull] public readonly string type = "namespace";
 		[NotNull] public readonly string name;
 		[NotNull] public readonly IEnumerable<Declaration> declarations;
 
@@ -25,7 +25,7 @@ namespace Gibberish.AST
 			{
 				parseErrors = new[]
 				{
-					ParseError.MissingThunkName()
+					ParseError.BlockWithMissingName("`in.namespace`")
 				}.Concat(parseErrors);
 			}
 			return Parse.Valid(new Namespace(maybeName.Name, block.Body.SelectMany(b => b.Declarations)), parseErrors.ToList());
