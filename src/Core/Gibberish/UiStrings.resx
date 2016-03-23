@@ -129,4 +129,7 @@
   <data name="IllegalWhitespaceAtStart" xml:space="preserve">
     <value>We were confused by whitespace `{0}` at the start of line. Each line must start with the right number of indentations, each a single tab character, and no other whitespace. Please double-check your whitespace.</value>
   </data>
+  <data name="IllegalTabInLine" xml:space="preserve">
+    <value>We were confused by a tab used for something other than indentation. Each line must start with the right number of indentations, each a single tab character. Tabs may also be used to separate the code line from a comment reference. Tabs are not allowed in any other place. Please clean up your tabs.</value>
+  </data>
 </root>

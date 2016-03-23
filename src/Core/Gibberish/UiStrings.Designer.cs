@@ -61,6 +61,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We were confused by a tab used for something other than indentation. Each line must start with the right number of indentations, each a single tab character. Tabs may also be used to separate the code line from a comment reference. Tabs are not allowed in any other place. Please clean up your tabs..
+        /// </summary>
+        internal static string IllegalTabInLine {
+            get {
+                return ResourceManager.GetString("IllegalTabInLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We were confused by whitespace `{0}` at the end of line. Each line must end with a newline and no other whitespace. Please double-check your whitespace..
         /// </summary>
         internal static string IllegalWhitespaceAtEnd {

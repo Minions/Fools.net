@@ -31,6 +31,11 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.IllegalWhitespaceAtEnd, EscapeWhitespace(input));
 		}
 
+		public static ParseError IllegalTabInLine()
+		{
+			return new ParseError(UiStrings.IllegalTabInLine);
+		}
+
 		private static string EscapeWhitespace(string input)
 		{
 			var replacements = new Dictionary<char, string>
