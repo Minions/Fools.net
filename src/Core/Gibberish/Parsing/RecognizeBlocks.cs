@@ -31,7 +31,8 @@ namespace Gibberish.Parsing
 				{
 					ParseError.IllegalWhitespaceAtEnd(extraAtEnd)
 				};
-			return new UnknownBlock(prelude.AsString(), body.Results.SelectMany(r => r.Items), preludeErrors).AsRecognition();
+			var blockErrors = Recognition.NoErrors;
+			return new UnknownBlock(new UnknownPrelude(prelude.AsString(), preludeErrors), body.Results.SelectMany(r => r.Items), blockErrors).AsRecognition();
 		}
 	}
 }

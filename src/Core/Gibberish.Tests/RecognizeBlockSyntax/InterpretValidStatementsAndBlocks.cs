@@ -55,9 +55,8 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"arbitrary block: \r\n\tpass\r\n",
-				BasicAst.Block("arbitrary block")
+				BasicAst.Block("arbitrary block", p => p.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
 					.WithBody(b => b.AddStatement("pass"))
-					.WithError(ParseError.IllegalWhitespaceAtEnd(" "))
 			}
 		};
 	}

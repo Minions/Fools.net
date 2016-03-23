@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Gibberish.Parsing;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
@@ -15,7 +16,12 @@ namespace Gibberish.AST._1_Bare
 
 		public static BlockBuilder Block(string prelude)
 		{
-			return new BlockBuilder(prelude);
+			return Block(prelude, x => { });
+		}
+
+		public static BlockBuilder Block(string prelude, Action<BlockBuilder.PreludeBuilder> func)
+		{
+			return new BlockBuilder(prelude, func);
 		}
 
 		public abstract class Builder
@@ -68,13 +74,14 @@ namespace Gibberish.AST._1_Bare
 
 		public class BlockBuilder : Builder
 		{
-			public BlockBuilder(string prelude)
+			public BlockBuilder(string prelude, Action<PreludeBuilder> func)
 			{
-				Prelude = prelude;
+				Prelude = new PreludeBuilder(prelude);
+				func(Prelude);
 			}
 
 			[NotNull]
-			public string Prelude { get; set; }
+			public PreludeBuilder Prelude { get; }
 
 			[NotNull]
 			public BlockBuilder WithBody([NotNull] Action<BodyBuilder> options)
@@ -83,9 +90,26 @@ namespace Gibberish.AST._1_Bare
 				return this;
 			}
 
+			public class PreludeBuilder : Builder
+			{
+				public PreludeBuilder(string content)
+				{
+					Content = content;
+				}
+
+				public string Content { get; set; }
+
+				internal override void Build(List<LanguageConstruct> destination)
+				{
+					destination.Add(new UnknownPrelude(Content, Errors));
+				}
+
+				private readonly BlockBuilder _self;
+			}
+
 			public class BodyBuilder
 			{
-				public BodyBuilder(BlockBuilder self)
+				public BodyBuilder([NotNull] BlockBuilder self)
 				{
 					_self = self;
 				}
@@ -105,9 +129,11 @@ namespace Gibberish.AST._1_Bare
 
 			internal override void Build(List<LanguageConstruct> destination)
 			{
+				var prelude = new List<LanguageConstruct>();
+				Prelude.Build(prelude);
 				var body = new List<LanguageConstruct>();
 				foreach (var statement in Body) { statement.Build(body); }
-				destination.Add(new UnknownBlock(Prelude, body, Errors));
+				destination.Add(new UnknownBlock((UnknownPrelude) prelude[0], body, Errors));
 			}
 		}
 	}
