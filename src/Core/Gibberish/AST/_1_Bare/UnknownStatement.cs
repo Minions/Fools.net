@@ -8,10 +8,12 @@ namespace Gibberish.AST._1_Bare
 	{
 		public UnknownStatement(int indentationDepth, string content, IEnumerable<int> comments, IEnumerable<ParseError> errors) : base(errors)
 		{
+			IndentationDepth = indentationDepth;
 			Content = content;
 			Comments = comments.ToArray();
 		}
 
+		public int IndentationDepth { get; }
 		[NotNull]
 		public string Content { get; }
 		[NotNull]

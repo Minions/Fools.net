@@ -26,18 +26,16 @@ namespace Gibberish.Parsing
 			return new UnknownStatement(indentationDepth, statement, comments, errors.ToArray()).AsRecognition();
 		}
 
-		private static Recognition _ExtractBlockAndErrors(_RecognizeBlocks_Item prelude, _RecognizeBlocks_Item body, _RecognizeBlocks_Item contentAfterColon)
+		private Recognition _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon)
 		{
-			var coreContent = prelude.AsString();
-			var extraAtEnd = contentAfterColon.AsString();
+			var extraAtEnd = contentAfterColon;
 			var possibleComment = extraAtEnd.TrimEnd();
 			extraAtEnd = extraAtEnd.Substring(possibleComment.Length);
 			var preludeErrors = new List<ParseError>();
 			var comments = new List<int>();
 			_ExtractCommentsAndReturnEverythingBeforeThem(preludeErrors, possibleComment, comments);
-			_CheckForWhitespaceErrors(preludeErrors, coreContent, extraAtEnd);
-			var blockErrors = Recognition.NoErrors;
-			return new UnknownBlock(new UnknownPrelude(coreContent, comments, preludeErrors), body.Results.SelectMany(r => r.Items), blockErrors).AsRecognition();
+			_CheckForWhitespaceErrors(preludeErrors, content, extraAtEnd);
+			return new UnknownPrelude(indentationDepth, content, comments, preludeErrors).AsRecognition();
 		}
 
 		[NotNull]

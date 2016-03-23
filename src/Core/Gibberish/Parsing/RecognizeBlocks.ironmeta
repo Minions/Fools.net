@@ -5,19 +5,14 @@ using Gibberish.AST._1_Bare;
 
 ironmeta RecognizeBlocks<char, Recognition> : IronMeta.Matcher.Matcher<char, Recognition>
 {
-	WholeFile = LanguageConstruct(AtRoot)*:matches -> { return matches.Results.Merge(); };
-	LanguageConstruct :indentation = BlankLine | Block(indentation) | Statement(indentation);
+	WholeFile = LanguageConstruct*:matches -> { return matches.Results.Merge(); };
+	LanguageConstruct = BlankLine | Prelude | Statement;
 
-	Statement :ignored = '\t'*:indentation (~(':' | '\n' | '\r') .)*:content NL -> { return _ExtractStatementAndErrors(content, indentation.Inputs.Count()); };
+	Statement = '\t'*:indentation (~(':' | '\n' | '\r') .)*:content NL -> { return _ExtractStatementAndErrors(content, indentation.Inputs.Count()); };
+
+	Prelude = '\t'*:indentation (~(':' | '\n' | '\r') .)*:content ":" (~('\n' | '\r') .)*:trailingContent NL -> { return _ExtractPreludeAndErrors(indentation.Inputs.Count(), content.AsString(), trailingContent.AsString()); };
 	
-	Block :ignored = '\t'*:indentation LineContent:prelude ":" NotNL:trailingWhitespace NL Body(ignored):body -> { return _ExtractBlockAndErrors(prelude, body, trailingWhitespace); };
-	Body :ignored = Statement('\t')+:statements -> { return statements.Results.Merge(); };
-
-	LineContent = /[^\r\n:]/*;
-	NotNL = /[^\r\n]/*;
-
 	BlankLine = /[\t ]/* NL;
-	AtRoot = &.?;
 
 	Nothing = (~(.?));
 	NL = "\r\n" | "\n" | "\r";

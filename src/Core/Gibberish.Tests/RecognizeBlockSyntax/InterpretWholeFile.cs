@@ -18,6 +18,7 @@ using language fasm
 
 define.thunk some.name:
 	pass
+
 define.thunk other.name:
 	pass
 ";

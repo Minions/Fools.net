@@ -24,7 +24,7 @@ namespace Gibberish.AST._1_Bare
 		[NotNull]
 		public static BlockBuilder Block([NotNull] string prelude, [NotNull] Action<BlockBuilder.PreludeBuilder> func)
 		{
-			return new BlockBuilder(prelude, func);
+			return new BlockBuilder(prelude, func, 0);
 		}
 
 		public abstract class Builder
@@ -34,6 +34,14 @@ namespace Gibberish.AST._1_Bare
 			{
 				var statements = new List<LanguageConstruct>();
 				Build(statements);
+				return statements;
+			}
+
+			[NotNull]
+			public List<LanguageConstruct> BuildRaw()
+			{
+				var statements = new List<LanguageConstruct>();
+				BuildRaw(statements);
 				return statements;
 			}
 
@@ -53,6 +61,7 @@ namespace Gibberish.AST._1_Bare
 			}
 
 			internal abstract void Build([NotNull] List<LanguageConstruct> destination);
+			internal abstract void BuildRaw([NotNull] List<LanguageConstruct> destination);
 
 			private static readonly JsonSerializerSettings NoWhitespace = new JsonSerializerSettings
 			{
@@ -87,15 +96,23 @@ namespace Gibberish.AST._1_Bare
 			{
 				destination.Add(new UnknownStatement(IndentationDepth, Content, Comments, Errors));
 			}
+
+			internal override void BuildRaw(List<LanguageConstruct> destination)
+			{
+				Build(destination);
+			}
 		}
 
 		public class BlockBuilder : Builder
 		{
-			public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> func)
+			public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> func, int indentationDepth)
 			{
-				Prelude = new PreludeBuilder(prelude);
+				IndentationDepth = indentationDepth;
+				Prelude = new PreludeBuilder(prelude, indentationDepth);
 				func(Prelude);
 			}
+
+			public int IndentationDepth { get; }
 
 			[NotNull]
 			public PreludeBuilder Prelude { get; }
@@ -109,13 +126,14 @@ namespace Gibberish.AST._1_Bare
 
 			public class PreludeBuilder : Builder
 			{
-				public PreludeBuilder([NotNull] string content)
+				public PreludeBuilder([NotNull] string content, int indentationDepth)
 				{
 					Content = content;
+					IndentationDepth = indentationDepth;
 				}
 
 				[NotNull]
-				public string Content { get; set; }
+				public string Content { get; }
 
 				[NotNull]
 				public List<int> Comments { get; } = new List<int>();
@@ -127,9 +145,16 @@ namespace Gibberish.AST._1_Bare
 					return this;
 				}
 
+				public int IndentationDepth { get; }
+
 				internal override void Build(List<LanguageConstruct> destination)
 				{
-					destination.Add(new UnknownPrelude(Content, Comments, Errors));
+					destination.Add(new UnknownPrelude(IndentationDepth, Content, Comments, Errors));
+				}
+
+				internal override void BuildRaw(List<LanguageConstruct> destination)
+				{
+					Build(destination);
 				}
 			}
 
@@ -143,7 +168,7 @@ namespace Gibberish.AST._1_Bare
 				[NotNull]
 				public StatementBuilder AddStatement([NotNull] string content)
 				{
-					var statement = Statement(content);
+					var statement = new StatementBuilder(content, _self.IndentationDepth + 1);
 					_self.Body.Add(statement);
 					return statement;
 				}
@@ -165,10 +190,21 @@ namespace Gibberish.AST._1_Bare
 			internal override void Build(List<LanguageConstruct> destination)
 			{
 				var prelude = new List<LanguageConstruct>();
-				Prelude.Build(prelude);
 				var body = new List<LanguageConstruct>();
-				foreach (var builder in Body) { builder.Build(body); }
+				Prelude.Build(prelude);
+				BuildBody(body);
 				destination.Add(new UnknownBlock((UnknownPrelude) prelude[0], body, Errors));
+			}
+
+			internal override void BuildRaw(List<LanguageConstruct> destination)
+			{
+				Prelude.BuildRaw(destination);
+				BuildBody(destination);
+			}
+
+			private void BuildBody(List<LanguageConstruct> body)
+			{
+				foreach (var builder in Body) { builder.Build(body); }
 			}
 		}
 	}

@@ -110,7 +110,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 
 		public void BeRecognizedAs(BasicAst.Builder expected)
 		{
-			var statements = expected.Build();
+			var statements = expected.BuildRaw();
 			Success.Should()
 				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
 			Result.Items.ShouldBeEquivalentTo(
@@ -124,7 +124,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 
 		internal void BeRecognizedAs(params BasicAst.Builder[] expected)
 		{
-			var statements = expected.SelectMany(b=>b.Build());
+			var statements = expected.SelectMany(b=>b.BuildRaw());
 			Success.Should()
 				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
 			Result.Items.ShouldBeEquivalentTo(
