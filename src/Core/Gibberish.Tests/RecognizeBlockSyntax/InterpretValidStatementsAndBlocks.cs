@@ -18,14 +18,17 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		{
 			var subject = new RecognizeBlocks();
 			var result = subject.GetMatch(input, subject.WholeFile);
-			try
-			{
-				result.Should()
-					.BeRecognizedAs(expected);
-			}
-			catch (Exception) {
-				Approvals.VerifyJson(result.PrettyPrint());
-			}
+			result.Should()
+				.BeRecognizedAs(expected);
+			//try
+			//{
+			//	result.Should()
+			//		.BeRecognizedAs(expected);
+			//}
+			//catch (Exception)
+			//{
+			//	Approvals.VerifyJson(result.PrettyPrint());
+			//}
 		}
 
 		public static IEnumerable<IEnumerable<object>> valid_recognitions { get; } = new[]
@@ -90,6 +93,19 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				BasicAst.Block("arbitrary block")
 					.WithBody(b => b.AddStatement("pass"))
 			},
+			//new object[]
+			//{
+			//	"arbitrary block:\r\n\tfirst\r\n\tsecond block:\r\n\t\tpass\r\n\tlast\r\n",
+			//	BasicAst.Block("arbitrary block")
+			//		.WithBody(
+			//			b =>
+			//			{
+			//				b.AddStatement("first");
+			//				b.AddBlock("second block")
+			//					.WithBody(inner => inner.AddStatement("pass"));
+			//				b.AddStatement("last");
+			//			})
+			//},
 			new object[]
 			{
 				"arbitrary block:\t\t#[3]\r\n\tpass\r\n",

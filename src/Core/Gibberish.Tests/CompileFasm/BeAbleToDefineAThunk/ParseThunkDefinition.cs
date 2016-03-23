@@ -8,7 +8,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 	[TestFixture]
 	public class ParseThunkDefinition
 	{
-		[Test, Timeout(1500)]
+		[Test, Timeout(2500)]
 		public void definethunk_statement_should_match_whole_block()
 		{
 			var input = @"define.named.thunk some.name:

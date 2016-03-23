@@ -146,17 +146,25 @@ namespace Gibberish.AST._1_Bare
 				}
 
 				[NotNull] private readonly BlockBuilder _self;
+
+				[NotNull]
+				public BlockBuilder AddBlock([NotNull] string prelude)
+				{
+					var result = Block(prelude);
+					_self.Body.Add(result);
+					return result;
+				}
 			}
 
 			[NotNull]
-			public List<StatementBuilder> Body { get; } = new List<StatementBuilder>();
+			public List<Builder> Body { get; } = new List<Builder>();
 
 			internal override void Build(List<LanguageConstruct> destination)
 			{
 				var prelude = new List<LanguageConstruct>();
 				Prelude.Build(prelude);
 				var body = new List<LanguageConstruct>();
-				foreach (var statement in Body) { statement.Build(body); }
+				foreach (var builder in Body) { builder.Build(body); }
 				destination.Add(new UnknownBlock((UnknownPrelude) prelude[0], body, Errors));
 			}
 		}
