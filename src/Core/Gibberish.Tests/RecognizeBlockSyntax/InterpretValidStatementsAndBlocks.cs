@@ -18,16 +18,16 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		{
 			var subject = new RecognizeBlocks();
 			var result = subject.GetMatch(input, subject.WholeFile);
-			//result.Should()
-			//	.BeRecognizedAs(expected);
+
+			result.Should()
+				.BeRecognizedAs(expected);
 
 			try
 			{
 				result.Should()
 					.BeRecognizedAs(expected);
 			}
-			catch (Exception)
-			{
+			catch (Exception) {
 				Approvals.VerifyJson(result.PrettyPrint());
 			}
 		}
@@ -86,7 +86,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				"arbitrary statement\t\t\t#[2]\r\n",
 				BasicAst.Statement("arbitrary statement")
 					.WithCommentRefs(2)
-					.WithError(ParseError.IncorrectCommentSeparator("\t\t\t"))
+					.WithError(ParseError.IncorrectCommentSeparator("\t\t\t#"))
 			},
 			new object[]
 			{
@@ -119,7 +119,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				BasicAst.Block(
 					"arbitrary block",
 					p => p.WithCommentRefs(3)
-						.WithError(ParseError.IncorrectCommentSeparator(" \t\t")))
+						.WithError(ParseError.IncorrectCommentSeparator(" \t\t#")))
 					.WithBody(b => b.AddStatement("pass"))
 			},
 			new object[]
@@ -170,9 +170,21 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			},
 			new object[]
 			{
+				"#[2]:\tcomment content\r\n",
+				BasicAst.CommentDefinition(2, "comment content")
+					.WithError(ParseError.IncorrectCommentDefinitionSeparator("\t"))
+			},
+			new object[]
+			{
 				"# just a bare comment\r\n",
 				BasicAst.CommentDefinition(0, "just a bare comment")
 					.WithError(ParseError.MissingIdInCommentDefinition("just a b"))
+			},
+			new object[]
+			{
+				"#[3a3]: almost right\r\n",
+				BasicAst.CommentDefinition(0, "[3a3]: almost right")
+					.WithError(ParseError.MissingIdInCommentDefinition("[3a3]: a"))
 			}
 		};
 	}

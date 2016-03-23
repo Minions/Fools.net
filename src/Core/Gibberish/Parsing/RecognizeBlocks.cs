@@ -19,7 +19,7 @@ namespace Gibberish.Parsing
 			var comments = new List<int>();
 			var statement = _ExtractCommentsAndReturnEverythingBeforeThem(errors, coreContent, comments);
 			_CheckForWhitespaceErrors(errors, statement, extraAtEnd);
-			return new UnknownStatement(indentationDepth, statement, comments, errors.ToArray());
+			return new UnknownStatement(indentationDepth, statement, comments, errors);
 		}
 
 		private UnknownPrelude _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon)
@@ -38,10 +38,10 @@ namespace Gibberish.Parsing
 		{
 			var errors = new List<ParseError>();
 			int commentNumber;
-			if (!int.TryParse(commentId, out commentNumber))
-			{
+			if (!int.TryParse(commentId, out commentNumber)) {
 				errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8)));
 			}
+			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
 			return new CommentDefinition(commentNumber, content, errors);
 		}
 

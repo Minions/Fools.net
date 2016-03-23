@@ -119,8 +119,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 				options => options.IncludingFields()
 					.IncludingProperties()
 					.IncludingNestedObjects()
-					.RespectingRuntimeTypes()
-					.IncludingAllRuntimeProperties());
+					.RespectingRuntimeTypes());
 		}
 
 		internal void BeRecognizedAs(params BasicAst.Builder[] expected)
@@ -133,8 +132,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 				options => options.IncludingFields()
 					.IncludingProperties()
 					.IncludingNestedObjects()
-					.RespectingRuntimeTypes()
-					.IncludingAllRuntimeProperties());
+					.RespectingRuntimeTypes());
 		}
 	}
 }

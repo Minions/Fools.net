@@ -88,6 +88,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We found a nearly-valid comment definition, but it had the wrong whitespace between the ID and the content. Comment definitions must begin with `#[44]: `. Yours is like that, but instead of a single space after the colon you have `{0}`. Please fix it..
+        /// </summary>
+        internal static string IncorrectCommentDefinitionSeparator {
+            get {
+                return ResourceManager.GetString("IncorrectCommentDefinitionSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We were confused by a comment. Comments must all be formatted like `#[4], [9], [2]`. This comment was `#{0}`. Please fix it..
         /// </summary>
         internal static string IncorrectCommentFormat {

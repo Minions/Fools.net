@@ -36,6 +36,11 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.IncorrectCommentSeparator, separatorUsed);
 		}
 
+		public static ParseError IncorrectCommentDefinitionSeparator(string separatorUsed)
+		{
+			return new ParseError(UiStrings.IncorrectCommentDefinitionSeparator, separatorUsed);
+		}
+
 		public static ParseError IncorrectCommentFormat(string comment)
 		{
 			return new ParseError(UiStrings.IncorrectCommentFormat, comment);
