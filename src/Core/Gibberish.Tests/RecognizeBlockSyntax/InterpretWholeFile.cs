@@ -9,7 +9,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 	[TestFixture]
 	public class InterpretWholeFile
 	{
-		[Test, UseReporter(typeof(QuietReporter))]
+		[Test]
 		public void should_accept_multiple_language_constructs()
 		{
 			var subject = new RecognizeBlocks();
@@ -23,7 +23,6 @@ define.thunk other.name:
 	pass
 ";
 			var result = subject.GetMatch(input, subject.WholeFile);
-			//ApprovalTests.Approvals.VerifyJson(result.PrettyPrint());
 			result.Should()
 				.BeRecognizedAs(
 					BasicAst.Statement("using language fasm"),
