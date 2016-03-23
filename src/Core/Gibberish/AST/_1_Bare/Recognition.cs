@@ -35,5 +35,13 @@ namespace Gibberish.AST._1_Bare
 		{
 			return new Recognition(NoStatements, errors);
 		}
+
+		public static Recognition Merge(IEnumerable<Recognition> items)
+		{
+			return new Recognition(
+				items.SelectMany(r => r.Items)
+					.ToArray(),
+				NoErrors);
+		}
 	}
 }

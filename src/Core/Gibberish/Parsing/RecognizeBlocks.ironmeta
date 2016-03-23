@@ -5,7 +5,8 @@ using Gibberish.AST._1_Bare;
 
 ironmeta RecognizeBlocks<char, Recognition> : IronMeta.Matcher.Matcher<char, Recognition>
 {
-	LanguageConstruct = Block(AtRoot) | Statement;
+	WholeFile = LanguageConstruct*:matches -> { return matches.Results.Merge(); };
+	LanguageConstruct = BlankLine | Block(AtRoot) | Statement;
 
 	Statement = LineContent:content NL -> { return _ExtractStatementAndErrors(content); };
 	
@@ -15,7 +16,7 @@ ironmeta RecognizeBlocks<char, Recognition> : IronMeta.Matcher.Matcher<char, Rec
 	LineContent = /[^\r\n:]/*;
 	NotNL = /[^\r\n]/*;
 
-	BlankLine = '\t'* NL;
+	BlankLine = /[\t ]/* NL;
 	AtRoot = &.?;
 	Indent :indents = '\t' indents;
 

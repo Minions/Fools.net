@@ -103,8 +103,6 @@ namespace Gibberish.AST._1_Bare
 				{
 					destination.Add(new UnknownPrelude(Content, Errors));
 				}
-
-				private readonly BlockBuilder _self;
 			}
 
 			public class BodyBuilder

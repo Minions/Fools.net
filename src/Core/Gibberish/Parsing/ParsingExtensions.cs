@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gibberish.AST;
@@ -25,7 +24,11 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public static Recognition AsRecognition([NotNull] this ParseError parseErrors)
 		{
-			return Recognition.WithUnattachedErrors(new []{parseErrors});
+			return Recognition.WithUnattachedErrors(
+				new[]
+				{
+					parseErrors
+				});
 		}
 
 		[NotNull]
@@ -43,7 +46,7 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public static string ToSetDisplayString([NotNull] this IEnumerable<string> values)
 		{
-			return "{" + String.Join(", ", values) + "}";
+			return "{" + string.Join(", ", values) + "}";
 		}
 
 		[NotNull]
@@ -73,6 +76,12 @@ namespace Gibberish.Parsing
 		public static IEnumerable<ParseError> ParseErrors([NotNull] this MatchItem<char, Parse> errs)
 		{
 			return errs.Results.SelectMany(p => p.Errors);
+		}
+
+		[NotNull]
+		public static Recognition Merge([NotNull] this IEnumerable<Recognition> items)
+		{
+			return Recognition.Merge(items);
 		}
 	}
 }

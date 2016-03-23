@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using FluentAssertions;
 using FluentAssertions.Primitives;
@@ -109,6 +111,20 @@ namespace Gibberish.Tests.ZzTestHelpers
 		public void BeRecognizedAs(BasicAst.Builder expected)
 		{
 			var statements = expected.Build();
+			Success.Should()
+				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
+			Result.Items.ShouldBeEquivalentTo(
+				statements,
+				options => options.IncludingFields()
+					.IncludingProperties()
+					.IncludingNestedObjects()
+					.RespectingRuntimeTypes()
+					.IncludingAllRuntimeProperties());
+		}
+
+		internal void BeRecognizedAs(params BasicAst.Builder[] expected)
+		{
+			var statements = expected.SelectMany(b=>b.Build());
 			Success.Should()
 				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
 			Result.Items.ShouldBeEquivalentTo(
