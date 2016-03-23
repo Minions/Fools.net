@@ -46,10 +46,16 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.IllegalTabInLine);
 		}
 
+		public static ParseError MissingIdInCommentDefinition(string firstPartOfComment)
+		{
+			return new ParseError(UiStrings.MissingIdInCommentDefinition, firstPartOfComment);
+		}
+
 		[NotNull] private static readonly string[] KnownLanguages = {
 			"fasm",
 			"fools"
 		};
+
 		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
 	}
 }

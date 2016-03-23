@@ -4,20 +4,16 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
-using IronMeta.Matcher;
 using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
-	using _RecognizeBlocks_Item = MatchItem<char, LanguageConstruct>;
-
 	partial class RecognizeBlocks
 	{
-		private static UnknownStatement _ExtractStatementAndErrors(_RecognizeBlocks_Item content, int indentationDepth)
+		private static UnknownStatement _ExtractStatementAndErrors(int indentationDepth, string content)
 		{
-			var rawContent = content.AsString();
-			var coreContent = rawContent.TrimEnd();
-			var extraAtEnd = rawContent.Substring(coreContent.Length);
+			var coreContent = content.TrimEnd();
+			var extraAtEnd = content.Substring(coreContent.Length);
 
 			var errors = new List<ParseError>();
 			var comments = new List<int>();
@@ -36,6 +32,17 @@ namespace Gibberish.Parsing
 			_ExtractCommentsAndReturnEverythingBeforeThem(preludeErrors, possibleComment, comments);
 			_CheckForWhitespaceErrors(preludeErrors, content, extraAtEnd);
 			return new UnknownPrelude(indentationDepth, content, comments, preludeErrors);
+		}
+
+		private LanguageConstruct _ExtractSingleLineCommentDefinition(string commentId, string content, string commentSeparator)
+		{
+			var errors = new List<ParseError>();
+			int commentNumber;
+			if (!int.TryParse(commentId, out commentNumber))
+			{
+				errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8)));
+			}
+			return new CommentDefinition(commentNumber, content, errors);
 		}
 
 		[NotNull]

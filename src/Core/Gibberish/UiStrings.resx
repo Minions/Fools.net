@@ -138,4 +138,7 @@
 	<data name="IllegalTabInLine" xml:space="preserve">
 		<value>We were confused by a tab used for something other than indentation. Each line must start with the right number of indentations, each a single tab character. Tabs may also be used to separate the code line from a comment reference. Tabs are not allowed in any other place. Please clean up your tabs.</value>
 	</data>
+	<data name="MissingIdInCommentDefinition" xml:space="preserve">
+		<value>We found a comment defintion but couldn't find its ID. Each comment must begin with an ID in the form `#[23]: `. Your comment starts with `{0}`.</value>
+	</data>
 </root>

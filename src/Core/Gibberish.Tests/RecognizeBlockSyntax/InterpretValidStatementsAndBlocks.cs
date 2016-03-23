@@ -18,17 +18,18 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		{
 			var subject = new RecognizeBlocks();
 			var result = subject.GetMatch(input, subject.WholeFile);
-			result.Should()
-				.BeRecognizedAs(expected);
-			//try
-			//{
-			//	result.Should()
-			//		.BeRecognizedAs(expected);
-			//}
-			//catch (Exception)
-			//{
-			//	Approvals.VerifyJson(result.PrettyPrint());
-			//}
+			//result.Should()
+			//	.BeRecognizedAs(expected);
+
+			try
+			{
+				result.Should()
+					.BeRecognizedAs(expected);
+			}
+			catch (Exception)
+			{
+				Approvals.VerifyJson(result.PrettyPrint());
+			}
 		}
 
 		public static IEnumerable<IEnumerable<object>> valid_recognitions { get; } = new[]
@@ -161,6 +162,17 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				"arbitrary\tblock:\r\n\tpass\r\n",
 				BasicAst.Block("arbitrary\tblock", p => p.WithError(ParseError.IllegalTabInLine()))
 					.WithBody(b => b.AddStatement("pass"))
+			},
+			new object[]
+			{
+				"#[2]: comment content\r\n",
+				BasicAst.CommentDefinition(2, "comment content")
+			},
+			new object[]
+			{
+				"# just a bare comment\r\n",
+				BasicAst.CommentDefinition(0, "just a bare comment")
+					.WithError(ParseError.MissingIdInCommentDefinition("just a b"))
 			}
 		};
 	}

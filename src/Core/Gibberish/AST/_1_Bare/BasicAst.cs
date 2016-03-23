@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gibberish.Parsing;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
@@ -25,6 +24,11 @@ namespace Gibberish.AST._1_Bare
 		public static BlockBuilder Block([NotNull] string prelude, [NotNull] Action<BlockBuilder.PreludeBuilder> preludeOptions)
 		{
 			return new BlockBuilder(prelude, preludeOptions, 0);
+		}
+
+		public static CommentBuilder CommentDefinition(int commentId, string content)
+		{
+			return new CommentBuilder(commentId, content);
 		}
 
 		public abstract class Builder
@@ -51,7 +55,7 @@ namespace Gibberish.AST._1_Bare
 			}
 
 			[NotNull]
-			public List<ParseError> Errors { get; set; } = ParseError.NoErrors.ToList();
+			public List<ParseError> Errors { get; } = ParseError.NoErrors.ToList();
 
 			[NotNull]
 			public Builder WithError([NotNull] ParseError error)
@@ -79,12 +83,12 @@ namespace Gibberish.AST._1_Bare
 			}
 
 			[NotNull]
-			public string Content { get; set; }
+			public string Content { get; }
 
 			[NotNull]
 			public List<int> Comments { get; } = new List<int>();
 
-			public int IndentationDepth { get; set; }
+			public int IndentationDepth { get; }
 
 			[NotNull]
 			public StatementBuilder WithCommentRefs([NotNull] params int[] indices)
@@ -207,6 +211,29 @@ namespace Gibberish.AST._1_Bare
 			{
 				Prelude.BuildRaw(destination);
 				foreach (var builder in Body) { builder.BuildRaw(destination); }
+			}
+		}
+
+		public class CommentBuilder : Builder
+		{
+			public CommentBuilder(int commentId, [NotNull] string content)
+			{
+				CommentId = commentId;
+				Content = content;
+			}
+
+			public int CommentId { get; }
+			[NotNull]
+			public string Content { get; }
+
+			internal override void Build(List<LanguageConstruct> destination)
+			{
+				destination.Add(new CommentDefinition(CommentId, Content, Errors));
+			}
+
+			internal override void BuildRaw(List<LanguageConstruct> destination)
+			{
+				Build(destination);
 			}
 		}
 	}

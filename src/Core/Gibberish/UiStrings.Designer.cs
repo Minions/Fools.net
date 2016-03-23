@@ -106,6 +106,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We found a comment defintion but couldn&apos;t find its ID. Each comment must begin with an ID in the form `#[23]: `. Your comment starts with `{0}`..
+        /// </summary>
+        internal static string MissingIdInCommentDefinition {
+            get {
+                return ResourceManager.GetString("MissingIdInCommentDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We couldn&apos;t find a name for your {0} block. Please name your new thunk..
         /// </summary>
         internal static string MissingNameForBlock {

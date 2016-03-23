@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Gibberish.AST;
-using Gibberish.AST._1_Bare;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.AST._1_Bare
 {
 	public class UnknownPrelude : LanguageConstruct
 	{

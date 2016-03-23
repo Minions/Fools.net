@@ -38,9 +38,9 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull]
-		public static string AsString<T>([NotNull] this MatchItem<char, T> sp)
+		public static string AsString<T>([CanBeNull] this MatchItem<char, T> sp)
 		{
-			return new string(sp.Inputs.ToArray());
+			return sp == null ? string.Empty : new string(sp.Inputs.ToArray());
 		}
 
 		[NotNull]
