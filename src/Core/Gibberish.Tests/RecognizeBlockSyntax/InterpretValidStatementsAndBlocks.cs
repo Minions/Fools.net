@@ -92,6 +92,21 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			},
 			new object[]
 			{
+				"arbitrary block:\t\t#[3]\r\n\tpass\r\n",
+				BasicAst.Block("arbitrary block", p => p.WithCommentRefs(3))
+					.WithBody(b => b.AddStatement("pass"))
+			},
+			new object[]
+			{
+				"arbitrary block: \t\t#[3]\r\n\tpass\r\n",
+				BasicAst.Block(
+					"arbitrary block",
+					p => p.WithCommentRefs(3)
+						.WithError(ParseError.IncorrectCommentSeparator(" \t\t")))
+					.WithBody(b => b.AddStatement("pass"))
+			},
+			new object[]
+			{
 				"arbitrary block:\r\n\tpass \r\n",
 				BasicAst.Block("arbitrary block")
 					.WithBody(
@@ -102,6 +117,15 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			{
 				"arbitrary block: \r\n\tpass\r\n",
 				BasicAst.Block("arbitrary block", p => p.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
+					.WithBody(b => b.AddStatement("pass"))
+			},
+			new object[]
+			{
+				"arbitrary block:\t\t#[4] \r\n\tpass\r\n",
+				BasicAst.Block(
+					"arbitrary block",
+					p => p.WithCommentRefs(4)
+						.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
 					.WithBody(b => b.AddStatement("pass"))
 			},
 			new object[]

@@ -21,23 +21,27 @@ namespace Gibberish.Parsing
 
 			var errors = new List<ParseError>();
 			var comments = new List<int>();
-			var statement = _ExtractStatementAndComments(errors, coreContent, comments);
+			var statement = _ExtractCommentsAndReturnEverythingBeforeThem(errors, coreContent, comments);
 			_CheckForWhitespaceErrors(errors, statement, extraAtEnd);
 			return Recognition.With(new UnknownStatement(statement, comments, errors.ToArray()));
 		}
 
-		private static Recognition _ExtractBlockAndErrors(_RecognizeBlocks_Item prelude, _RecognizeBlocks_Item body, _RecognizeBlocks_Item trailingWhitespace)
+		private static Recognition _ExtractBlockAndErrors(_RecognizeBlocks_Item prelude, _RecognizeBlocks_Item body, _RecognizeBlocks_Item contentAfterColon)
 		{
 			var coreContent = prelude.AsString();
-			var extraAtEnd = trailingWhitespace.AsString();
+			var extraAtEnd = contentAfterColon.AsString();
+			var possibleComment = extraAtEnd.TrimEnd();
+			extraAtEnd = extraAtEnd.Substring(possibleComment.Length);
 			var preludeErrors = new List<ParseError>();
+			var comments = new List<int>();
+			_ExtractCommentsAndReturnEverythingBeforeThem(preludeErrors, possibleComment, comments);
 			_CheckForWhitespaceErrors(preludeErrors, coreContent, extraAtEnd);
 			var blockErrors = Recognition.NoErrors;
-			return new UnknownBlock(new UnknownPrelude(coreContent, preludeErrors), body.Results.SelectMany(r => r.Items), blockErrors).AsRecognition();
+			return new UnknownBlock(new UnknownPrelude(coreContent, comments, preludeErrors), body.Results.SelectMany(r => r.Items), blockErrors).AsRecognition();
 		}
 
 		[NotNull]
-		private static string _ExtractStatementAndComments([NotNull] List<ParseError> errors, [NotNull] string content, [NotNull] List<int> comments)
+		private static string _ExtractCommentsAndReturnEverythingBeforeThem([NotNull] List<ParseError> errors, [NotNull] string content, [NotNull] List<int> comments)
 		{
 			var statementAndComment = content.Split(
 				new[]

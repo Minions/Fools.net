@@ -9,17 +9,20 @@ namespace Gibberish.AST._1_Bare
 {
 	public static class BasicAst
 	{
+		[NotNull]
 		public static StatementBuilder Statement([NotNull] string content)
 		{
 			return new StatementBuilder(content);
 		}
 
-		public static BlockBuilder Block(string prelude)
+		[NotNull]
+		public static BlockBuilder Block([NotNull] string prelude)
 		{
 			return Block(prelude, x => { });
 		}
 
-		public static BlockBuilder Block(string prelude, Action<BlockBuilder.PreludeBuilder> func)
+		[NotNull]
+		public static BlockBuilder Block([NotNull] string prelude, [NotNull] Action<BlockBuilder.PreludeBuilder> func)
 		{
 			return new BlockBuilder(prelude, func);
 		}
@@ -42,7 +45,8 @@ namespace Gibberish.AST._1_Bare
 			[NotNull]
 			public List<ParseError> Errors { get; set; } = Recognition.NoErrors.ToList();
 
-			public Builder WithError(ParseError error)
+			[NotNull]
+			public Builder WithError([NotNull] ParseError error)
 			{
 				Errors.Add(error);
 				return this;
@@ -58,7 +62,7 @@ namespace Gibberish.AST._1_Bare
 
 		public class StatementBuilder : Builder
 		{
-			public StatementBuilder(string content)
+			public StatementBuilder([NotNull] string content)
 			{
 				Content = content;
 			}
@@ -69,7 +73,8 @@ namespace Gibberish.AST._1_Bare
 			[NotNull]
 			public List<int> Comments { get; } = new List<int>();
 
-			public StatementBuilder WithCommentRefs(params int[] indices)
+			[NotNull]
+			public StatementBuilder WithCommentRefs([NotNull] params int[] indices)
 			{
 				Comments.AddRange(indices);
 				return this;
@@ -83,7 +88,7 @@ namespace Gibberish.AST._1_Bare
 
 		public class BlockBuilder : Builder
 		{
-			public BlockBuilder(string prelude, Action<PreludeBuilder> func)
+			public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> func)
 			{
 				Prelude = new PreludeBuilder(prelude);
 				func(Prelude);
@@ -101,16 +106,27 @@ namespace Gibberish.AST._1_Bare
 
 			public class PreludeBuilder : Builder
 			{
-				public PreludeBuilder(string content)
+				public PreludeBuilder([NotNull] string content)
 				{
 					Content = content;
 				}
 
+				[NotNull]
 				public string Content { get; set; }
+
+				[NotNull]
+				public List<int> Comments { get; } = new List<int>();
+
+				[NotNull]
+				public PreludeBuilder WithCommentRefs([NotNull] params int[] indices)
+				{
+					Comments.AddRange(indices);
+					return this;
+				}
 
 				internal override void Build(List<LanguageConstruct> destination)
 				{
-					destination.Add(new UnknownPrelude(Content, Errors));
+					destination.Add(new UnknownPrelude(Content, Comments, Errors));
 				}
 			}
 
@@ -121,7 +137,8 @@ namespace Gibberish.AST._1_Bare
 					_self = self;
 				}
 
-				public StatementBuilder AddStatement(string content)
+				[NotNull]
+				public StatementBuilder AddStatement([NotNull] string content)
 				{
 					var statement = Statement(content);
 					_self.Body.Add(statement);
