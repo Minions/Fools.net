@@ -170,8 +170,8 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			},
 			new object[]
 			{
-				"#[2]:\tcomment content\r\n",
-				BasicAst.CommentDefinition(2, "comment content")
+				"#[9]:\tcomment content\r\n",
+				BasicAst.CommentDefinition(9, "comment content")
 					.WithError(ParseError.IncorrectCommentDefinitionSeparator("\t"))
 			},
 			new object[]
