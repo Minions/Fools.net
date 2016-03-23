@@ -8,15 +8,12 @@ namespace Gibberish.Parsing
 {
 	public class UnknownPrelude : LanguageConstruct
 	{
-		public UnknownPrelude([NotNull] string content, [NotNull] IEnumerable<ParseError> errors)
+		public UnknownPrelude([NotNull] string content, [NotNull] IEnumerable<ParseError> errors) :base(errors)
 		{
 			Content = content;
-			Errors = errors.ToArray();
 		}
 
 		[NotNull]
 		public string Content { get; }
-		[NotNull]
-		public ParseError[] Errors { get; set; }
 	}
 }

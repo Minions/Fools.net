@@ -6,15 +6,12 @@ namespace Gibberish.AST._1_Bare
 {
 	public class UnknownStatement : LanguageConstruct
 	{
-		public UnknownStatement(string content, IEnumerable<ParseError> errors)
+		public UnknownStatement(string content, IEnumerable<ParseError> errors) : base(errors)
 		{
 			Content = content;
-			Errors = errors.ToArray();
 		}
 
 		[NotNull]
 		public string Content { get; }
-		[NotNull]
-		public ParseError[] Errors { get; }
 	}
 }
