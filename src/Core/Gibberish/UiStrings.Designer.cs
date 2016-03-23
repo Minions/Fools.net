@@ -88,6 +88,24 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We were confused by a comment. Comments must all be formatted like `#[4], [9], [2]`. This comment was `#{0}`. Please fix it..
+        /// </summary>
+        internal static string IncorrectCommentFormat {
+            get {
+                return ResourceManager.GetString("IncorrectCommentFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We found what we think was intended to be a comment, but it had the wrong separator. Comments must begin with `		#`. This possible comment started with `{0}`. Please fix it..
+        /// </summary>
+        internal static string IncorrectCommentSeparator {
+            get {
+                return ResourceManager.GetString("IncorrectCommentSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We couldn&apos;t find a name for your {0} block. Please name your new thunk..
         /// </summary>
         internal static string MissingNameForBlock {

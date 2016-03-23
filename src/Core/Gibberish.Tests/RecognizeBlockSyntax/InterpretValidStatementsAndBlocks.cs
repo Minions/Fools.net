@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ApprovalTests;
+using ApprovalTests.Reporters;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
@@ -10,13 +13,19 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 	[TestFixture]
 	public class InterpretValidStatementsAndBlocks
 	{
-		[Test, TestCaseSource(nameof(valid_recognitions))]
+		[Test, TestCaseSource(nameof(valid_recognitions)), UseReporter(typeof (QuietReporter))]
 		public void should_recognize_as(string input, BasicAst.Builder expected)
 		{
 			var subject = new RecognizeBlocks();
-			var result = subject.GetMatch(input, subject.LanguageConstruct);
-			result.Should()
-				.BeRecognizedAs(expected);
+			var result = subject.GetMatch(input, subject.WholeFile);
+			try
+			{
+				result.Should()
+					.BeRecognizedAs(expected);
+			}
+			catch (Exception) {
+				Approvals.VerifyJson(result.PrettyPrint());
+			}
 		}
 
 		public static IEnumerable<IEnumerable<object>> valid_recognitions { get; } = new[]
@@ -43,6 +52,37 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				"arbitrary\tstatement\r\n",
 				BasicAst.Statement("arbitrary\tstatement")
 					.WithError(ParseError.IllegalTabInLine())
+			},
+			new object[]
+			{
+				"arbitrary statement\t\t#[2]\r\n",
+				BasicAst.Statement("arbitrary statement")
+					.WithCommentRefs(2)
+			},
+			new object[]
+			{
+				"arbitrary statement\t\t#[2], [42], [3]\r\n",
+				BasicAst.Statement("arbitrary statement")
+					.WithCommentRefs(2, 42, 3)
+			},
+			new object[]
+			{
+				"arbitrary statement\t\t#[2],[4]\r\n",
+				BasicAst.Statement("arbitrary statement")
+					.WithError(ParseError.IncorrectCommentFormat("[2],[4]"))
+			},
+			new object[]
+			{
+				"arbitrary statement\t\t#[2a4]\r\n",
+				BasicAst.Statement("arbitrary statement")
+					.WithError(ParseError.IncorrectCommentFormat("[2a4]"))
+			},
+			new object[]
+			{
+				"arbitrary statement\t\t\t#[2]\r\n",
+				BasicAst.Statement("arbitrary statement")
+					.WithCommentRefs(2)
+					.WithError(ParseError.IncorrectCommentSeparator("\t\t\t"))
 			},
 			new object[]
 			{

@@ -66,9 +66,18 @@ namespace Gibberish.AST._1_Bare
 			[NotNull]
 			public string Content { get; set; }
 
+			[NotNull]
+			public List<int> Comments { get; } = new List<int>();
+
+			public StatementBuilder WithCommentRefs(params int[] indices)
+			{
+				Comments.AddRange(indices);
+				return this;
+			}
+
 			internal override void Build(List<LanguageConstruct> destination)
 			{
-				destination.Add(new UnknownStatement(Content, Errors));
+				destination.Add(new UnknownStatement(Content, Comments, Errors));
 			}
 		}
 
