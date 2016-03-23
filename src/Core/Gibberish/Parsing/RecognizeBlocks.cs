@@ -13,7 +13,7 @@ namespace Gibberish.Parsing
 
 	partial class RecognizeBlocks
 	{
-		private static Recognition _ExtractStatementAndErrors(_RecognizeBlocks_Item content)
+		private static Recognition _ExtractStatementAndErrors(_RecognizeBlocks_Item content, int indentationDepth)
 		{
 			var rawContent = content.AsString();
 			var coreContent = rawContent.TrimEnd();
@@ -23,7 +23,7 @@ namespace Gibberish.Parsing
 			var comments = new List<int>();
 			var statement = _ExtractCommentsAndReturnEverythingBeforeThem(errors, coreContent, comments);
 			_CheckForWhitespaceErrors(errors, statement, extraAtEnd);
-			return Recognition.With(new UnknownStatement(statement, comments, errors.ToArray()));
+			return new UnknownStatement(indentationDepth, statement, comments, errors.ToArray()).AsRecognition();
 		}
 
 		private static Recognition _ExtractBlockAndErrors(_RecognizeBlocks_Item prelude, _RecognizeBlocks_Item body, _RecognizeBlocks_Item contentAfterColon)

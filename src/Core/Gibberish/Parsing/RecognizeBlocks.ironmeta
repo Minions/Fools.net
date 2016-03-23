@@ -8,10 +8,10 @@ ironmeta RecognizeBlocks<char, Recognition> : IronMeta.Matcher.Matcher<char, Rec
 	WholeFile = LanguageConstruct(AtRoot)*:matches -> { return matches.Results.Merge(); };
 	LanguageConstruct :indentation = BlankLine | Block(indentation) | Statement(indentation);
 
-	Statement :indentation = indentation LineContent:content NL -> { return _ExtractStatementAndErrors(content); };
+	Statement :ignored = '\t'*:indentation (~(':' | '\n' | '\r') .)*:content NL -> { return _ExtractStatementAndErrors(content, indentation.Inputs.Count()); };
 	
-	Block :indentation = indentation LineContent:prelude ":" NotNL:trailingWhitespace NL Body(indentation):body -> { return _ExtractBlockAndErrors(prelude, body, trailingWhitespace); };
-	Body :indentation = Statement('\t')+:statements -> { return statements; };
+	Block :ignored = '\t'*:indentation LineContent:prelude ":" NotNL:trailingWhitespace NL Body(ignored):body -> { return _ExtractBlockAndErrors(prelude, body, trailingWhitespace); };
+	Body :ignored = Statement('\t')+:statements -> { return statements.Results.Merge(); };
 
 	LineContent = /[^\r\n:]/*;
 	NotNL = /[^\r\n]/*;

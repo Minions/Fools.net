@@ -12,7 +12,7 @@ namespace Gibberish.AST._1_Bare
 		[NotNull]
 		public static StatementBuilder Statement([NotNull] string content)
 		{
-			return new StatementBuilder(content);
+			return new StatementBuilder(content, 0);
 		}
 
 		[NotNull]
@@ -62,9 +62,10 @@ namespace Gibberish.AST._1_Bare
 
 		public class StatementBuilder : Builder
 		{
-			public StatementBuilder([NotNull] string content)
+			public StatementBuilder([NotNull] string content, int indentationDepth)
 			{
 				Content = content;
+				IndentationDepth = indentationDepth;
 			}
 
 			[NotNull]
@@ -72,6 +73,8 @@ namespace Gibberish.AST._1_Bare
 
 			[NotNull]
 			public List<int> Comments { get; } = new List<int>();
+
+			public int IndentationDepth { get; set; }
 
 			[NotNull]
 			public StatementBuilder WithCommentRefs([NotNull] params int[] indices)
@@ -82,7 +85,7 @@ namespace Gibberish.AST._1_Bare
 
 			internal override void Build(List<LanguageConstruct> destination)
 			{
-				destination.Add(new UnknownStatement(Content, Comments, Errors));
+				destination.Add(new UnknownStatement(IndentationDepth, Content, Comments, Errors));
 			}
 		}
 
@@ -145,8 +148,6 @@ namespace Gibberish.AST._1_Bare
 					return statement;
 				}
 
-				[NotNull] private readonly BlockBuilder _self;
-
 				[NotNull]
 				public BlockBuilder AddBlock([NotNull] string prelude)
 				{
@@ -154,6 +155,8 @@ namespace Gibberish.AST._1_Bare
 					_self.Body.Add(result);
 					return result;
 				}
+
+				[NotNull] private readonly BlockBuilder _self;
 			}
 
 			[NotNull]
