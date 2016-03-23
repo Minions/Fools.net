@@ -99,7 +99,6 @@
       <DependentUpon>ParseLanguageFile.ironmeta</DependentUpon>
     </Compile>
     <Compile Include="Parsing\ParsingExtensions.cs" />
-    <Compile Include="AST\_1_Bare\Recognition.cs" />
     <Compile Include="Parsing\RecognizeBlocks.cs" />
     <Compile Include="Parsing\RecognizeBlocks.g.cs">
       <AutoGen>True</AutoGen>

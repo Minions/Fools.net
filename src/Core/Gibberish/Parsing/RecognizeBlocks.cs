@@ -9,11 +9,11 @@ using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
-	using _RecognizeBlocks_Item = MatchItem<char, Recognition>;
+	using _RecognizeBlocks_Item = MatchItem<char, LanguageConstruct>;
 
 	partial class RecognizeBlocks
 	{
-		private static Recognition _ExtractStatementAndErrors(_RecognizeBlocks_Item content, int indentationDepth)
+		private static UnknownStatement _ExtractStatementAndErrors(_RecognizeBlocks_Item content, int indentationDepth)
 		{
 			var rawContent = content.AsString();
 			var coreContent = rawContent.TrimEnd();
@@ -23,10 +23,10 @@ namespace Gibberish.Parsing
 			var comments = new List<int>();
 			var statement = _ExtractCommentsAndReturnEverythingBeforeThem(errors, coreContent, comments);
 			_CheckForWhitespaceErrors(errors, statement, extraAtEnd);
-			return new UnknownStatement(indentationDepth, statement, comments, errors.ToArray()).AsRecognition();
+			return new UnknownStatement(indentationDepth, statement, comments, errors.ToArray());
 		}
 
-		private Recognition _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon)
+		private UnknownPrelude _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon)
 		{
 			var extraAtEnd = contentAfterColon;
 			var possibleComment = extraAtEnd.TrimEnd();
@@ -35,7 +35,7 @@ namespace Gibberish.Parsing
 			var comments = new List<int>();
 			_ExtractCommentsAndReturnEverythingBeforeThem(preludeErrors, possibleComment, comments);
 			_CheckForWhitespaceErrors(preludeErrors, content, extraAtEnd);
-			return new UnknownPrelude(indentationDepth, content, comments, preludeErrors).AsRecognition();
+			return new UnknownPrelude(indentationDepth, content, comments, preludeErrors);
 		}
 
 		[NotNull]

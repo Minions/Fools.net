@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gibberish.Parsing;
@@ -10,7 +11,7 @@ namespace Gibberish.AST
 		[StringFormatMethod("baseMesage")]
 		private ParseError([NotNull] string baseMessage, [NotNull] params object[] messageParams)
 		{
-			message = string.Format(baseMessage, messageParams);
+			message = String.Format(baseMessage, messageParams);
 		}
 
 		public static ParseError UnknownLanguage(IEnumerable<char> lang)
@@ -49,5 +50,6 @@ namespace Gibberish.AST
 			"fasm",
 			"fools"
 		};
+		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
 	}
 }

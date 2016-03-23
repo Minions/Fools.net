@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using FluentAssertions;
@@ -42,9 +43,9 @@ namespace Gibberish.Tests.ZzTestHelpers
 		}
 
 		[NotNull]
-		public static RecognitionAssertions Should([NotNull] this MatchResult<char, Recognition> result)
+		public static RecognitionAssertions Should([NotNull] this MatchResult<char, LanguageConstruct> result)
 		{
-			var recognition = result.Success ? result.Result : null;
+			var recognition = result.Success ? result.Results : Enumerable.Empty<LanguageConstruct>();
 			return new RecognitionAssertions(result.Success, recognition);
 		}
 
@@ -98,22 +99,22 @@ namespace Gibberish.Tests.ZzTestHelpers
 
 	internal class RecognitionAssertions : ObjectAssertions
 	{
-		public RecognitionAssertions(bool success, [NotNull] Recognition result) : base(result)
+		public RecognitionAssertions(bool success, [NotNull] IEnumerable<LanguageConstruct> result) : base(result)
 		{
 			Success = success;
-			Result = result;
+			Result = result.ToArray();
 		}
 
 		public bool Success { get; }
 		[NotNull]
-		public Recognition Result { get; }
+		public LanguageConstruct[] Result { get; }
 
 		public void BeRecognizedAs(BasicAst.Builder expected)
 		{
 			var statements = expected.BuildRaw();
 			Success.Should()
 				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
-			Result.Items.ShouldBeEquivalentTo(
+			Result.ShouldBeEquivalentTo(
 				statements,
 				options => options.IncludingFields()
 					.IncludingProperties()
@@ -127,7 +128,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 			var statements = expected.SelectMany(b=>b.BuildRaw());
 			Success.Should()
 				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
-			Result.Items.ShouldBeEquivalentTo(
+			Result.ShouldBeEquivalentTo(
 				statements,
 				options => options.IncludingFields()
 					.IncludingProperties()

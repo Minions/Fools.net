@@ -51,7 +51,7 @@ namespace Gibberish.AST._1_Bare
 			}
 
 			[NotNull]
-			public List<ParseError> Errors { get; set; } = Recognition.NoErrors.ToList();
+			public List<ParseError> Errors { get; set; } = ParseError.NoErrors.ToList();
 
 			[NotNull]
 			public Builder WithError([NotNull] ParseError error)
