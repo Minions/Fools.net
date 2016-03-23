@@ -93,19 +93,19 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				BasicAst.Block("arbitrary block")
 					.WithBody(b => b.AddStatement("pass"))
 			},
-			//new object[]
-			//{
-			//	"arbitrary block:\r\n\tfirst\r\n\tsecond block:\r\n\t\tpass\r\n\tlast\r\n",
-			//	BasicAst.Block("arbitrary block")
-			//		.WithBody(
-			//			b =>
-			//			{
-			//				b.AddStatement("first");
-			//				b.AddBlock("second block")
-			//					.WithBody(inner => inner.AddStatement("pass"));
-			//				b.AddStatement("last");
-			//			})
-			//},
+			new object[]
+			{
+				"arbitrary block:\r\n\tfirst\r\n\tsecond block:\r\n\t\tpass\r\n\tlast\r\n",
+				BasicAst.Block("arbitrary block")
+					.WithBody(
+						b =>
+						{
+							b.AddStatement("first");
+							b.AddBlock("second block")
+								.WithBody(inner => inner.AddStatement("pass"));
+							b.AddStatement("last");
+						})
+			},
 			new object[]
 			{
 				"arbitrary block:\t\t#[3]\r\n\tpass\r\n",

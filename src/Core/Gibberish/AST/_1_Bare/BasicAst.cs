@@ -22,9 +22,9 @@ namespace Gibberish.AST._1_Bare
 		}
 
 		[NotNull]
-		public static BlockBuilder Block([NotNull] string prelude, [NotNull] Action<BlockBuilder.PreludeBuilder> func)
+		public static BlockBuilder Block([NotNull] string prelude, [NotNull] Action<BlockBuilder.PreludeBuilder> preludeOptions)
 		{
-			return new BlockBuilder(prelude, func, 0);
+			return new BlockBuilder(prelude, preludeOptions, 0);
 		}
 
 		public abstract class Builder
@@ -61,6 +61,7 @@ namespace Gibberish.AST._1_Bare
 			}
 
 			internal abstract void Build([NotNull] List<LanguageConstruct> destination);
+
 			internal abstract void BuildRaw([NotNull] List<LanguageConstruct> destination);
 
 			private static readonly JsonSerializerSettings NoWhitespace = new JsonSerializerSettings
@@ -118,9 +119,9 @@ namespace Gibberish.AST._1_Bare
 			public PreludeBuilder Prelude { get; }
 
 			[NotNull]
-			public BlockBuilder WithBody([NotNull] Action<BodyBuilder> options)
+			public BlockBuilder WithBody([NotNull] Action<BodyBuilder> bodyOptions)
 			{
-				options(new BodyBuilder(this));
+				bodyOptions(new BodyBuilder(this));
 				return this;
 			}
 
@@ -176,7 +177,13 @@ namespace Gibberish.AST._1_Bare
 				[NotNull]
 				public BlockBuilder AddBlock([NotNull] string prelude)
 				{
-					var result = Block(prelude);
+					return AddBlock(prelude, _ => { });
+				}
+
+				[NotNull]
+				private BlockBuilder AddBlock([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions)
+				{
+					var result = new BlockBuilder(prelude, preludeOptions, _self.IndentationDepth + 1);
 					_self.Body.Add(result);
 					return result;
 				}
@@ -192,19 +199,14 @@ namespace Gibberish.AST._1_Bare
 				var prelude = new List<LanguageConstruct>();
 				var body = new List<LanguageConstruct>();
 				Prelude.Build(prelude);
-				BuildBody(body);
+				foreach (var builder in Body) { builder.Build(body); }
 				destination.Add(new UnknownBlock((UnknownPrelude) prelude[0], body, Errors));
 			}
 
 			internal override void BuildRaw(List<LanguageConstruct> destination)
 			{
 				Prelude.BuildRaw(destination);
-				BuildBody(destination);
-			}
-
-			private void BuildBody(List<LanguageConstruct> body)
-			{
-				foreach (var builder in Body) { builder.Build(body); }
+				foreach (var builder in Body) { builder.BuildRaw(destination); }
 			}
 		}
 	}
