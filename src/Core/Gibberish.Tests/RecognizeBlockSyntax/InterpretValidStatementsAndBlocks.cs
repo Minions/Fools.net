@@ -237,7 +237,10 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 more
 """"""
 ",
-				BasicAst.CommentDefinition(9, "first\r\n\r\nmore\r\n")
+				BasicAst.CommentDefinition(9, @"first
+
+more
+")
 			},
 			new object[]
 			{
