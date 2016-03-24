@@ -14,22 +14,17 @@ namespace Gibberish.Tests.ZzTestHelpers
 {
 	internal static class ResultExtensions
 	{
-		[NotNull]
+		[NotNull, UsedImplicitly]
 		public static string PrettyPrint<T>([CanBeNull] this MatchResult<char, T> self)
 		{
 			if (!self.Success) { return "Unhandled low-level error: " + (self.Error ?? "<null>"); }
 			if (!self.Results.Any()) { return "Low-level parser matched, but no results found."; }
 			return JsonConvert.SerializeObject(self.Results, WithTypeNames);
 		}
+
 		public static void ShouldHave([CanBeNull] this ThunkDescriptor subject, object expectation)
 		{
 			subject.ShouldBeEquivalentTo(expectation, c => c.ExcludingMissingMembers());
-		}
-
-		[NotNull]
-		public static ParseResultAssertions Declare([NotNull] this ParseResultAssertions target, [NotNull] Declaration declaration)
-		{
-			return ParseAs(target, Parse.Valid(declaration, Parse.NoErrors));
 		}
 
 		[NotNull]
