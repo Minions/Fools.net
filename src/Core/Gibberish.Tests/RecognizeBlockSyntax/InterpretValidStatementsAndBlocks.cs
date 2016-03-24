@@ -203,6 +203,18 @@ more
 """"""
 ",
 				BasicAst.CommentDefinition(9, "first\r\n\r\nmore\r\n")
+			},
+			new object[]
+			{
+				"#[13]: \"\"\"\r\n \"\"\"\r\n",
+				BasicAst.CommentDefinition(13, "\r\n")
+					.WithError(ParseError.ErrorAtEndOfMultilineComment(" \"\"\""))
+			},
+			new object[]
+			{
+				"#[17]: \"\"\"\r\n\"\"\" \r\n",
+				BasicAst.CommentDefinition(17, "\r\n")
+					.WithError(ParseError.ErrorAtEndOfMultilineComment("\"\"\" "))
 			}
 		};
 	}

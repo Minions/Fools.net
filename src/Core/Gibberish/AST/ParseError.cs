@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gibberish.Parsing;
@@ -11,7 +10,7 @@ namespace Gibberish.AST
 		[StringFormatMethod("baseMesage")]
 		private ParseError([NotNull] string baseMessage, [NotNull] params object[] messageParams)
 		{
-			message = String.Format(baseMessage, messageParams);
+			message = string.Format(baseMessage, messageParams);
 		}
 
 		public static ParseError UnknownLanguage(IEnumerable<char> lang)
@@ -61,11 +60,16 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.IllegalWhitespaceOnBlankLine, whitespace);
 		}
 
+		public static ParseError ErrorAtEndOfMultilineComment(string endingFound)
+		{
+			return new ParseError(UiStrings.ErrorAtEndOfMultilineComment, endingFound);
+		}
+
+		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
+
 		[NotNull] private static readonly string[] KnownLanguages = {
 			"fasm",
 			"fools"
 		};
-
-		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
 	}
 }

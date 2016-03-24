@@ -61,6 +61,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We might have found the end of your multiline comment, but we can&apos;t be sure. a Multiline comment must end with `&quot;&quot;&quot;` on its own line. We found something similar: `{0}`. Please end the comment properly..
+        /// </summary>
+        internal static string ErrorAtEndOfMultilineComment {
+            get {
+                return ResourceManager.GetString("ErrorAtEndOfMultilineComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We were confused by a tab used for something other than indentation. Each line must start with the right number of indentations, each a single tab character. Tabs may also be used to separate the code line from a comment reference. Tabs are not allowed in any other place. Please clean up your tabs..
         /// </summary>
         internal static string IllegalTabInLine {

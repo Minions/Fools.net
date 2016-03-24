@@ -57,6 +57,19 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull]
+		private LanguageConstruct _ExtractMultiLineCommentDefinition(string commentId, string content, string commentSeparator, string commentEnd)
+		{
+			var errors = new List<ParseError>();
+			int commentNumber;
+			if (!int.TryParse(commentId, out commentNumber)) {
+				errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8)));
+			}
+			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
+			else if (!"\"\"\"".Equals(commentEnd)) { errors.Add(ParseError.ErrorAtEndOfMultilineComment(commentEnd)); }
+			return new CommentDefinition(commentNumber, content, errors);
+		}
+
+		[NotNull]
 		private static string _ExtractCommentsAndReturnEverythingBeforeThem([NotNull] List<ParseError> errors, [NotNull] string content, [NotNull] List<int> comments)
 		{
 			var statementAndComment = content.Split(
