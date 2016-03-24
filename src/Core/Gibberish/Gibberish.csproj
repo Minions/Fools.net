@@ -65,6 +65,7 @@
     <Compile Include="AST\Namespace.cs" />
     <Compile Include="AST\SpecificationSection.cs" />
     <Compile Include="AST\_1_Bare\BasicAst.cs" />
+    <Compile Include="AST\_1_Bare\BlankLine.cs" />
     <Compile Include="AST\_1_Bare\CommentDefinition.cs" />
     <Compile Include="AST\_1_Bare\LanguageConstruct.cs" />
     <Compile Include="AST\_1_Bare\UnknownBlock.cs" />

@@ -9,6 +9,12 @@ namespace Gibberish.AST._1_Bare
 	public static class BasicAst
 	{
 		[NotNull]
+		public static BlankLineBuilder BlankLine(int indentationDepth)
+		{
+			return new BlankLineBuilder(indentationDepth);
+		}
+
+		[NotNull]
 		public static StatementBuilder Statement([NotNull] string content)
 		{
 			return new StatementBuilder(content, 0);
@@ -229,6 +235,26 @@ namespace Gibberish.AST._1_Bare
 			internal override void Build(List<LanguageConstruct> destination)
 			{
 				destination.Add(new CommentDefinition(CommentId, Content, Errors));
+			}
+
+			internal override void BuildRaw(List<LanguageConstruct> destination)
+			{
+				Build(destination);
+			}
+		}
+
+		public class BlankLineBuilder : Builder
+		{
+			public BlankLineBuilder(int indentationDepth)
+			{
+				IndentationDepth = indentationDepth;
+			}
+
+			public int IndentationDepth { get; }
+
+			internal override void Build(List<LanguageConstruct> destination)
+			{
+				destination.Add(new BlankLine(IndentationDepth, Errors));
 			}
 
 			internal override void BuildRaw(List<LanguageConstruct> destination)

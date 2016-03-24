@@ -93,5 +93,11 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
+
+		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace)
+		{
+			var errors = new List<ParseError>();
+			return new BlankLine(indentationDepth, errors);
+		}
 	}
 }
