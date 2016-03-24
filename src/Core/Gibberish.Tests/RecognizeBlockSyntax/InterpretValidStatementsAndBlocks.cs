@@ -189,6 +189,20 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				"#[3a3]: almost right\r\n",
 				BasicAst.CommentDefinition(0, "[3a3]: almost right")
 					.WithError(ParseError.MissingIdInCommentDefinition("[3a3]: a"))
+			},
+			new object[]
+			{
+				"#[8]: \"\"\"\r\n\"\"\"\r\n",
+				BasicAst.CommentDefinition(8, "\r\n")
+			},
+			new object[]
+			{
+				@"#[9]: """"""first
+
+more
+""""""
+",
+				BasicAst.CommentDefinition(9, "first\r\n\r\nmore\r\n")
 			}
 		};
 	}

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
@@ -7,7 +6,6 @@ using FluentAssertions.Primitives;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Execution;
-using Gibberish.Tests.RecognizeBlockSyntax;
 using IronMeta.Matcher;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -19,12 +17,10 @@ namespace Gibberish.Tests.ZzTestHelpers
 		[NotNull]
 		public static string PrettyPrint<T>([CanBeNull] this MatchResult<char, T> self)
 		{
-			if (self == null) { return "No match result"; }
 			if (!self.Success) { return "Unhandled low-level error: " + (self.Error ?? "<null>"); }
-			if (self.Result == null) { return "Low-level parser matched, but result was <null>"; }
-			return JsonConvert.SerializeObject(self.Result, WithTypeNames);
+			if (!self.Results.Any()) { return "Low-level parser matched, but no results found."; }
+			return JsonConvert.SerializeObject(self.Results, WithTypeNames);
 		}
-
 		public static void ShouldHave([CanBeNull] this ThunkDescriptor subject, object expectation)
 		{
 			subject.ShouldBeEquivalentTo(expectation, c => c.ExcludingMissingMembers());
@@ -124,7 +120,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 
 		internal void BeRecognizedAs(params BasicAst.Builder[] expected)
 		{
-			var statements = expected.SelectMany(b=>b.BuildRaw());
+			var statements = expected.SelectMany(b => b.BuildRaw());
 			Success.Should()
 				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
 			Result.ShouldBeEquivalentTo(
