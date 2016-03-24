@@ -4,15 +4,15 @@ using Gibberish.AST;
 
 ironmeta ParseBlockLanguage<char, Parse> : IronMeta.Matcher.Matcher<char, Parse>
 {
-	Name = /[a-zA-z0-9_.]+/:name -> { return Parse.Valid(new NameNode(name.Inputs), Parse.NoErrors); };
+	Name = /[a-zA-z0-9_.]+/:name -> { return Parse.Valid(new NameNode(name.AsString()), Parse.NoErrors); };
 
 	PassStatement = Statement("pass") -> { return FasmAst.Pass; };
 
-	Statement :rule = rule:r NL -> { return r; };
-	Block :indentation :prelude :allowed_statements = indentation prelude:prelude ":" NL Body(indentation, allowed_statements):body -> { return Parse.Valid(new Block(prelude.Results.Single(), body.Results), Parse.NoErrors); };
+	Statement :rule = rule:r NL:errs -> { return ((Parse)r) == null ? errs : Parse.MergeAll(r, errs); };
+	Block :indentation :prelude :allowed_statements = indentation prelude:prelude ":" NL:errs Body(indentation, allowed_statements):body -> { return Parse.Valid(new Block(prelude.Results.Single().WithErrorsFrom(errs), body.Results), Parse.NoErrors); };
 	Body :indentation :allowed_statements = ((Indent(indentation) PassStatement) | ((Indent(indentation) allowed_statements)+)):statements -> { return statements; };
 
-	BlankLine = '\t'* NL;
+	BlankLine = '\t'* NL:errs -> { return errs; };
 
 	AtRoot = &.?;
 	Indent :indents = '\t' indents;
@@ -21,5 +21,7 @@ ironmeta ParseBlockLanguage<char, Parse> : IronMeta.Matcher.Matcher<char, Parse>
 	KW :str = str (WS+ | &NL);
 	WS = ' ';
 	NotNL = /[^\r\n]/;
-	NL = "\r\n" | "\n" | "\r";
+	NL = ValidNL
+		| /[ \t]+/:sp ValidNL -> { return ParseError.IllegalWhitespaceAtEnd(sp.AsString()).AsParse(); } ;
+	ValidNL = ("\r\n" | "\n" | "\r") -> { return Parse.Empty; };
 }

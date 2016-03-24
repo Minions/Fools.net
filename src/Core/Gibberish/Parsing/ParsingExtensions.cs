@@ -4,7 +4,7 @@ using Gibberish.AST;
 using IronMeta.Matcher;
 using JetBrains.Annotations;
 
-namespace Gibberish
+namespace Gibberish.Parsing
 {
 	internal static class ParsingExtensions
 	{
@@ -25,6 +25,28 @@ namespace Gibberish
 		{
 			return (Block) matchItem.Results.Single()
 				.Statements.Single();
+		}
+
+		[NotNull]
+		public static Parse WithErrorsFrom([NotNull] this Parse main, [NotNull] params MatchItem<char, Parse>[] errorSources)
+		{
+			return Parse.MergeAll(
+				main,
+				Parse.WithErrors(
+					errorSources.SelectMany(p => p.ParseErrors())
+						.ToArray()));
+		}
+
+		[NotNull]
+		public static string AsString<T>([CanBeNull] this MatchItem<char, T> sp)
+		{
+			return sp == null ? string.Empty : new string(sp.Inputs.ToArray());
+		}
+
+		[NotNull]
+		public static IEnumerable<ParseError> ParseErrors([NotNull] this MatchItem<char, Parse> errs)
+		{
+			return errs.Results.SelectMany(p => p.Errors);
 		}
 	}
 }

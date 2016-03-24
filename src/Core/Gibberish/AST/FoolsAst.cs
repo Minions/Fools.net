@@ -10,5 +10,10 @@ namespace Gibberish.AST
 		{
 			return Parse.Valid(new Namespace(name, Enumerable.Empty<Declaration>()), Parse.NoErrors);
 		}
+
+		public static Parse SpecificationSection(params string[] headers)
+		{
+			return Parse.Valid(new SpecificationSection(headers, Enumerable.Empty<Declaration>()), Parse.NoErrors);
+		}
 	}
 }

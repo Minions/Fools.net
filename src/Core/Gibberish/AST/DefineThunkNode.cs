@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Gibberish.Parsing;
 using JetBrains.Annotations;
 
 namespace Gibberish.AST
@@ -12,7 +13,6 @@ namespace Gibberish.AST
 			this.body = body.ToList();
 		}
 
-		[NotNull] public readonly string type = "define.thunk";
 		[NotNull] public readonly string name;
 		[NotNull] public readonly List<Statement> body;
 
@@ -25,10 +25,10 @@ namespace Gibberish.AST
 			{
 				parseErrors = new[]
 				{
-					ParseError.MissingThunkName()
+					ParseError.BlockWithMissingName("`define.thunk`")
 				}.Concat(parseErrors);
 			}
-			return Parse.Valid(new DefineThunkNode(maybeName.Name, block.Body.SelectMany(b => b.Statements)), parseErrors.ToList());
+			return Parse.Valid(new DefineThunkNode(maybeName?.Name ?? string.Empty, block.Body.SelectMany(b => b.Statements)), parseErrors.ToList());
 		}
 
 		[NotNull]

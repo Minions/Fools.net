@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using JetBrains.Annotations;
 
 namespace Gibberish.AST
 {
 	public class NameNode
 	{
-		public NameNode(IEnumerable<char> value) { Name = new string(value.ToArray()); }
+		public NameNode([NotNull] string value)
+		{
+			Name = value;
+		}
 
+		[NotNull]
 		public string Name { get; }
 	}
 }

@@ -61,11 +61,110 @@ namespace Gibberish {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We couldn&apos;t find a name for your `define.thunk` block. Please name your new thunk..
+        ///   Looks up a localized string similar to We might have found the end of your multi-line comment, but we can&apos;t be sure. A multi-line comment must end with `&quot;&quot;&quot;` on its own line. We found something similar: `{0}`. Please end the comment properly..
         /// </summary>
-        internal static string MissingDefineThunkName {
+        internal static string ErrorAtEndOfMultilineComment {
             get {
-                return ResourceManager.GetString("MissingDefineThunkName", resourceCulture);
+                return ResourceManager.GetString("ErrorAtEndOfMultilineComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We were confused by a tab used for something other than indentation. Each line must start with the right number of indentations, each a single tab character. Tabs may also be used to separate the code line from a comment reference. Tabs are not allowed in any other place. Please clean up your tabs..
+        /// </summary>
+        internal static string IllegalTabInLine {
+            get {
+                return ResourceManager.GetString("IllegalTabInLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We were confused by whitespace `{0}` at the end of line. Each line must end with a newline and no other whitespace. Please double-check your whitespace..
+        /// </summary>
+        internal static string IllegalWhitespaceAtEnd {
+            get {
+                return ResourceManager.GetString("IllegalWhitespaceAtEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We were confused by whitespace `{0}` at the start of line. Each line must start with the right number of indentations, each a single tab character, and no other whitespace. Please double-check your whitespace..
+        /// </summary>
+        internal static string IllegalWhitespaceAtStart {
+            get {
+                return ResourceManager.GetString("IllegalWhitespaceAtStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We found bad whitespace on a blank line. Blank lines must either consist of just a newline, or must be indented the current indentation level and then have a newline. This blank line has the whitespace `{0}`. Please remove it..
+        /// </summary>
+        internal static string IllegalWhitespaceOnBlankLine {
+            get {
+                return ResourceManager.GetString("IllegalWhitespaceOnBlankLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We found a nearly-valid comment definition, but it had the wrong whitespace between the ID and the content. Comment definitions must begin with `#[44]: `. Yours is like that, but instead of a single space after the colon you have `{0}`. Please fix it..
+        /// </summary>
+        internal static string IncorrectCommentDefinitionSeparator {
+            get {
+                return ResourceManager.GetString("IncorrectCommentDefinitionSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We were confused by a comment. Comments must all be formatted like `#[4], [9], [2]`. This comment was `#{0}`. Please fix it..
+        /// </summary>
+        internal static string IncorrectCommentFormat {
+            get {
+                return ResourceManager.GetString("IncorrectCommentFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We found what we think was intended to be a comment, but it had the wrong separator. Comments must begin with `		#`. This possible comment started with `{0}`. Please fix it..
+        /// </summary>
+        internal static string IncorrectCommentSeparator {
+            get {
+                return ResourceManager.GetString("IncorrectCommentSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We found a comment defintion but couldn&apos;t find its ID. Each comment must begin with an ID in the form `#[23]: `. Your comment starts with `{0}`..
+        /// </summary>
+        internal static string MissingIdInCommentDefinition {
+            get {
+                return ResourceManager.GetString("MissingIdInCommentDefinition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We couldn&apos;t find a name for your {0} block. Please name your new thunk..
+        /// </summary>
+        internal static string MissingNameForBlock {
+            get {
+                return ResourceManager.GetString("MissingNameForBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We couldn&apos;t find the newline at the end of the file. Each file is required to end with a newline. Please add it..
+        /// </summary>
+        internal static string MissingNewlineAtEndOfFile {
+            get {
+                return ResourceManager.GetString("MissingNewlineAtEndOfFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We tried our best, but just couldn&apos;t find the end of this multi-line comment. Multi-line comments must end with a line containing just `&quot;&quot;&quot;`. Please end your comment..
+        /// </summary>
+        internal static string MultilineCommentWithoutEnd {
+            get {
+                return ResourceManager.GetString("MultilineCommentWithoutEnd", resourceCulture);
             }
         }
         

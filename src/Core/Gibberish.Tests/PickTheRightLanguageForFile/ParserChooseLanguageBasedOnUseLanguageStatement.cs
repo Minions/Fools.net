@@ -1,5 +1,4 @@
-﻿using ApprovalTests;
-using Gibberish.AST;
+﻿using Gibberish.AST;
 using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
@@ -43,7 +42,8 @@ in.namespace the.name:
 ";
 			var subject = new ParseLanguageFile();
 			var result = subject.GetMatch(input, subject.File);
-			result.Should().ParseAs(FoolsAst.Namespace("the.name"));
+			result.Should()
+				.ParseAs(FoolsAst.Namespace("the.name"));
 		}
 
 		[Test]
@@ -52,7 +52,8 @@ in.namespace the.name:
 			var input = "use language unknown\r\n";
 			var subject = new ParseLanguageFile();
 			var result = subject.GetMatch(input, subject.File);
-			Approvals.VerifyJson(result.PrettyPrint());
+			result.Should()
+				.ParseWithErrors(ParseError.UnknownLanguage("unknown"));
 		}
 
 		[Test, Ignore("Not implemented; should be in lang spec.")]
