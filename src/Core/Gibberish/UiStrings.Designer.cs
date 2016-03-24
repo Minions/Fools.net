@@ -151,6 +151,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We couldn&apos;t find the newline at the end of the file. Each file is required to end with a newline. Please add it..
+        /// </summary>
+        internal static string MissingNewlineAtEndOfFile {
+            get {
+                return ResourceManager.GetString("MissingNewlineAtEndOfFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We tried our best, but just couldn&apos;t find the end of this multi-line comment. Multi-line comments must end with a line containing just `&quot;&quot;&quot;`. Please end your comment..
         /// </summary>
         internal static string MultilineCommentWithoutEnd {

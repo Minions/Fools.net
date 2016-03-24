@@ -153,4 +153,7 @@
 	<data name="MultilineCommentWithoutEnd" xml:space="preserve">
 		<value>We tried our best, but just couldn't find the end of this multi-line comment. Multi-line comments must end with a line containing just `"""`. Please end your comment.</value>
 	</data>
+	<data name="MissingNewlineAtEndOfFile" xml:space="preserve">
+		<value>We couldn't find the newline at the end of the file. Each file is required to end with a newline. Please add it.</value>
+	</data>
 </root>

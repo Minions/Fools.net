@@ -68,7 +68,11 @@ namespace Gibberish.AST
 		public static ParseError MultilineCommentWithoutEnd()
 		{
 			return new ParseError(UiStrings.MultilineCommentWithoutEnd);
+		}
 
+		public static ParseError MissingNewlineAtEndOfFile()
+		{
+			return new ParseError(UiStrings.MissingNewlineAtEndOfFile);
 		}
 
 		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();

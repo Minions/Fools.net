@@ -5,18 +5,22 @@ using Gibberish.AST._1_Bare;
 
 ironmeta RecognizeBlocks<char, LanguageConstruct> : IronMeta.Matcher.Matcher<char, LanguageConstruct>
 {
-	WholeFile = LanguageConstruct*:matches;
+	WholeFile = EOF -> { return _ExtractBlankLine(0, string.Empty, string.Empty); }
+		| LanguageConstruct*:matches;
 	LanguageConstruct = BlankLine | MultilineCommentDefinition | CommentDefinition | Prelude | Statement;
 
-	Statement = '\t'*:indentation (~(':' | '\n' | '\r') .)*:content NL -> { return _ExtractStatementAndErrors(indentation.Inputs.Count(), content.AsString()); };
+	Statement = '\t'*:indentation (~(':' | '\n' | '\r') .)+:content (NL | EOF):nl -> { return _ExtractStatementAndErrors(indentation.Inputs.Count(), content.AsString(), nl.AsString()); };
 
-	Prelude = '\t'*:indentation (~(':' | '\n' | '\r') .)*:content ":" (~('\n' | '\r') .)*:trailingContent NL -> { return _ExtractPreludeAndErrors(indentation.Inputs.Count(), content.AsString(), trailingContent.AsString()); };
+	Prelude = '\t'*:indentation (~(':' | '\n' | '\r') .)*:content ":" (~('\n' | '\r') .)*:trailingContent (NL | EOF):nl -> { return _ExtractPreludeAndErrors(indentation.Inputs.Count(), content.AsString(), trailingContent.AsString(), nl.AsString()); };
 
 	MultilineCommentDefinition = '#' ('[' /[0-9]/+:commentId "]:")?:wholeCommentId (' ' | '\t')*:commentSep "\"\"\"" ((~(NL /[ \t]/* "\"\"\"" /[ \t]/* NL) .)* NL?):content (EOF | ((/[ \t]/* "\"\"\"" /[ \t]/*):commentEnd NL)) -> { return _ExtractMultiLineCommentDefinition(wholeCommentId.Inputs.Count() > 0 ? commentId.AsString() : string.Empty, content.AsString(), commentSep.AsString(), commentEnd.AsString()); };
 
-	CommentDefinition = '#' ('[' /[0-9]/+:commentId "]:")?:wholeCommentId (' ' | '\t')*:commentSep (~('\r' | '\n') .)*:content NL -> { return _ExtractSingleLineCommentDefinition(wholeCommentId.Inputs.Count() > 0 ? commentId.AsString() : string.Empty, content.AsString(), commentSep.AsString()); };
+	CommentDefinition = '#' ('[' /[0-9]/+:commentId "]:")?:wholeCommentId (' ' | '\t')*:commentSep (~('\r' | '\n') .)*:content (NL | EOF):nl -> { return _ExtractSingleLineCommentDefinition(wholeCommentId.Inputs.Count() > 0 ? commentId.AsString() : string.Empty, content.AsString(), commentSep.AsString(), nl.AsString()); };
 	
-	BlankLine = '\t'*:indentation /[\t ]/*:invalidWhitespace NL -> { return _ExtractBlankLine(indentation.Inputs.Count(), invalidWhitespace.AsString()); };
+	BlankLine = '\t'*:indentation /[\t ]/*:invalidWhitespace NL:nl -> { return _ExtractBlankLine(indentation.Inputs.Count(), invalidWhitespace.AsString(), nl.AsString()); }
+		| '\t'+:indentation /[\t ]/*:invalidWhitespace EOF -> { return _ExtractBlankLine(indentation.Inputs.Count(), invalidWhitespace.AsString(), string.Empty); }
+		| /[\t ]/+:invalidWhitespace EOF -> { return _ExtractBlankLine(0, invalidWhitespace.AsString(), string.Empty); }
+	;
 
 	Nothing = (~(.?));
 	EOF = ~.;

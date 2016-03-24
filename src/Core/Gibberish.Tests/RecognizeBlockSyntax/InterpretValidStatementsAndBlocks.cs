@@ -24,6 +24,25 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		{
 			new object[]
 			{
+				"",
+				BasicAst.BlankLine(0)
+					.WithError(ParseError.MissingNewlineAtEndOfFile())
+			},
+			new object[]
+			{
+				" ",
+				BasicAst.BlankLine(0)
+					.WithError(ParseError.IllegalWhitespaceOnBlankLine(" "))
+					.WithError(ParseError.MissingNewlineAtEndOfFile())
+			},
+			new object[]
+			{
+				"\t",
+				BasicAst.BlankLine(1)
+					.WithError(ParseError.MissingNewlineAtEndOfFile())
+			},
+			new object[]
+			{
 				"\r\n",
 				BasicAst.BlankLine(0)
 			},
@@ -42,6 +61,12 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			{
 				"arbitrary statement\r\n",
 				BasicAst.Statement("arbitrary statement")
+			},
+			new object[]
+			{
+				"arbitrary statement",
+				BasicAst.Statement("arbitrary statement")
+					.WithError(ParseError.MissingNewlineAtEndOfFile())
 			},
 			new object[]
 			{
@@ -97,6 +122,11 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				"arbitrary block:\r\n\tpass\r\n",
 				BasicAst.Block("arbitrary block")
 					.WithBody(b => b.AddStatement("pass"))
+			},
+			new object[]
+			{
+				"arbitrary block:",
+				BasicAst.Block("arbitrary block", p => p.WithError(ParseError.MissingNewlineAtEndOfFile()))
 			},
 			new object[]
 			{
@@ -171,6 +201,11 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			{
 				"#[2]: comment content\r\n",
 				BasicAst.CommentDefinition(2, "comment content")
+			},
+			new object[]
+			{
+				"#[22]: comment content",
+				BasicAst.CommentDefinition(22, "comment content").WithError(ParseError.MissingNewlineAtEndOfFile())
 			},
 			new object[]
 			{

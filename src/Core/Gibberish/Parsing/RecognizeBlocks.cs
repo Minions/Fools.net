@@ -11,48 +11,48 @@ namespace Gibberish.Parsing
 	partial class RecognizeBlocks
 	{
 		[NotNull]
-		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace)
+		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace, string newline)
 		{
 			var errors = new List<ParseError>();
+			_RequireNewline(newline, errors);
 			if (illegalWhitespace.Length > 0) { errors.Add(ParseError.IllegalWhitespaceOnBlankLine(illegalWhitespace)); }
 			return new BlankLine(indentationDepth, errors);
 		}
 
 		[NotNull]
-		private static UnknownStatement _ExtractStatementAndErrors(int indentationDepth, string content)
+		private static UnknownStatement _ExtractStatementAndErrors(int indentationDepth, string content, string newline)
 		{
 			var coreContent = content.TrimEnd();
 			var extraAtEnd = content.Substring(coreContent.Length);
 
 			var errors = new List<ParseError>();
 			var comments = new List<int>();
+			_RequireNewline(newline, errors);
 			var statement = _ExtractCommentsAndReturnEverythingBeforeThem(errors, coreContent, comments);
 			_CheckForWhitespaceErrors(errors, statement, extraAtEnd);
 			return new UnknownStatement(indentationDepth, statement, comments, errors);
 		}
 
 		[NotNull]
-		private UnknownPrelude _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon)
+		private UnknownPrelude _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon, string newline)
 		{
 			var extraAtEnd = contentAfterColon;
 			var possibleComment = extraAtEnd.TrimEnd();
 			extraAtEnd = extraAtEnd.Substring(possibleComment.Length);
-			var preludeErrors = new List<ParseError>();
+			var errors = new List<ParseError>();
 			var comments = new List<int>();
-			_ExtractCommentsAndReturnEverythingBeforeThem(preludeErrors, possibleComment, comments);
-			_CheckForWhitespaceErrors(preludeErrors, content, extraAtEnd);
-			return new UnknownPrelude(indentationDepth, content, comments, preludeErrors);
+			_RequireNewline(newline, errors);
+			_ExtractCommentsAndReturnEverythingBeforeThem(errors, possibleComment, comments);
+			_CheckForWhitespaceErrors(errors, content, extraAtEnd);
+			return new UnknownPrelude(indentationDepth, content, comments, errors);
 		}
 
 		[NotNull]
-		private LanguageConstruct _ExtractSingleLineCommentDefinition(string commentId, string content, string commentSeparator)
+		private LanguageConstruct _ExtractSingleLineCommentDefinition(string commentId, string content, string commentSeparator, string newline)
 		{
 			var errors = new List<ParseError>();
-			int commentNumber;
-			if (!int.TryParse(commentId, out commentNumber)) {
-				errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8)));
-			}
-			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
+			_RequireNewline(newline, errors);
+			var commentNumber = _ExtractCommentNumber(commentId, content, commentSeparator, errors);
 			return new CommentDefinition(commentNumber, content, errors);
 		}
 
@@ -60,11 +60,7 @@ namespace Gibberish.Parsing
 		private LanguageConstruct _ExtractMultiLineCommentDefinition(string commentId, string content, string commentSeparator, string commentEnd)
 		{
 			var errors = new List<ParseError>();
-			int commentNumber;
-			if (!int.TryParse(commentId, out commentNumber)) {
-				errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8)));
-			}
-			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
+			var commentNumber = _ExtractCommentNumber(commentId, content, commentSeparator, errors);
 			if (commentEnd.Length == 0) {
 				errors.Add(ParseError.MultilineCommentWithoutEnd());
 			}
@@ -120,5 +116,18 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
+
+		private static void _RequireNewline(string newline, List<ParseError> errors)
+		{
+			if (newline.Length == 0) { errors.Add(ParseError.MissingNewlineAtEndOfFile()); }
+		}
+
+		private static int _ExtractCommentNumber(string commentId, string content, string commentSeparator, List<ParseError> errors)
+		{
+			int commentNumber;
+			if (!int.TryParse(commentId, out commentNumber)) { errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8))); }
+			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
+			return commentNumber;
+		}
 	}
 }
