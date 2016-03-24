@@ -56,6 +56,11 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.MissingIdInCommentDefinition, firstPartOfComment);
 		}
 
+		public static ParseError IllegalWhitespaceOnBlankLine(string whitespace)
+		{
+			return new ParseError(UiStrings.IllegalWhitespaceOnBlankLine, whitespace);
+		}
+
 		[NotNull] private static readonly string[] KnownLanguages = {
 			"fasm",
 			"fools"

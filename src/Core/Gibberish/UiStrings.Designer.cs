@@ -88,6 +88,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We found bad whitespace on a blank line. Blank lines must either consist of just a newline, or must be indented the current indentation level and then have a newline. This blank line has the whitespace `{0}`. Please remove it..
+        /// </summary>
+        internal static string IllegalWhitespaceOnBlankLine {
+            get {
+                return ResourceManager.GetString("IllegalWhitespaceOnBlankLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We found a nearly-valid comment definition, but it had the wrong whitespace between the ID and the content. Comment definitions must begin with `#[44]: `. Yours is like that, but instead of a single space after the colon you have `{0}`. Please fix it..
         /// </summary>
         internal static string IncorrectCommentDefinitionSeparator {

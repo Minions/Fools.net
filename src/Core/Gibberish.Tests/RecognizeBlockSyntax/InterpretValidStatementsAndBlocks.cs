@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using ApprovalTests;
-using ApprovalTests.Reporters;
+﻿using System.Collections.Generic;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
@@ -13,23 +10,14 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 	[TestFixture]
 	public class InterpretValidStatementsAndBlocks
 	{
-		[Test, TestCaseSource(nameof(valid_recognitions)), UseReporter(typeof (QuietReporter))]
+		[Test, TestCaseSource(nameof(valid_recognitions))]
 		public void should_recognize_as(string input, BasicAst.Builder expected)
 		{
 			var subject = new RecognizeBlocks();
 			var result = subject.GetMatch(input, subject.WholeFile);
 
-			//result.Should()
-			//	.BeRecognizedAs(expected);
-
-			try
-			{
-				result.Should()
-					.BeRecognizedAs(expected);
-			}
-			catch (Exception) {
-				Approvals.VerifyJson(result.PrettyPrint());
-			}
+			result.Should()
+				.BeRecognizedAs(expected);
 		}
 
 		public static IEnumerable<IEnumerable<object>> valid_recognitions { get; } = new[]
@@ -38,6 +26,17 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			{
 				"\r\n",
 				BasicAst.BlankLine(0)
+			},
+			new object[]
+			{
+				"\t\t\r\n",
+				BasicAst.BlankLine(2)
+			},
+			new object[]
+			{
+				"\t \t\r\n",
+				BasicAst.BlankLine(1)
+					.WithError(ParseError.IllegalWhitespaceOnBlankLine(" \t"))
 			},
 			new object[]
 			{

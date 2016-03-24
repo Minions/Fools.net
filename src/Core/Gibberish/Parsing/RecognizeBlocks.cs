@@ -10,6 +10,15 @@ namespace Gibberish.Parsing
 {
 	partial class RecognizeBlocks
 	{
+		[NotNull]
+		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace)
+		{
+			var errors = new List<ParseError>();
+			if (illegalWhitespace.Length > 0) { errors.Add(ParseError.IllegalWhitespaceOnBlankLine(illegalWhitespace)); }
+			return new BlankLine(indentationDepth, errors);
+		}
+
+		[NotNull]
 		private static UnknownStatement _ExtractStatementAndErrors(int indentationDepth, string content)
 		{
 			var coreContent = content.TrimEnd();
@@ -22,6 +31,7 @@ namespace Gibberish.Parsing
 			return new UnknownStatement(indentationDepth, statement, comments, errors);
 		}
 
+		[NotNull]
 		private UnknownPrelude _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon)
 		{
 			var extraAtEnd = contentAfterColon;
@@ -34,6 +44,7 @@ namespace Gibberish.Parsing
 			return new UnknownPrelude(indentationDepth, content, comments, preludeErrors);
 		}
 
+		[NotNull]
 		private LanguageConstruct _ExtractSingleLineCommentDefinition(string commentId, string content, string commentSeparator)
 		{
 			var errors = new List<ParseError>();
@@ -93,11 +104,5 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
-
-		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace)
-		{
-			var errors = new List<ParseError>();
-			return new BlankLine(indentationDepth, errors);
-		}
 	}
 }
