@@ -65,6 +65,12 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.ErrorAtEndOfMultilineComment, endingFound);
 		}
 
+		public static ParseError MultilineCommentWithoutEnd()
+		{
+			return new ParseError(UiStrings.MultilineCommentWithoutEnd);
+
+		}
+
 		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
 
 		[NotNull] private static readonly string[] KnownLanguages = {

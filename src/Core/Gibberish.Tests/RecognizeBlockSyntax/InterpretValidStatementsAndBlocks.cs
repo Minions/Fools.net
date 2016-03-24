@@ -206,6 +206,12 @@ more
 			},
 			new object[]
 			{
+				"#[16]: \"\"\"\r\n#[12]: hi\r\n",
+				BasicAst.CommentDefinition(16, "\r\n#[12]: hi\r\n")
+					.WithError(ParseError.MultilineCommentWithoutEnd())
+			},
+			new object[]
+			{
 				"#[13]: \"\"\"\r\n \"\"\"\r\n",
 				BasicAst.CommentDefinition(13, "\r\n")
 					.WithError(ParseError.ErrorAtEndOfMultilineComment(" \"\"\""))

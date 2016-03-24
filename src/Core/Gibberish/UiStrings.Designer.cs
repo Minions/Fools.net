@@ -61,7 +61,7 @@ namespace Gibberish {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We might have found the end of your multiline comment, but we can&apos;t be sure. a Multiline comment must end with `&quot;&quot;&quot;` on its own line. We found something similar: `{0}`. Please end the comment properly..
+        ///   Looks up a localized string similar to We might have found the end of your multi-line comment, but we can&apos;t be sure. A multi-line comment must end with `&quot;&quot;&quot;` on its own line. We found something similar: `{0}`. Please end the comment properly..
         /// </summary>
         internal static string ErrorAtEndOfMultilineComment {
             get {
@@ -147,6 +147,15 @@ namespace Gibberish {
         internal static string MissingNameForBlock {
             get {
                 return ResourceManager.GetString("MissingNameForBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We tried our best, but just couldn&apos;t find the end of this multi-line comment. Multi-line comments must end with a line containing just `&quot;&quot;&quot;`. Please end your comment..
+        /// </summary>
+        internal static string MultilineCommentWithoutEnd {
+            get {
+                return ResourceManager.GetString("MultilineCommentWithoutEnd", resourceCulture);
             }
         }
         

@@ -65,6 +65,9 @@ namespace Gibberish.Parsing
 				errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8)));
 			}
 			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
+			if (commentEnd.Length == 0) {
+				errors.Add(ParseError.MultilineCommentWithoutEnd());
+			}
 			else if (!"\"\"\"".Equals(commentEnd)) { errors.Add(ParseError.ErrorAtEndOfMultilineComment(commentEnd)); }
 			return new CommentDefinition(commentNumber, content, errors);
 		}
