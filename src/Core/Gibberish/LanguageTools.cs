@@ -4,9 +4,9 @@ namespace Gibberish
 {
 	public class LanguageTools
 	{
-		public LanguageTools([NotNull] Compiler compiler) { Compiler = compiler; }
+		public LanguageTools([NotNull] Compiler_Old compilerOldApi) { Compiler_OldApi = compilerOldApi; }
 
 		[NotNull]
-		public Compiler Compiler { get; private set; }
+		public Compiler_Old Compiler_OldApi { get; private set; }
 	}
 }

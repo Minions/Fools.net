@@ -13,7 +13,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		[Test]
 		public void CompilingATrivialDefineThunkNodeShouldCreateThunkInNameTable()
 		{
-			var testSubject = Tools.Fasm.Compiler;
+			var testSubject = Tools.Fasm_Old.Compiler_OldApi;
 			var parse = FasmAst.Thunk(ArbitraryName, FasmAst.PassRaw);
 			testSubject.CompileFragment(parse, _arbitraryDistrict);
 			_arbitraryDistrict.Name(ArbitraryName)

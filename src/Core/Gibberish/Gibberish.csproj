@@ -70,9 +70,9 @@
     <Compile Include="AST\_1_Bare\LanguageConstruct.cs" />
     <Compile Include="AST\_1_Bare\UnknownBlock.cs" />
     <Compile Include="Execution\City.cs" />
-    <Compile Include="Compiler.cs" />
+    <Compile Include="Compiler_Old.cs" />
     <Compile Include="Execution\District.cs" />
-    <Compile Include="Execution\FasmCompiler.cs" />
+    <Compile Include="Execution\FasmCompiler_Old.cs" />
     <Compile Include="Execution\ThunkDescriptor.cs" />
     <Compile Include="LanguageTools.cs" />
     <Compile Include="AST\Parse.cs" />

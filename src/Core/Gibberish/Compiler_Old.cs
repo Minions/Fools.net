@@ -4,11 +4,8 @@ using JetBrains.Annotations;
 
 namespace Gibberish
 {
-	public abstract class Compiler
+	public abstract class Compiler_Old
 	{
-		[NotNull]
-		public abstract City CreateCity();
-
 		public abstract void CompileFragment([NotNull] Parse parse, [NotNull] District @where);
 	}
 }
