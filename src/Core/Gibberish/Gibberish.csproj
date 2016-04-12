@@ -58,17 +58,28 @@
   <ItemGroup>
     <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\DefineThunkNode.cs" />
-    <Compile Include="AST\FasmAst.cs" />
+    <Compile Include="AST\FasmAstOld.cs" />
     <Compile Include="AST\FoolsAst.cs" />
     <Compile Include="AST\NameNode.cs" />
     <Compile Include="AST\Block.cs" />
     <Compile Include="AST\Namespace.cs" />
     <Compile Include="AST\SpecificationSection.cs" />
+    <Compile Include="AST\AstBuilder.cs" />
     <Compile Include="AST\_1_Bare\BasicAst.cs" />
     <Compile Include="AST\_1_Bare\BlankLine.cs" />
+    <Compile Include="AST\_1_Bare\Builders\BlankLineBuilder.cs" />
+    <Compile Include="AST\_1_Bare\Builders\RawBlockBuilder.cs" />
+    <Compile Include="AST\_1_Bare\Builders\CommentBuilder.cs" />
     <Compile Include="AST\_1_Bare\CommentDefinition.cs" />
     <Compile Include="AST\_1_Bare\LanguageConstruct.cs" />
+    <Compile Include="AST\_1_Bare\Builders\StatementBuilder.cs" />
     <Compile Include="AST\_1_Bare\UnknownBlock.cs" />
+    <Compile Include="AST\_1_Bare\FasmOrLanguageConstruct.cs" />
+    <Compile Include="AST\_2_Fasm\Builders\UnknownStatementBuilder.cs" />
+    <Compile Include="AST\_2_Fasm\NamedThunk.cs" />
+    <Compile Include="AST\_2_Fasm\FasmAst.cs" />
+    <Compile Include="AST\_2_Fasm\Builders\NamedThunkBuilder.cs" />
+    <Compile Include="AST\_2_Fasm\FasmConstruct.cs" />
     <Compile Include="Execution\City.cs" />
     <Compile Include="Compiler_Old.cs" />
     <Compile Include="Execution\District.cs" />
@@ -78,6 +89,7 @@
     <Compile Include="AST\Parse.cs" />
     <Compile Include="AST\PassStatement.cs" />
     <Compile Include="AST\_1_Bare\UnknownStatement.cs" />
+    <Compile Include="Parsing\AssembleBlocks.cs" />
     <Compile Include="Parsing\ParseBlockLanguage.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

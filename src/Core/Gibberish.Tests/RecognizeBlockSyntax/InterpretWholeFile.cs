@@ -27,10 +27,10 @@ define.thunk other.name:
 					BasicAst.BlankLine(0),
 					BasicAst.Statement("using language fasm"),
 					BasicAst.BlankLine(0),
-					BasicAst.Block("define.thunk some.name")
+					BasicAst.RawBlock("define.thunk some.name")
 						.WithBody(b => b.AddStatement("pass")),
 					BasicAst.BlankLine(0),
-					BasicAst.Block("define.thunk other.name")
+					BasicAst.RawBlock("define.thunk other.name")
 						.WithBody(b => b.AddStatement("pass")));
 		}
 	}

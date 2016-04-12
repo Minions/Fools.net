@@ -88,6 +88,7 @@
     <Compile Include="RecognizeBlockSyntax\InterpretValidStatementsAndBlocks.cs" />
     <Compile Include="RecognizeBlockSyntax\InterpretWholeFile.cs" />
     <Compile Include="ZzTestHelpers\ParseResultAssertions.cs" />
+    <Compile Include="ZzTestHelpers\RecognitionAssertions.cs" />
     <Compile Include="ZzTestHelpers\ResultExtensions.cs" />
     <Compile Include="CompileFasm\BeAbleToDefineAThunk\ParseThunkDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

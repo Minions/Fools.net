@@ -29,7 +29,7 @@ define.named.thunk some.name:
 			var subject = new ParseLanguageFile();
 			var result = subject.GetMatch(input, subject.File);
 			result.Should()
-				.ParseAs(FasmAst.Thunk("some.name", FasmAst.PassRaw));
+				.ParseAs(FasmAstOld.Thunk("some.name", FasmAstOld.PassRaw));
 		}
 
 		[Test]

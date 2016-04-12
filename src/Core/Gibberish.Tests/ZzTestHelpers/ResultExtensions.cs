@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using FluentAssertions;
-using FluentAssertions.Primitives;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Execution;
@@ -34,10 +33,16 @@ namespace Gibberish.Tests.ZzTestHelpers
 		}
 
 		[NotNull]
-		public static RecognitionAssertions Should([NotNull] this MatchResult<char, LanguageConstruct> result)
+		public static RecognitionAssertions<LanguageConstruct> Should([NotNull] this MatchResult<char, LanguageConstruct> result)
 		{
 			var recognition = result.Success ? result.Results : Enumerable.Empty<LanguageConstruct>();
-			return new RecognitionAssertions(result.Success, recognition);
+			return new RecognitionAssertions<LanguageConstruct>(result.Success, recognition);
+		}
+
+		[NotNull]
+		public static RecognitionAssertions<LanguageConstruct> Should([NotNull] this IEnumerable<LanguageConstruct> result)
+		{
+			return new RecognitionAssertions<LanguageConstruct>(true, result);
 		}
 
 		[NotNull]
@@ -86,44 +91,5 @@ namespace Gibberish.Tests.ZzTestHelpers
 			TypeNameHandling = TypeNameHandling.Objects,
 			TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
 		};
-	}
-
-	internal class RecognitionAssertions : ObjectAssertions
-	{
-		public RecognitionAssertions(bool success, [NotNull] IEnumerable<LanguageConstruct> result) : base(result)
-		{
-			Success = success;
-			Result = result.ToArray();
-		}
-
-		public bool Success { get; }
-		[NotNull]
-		public LanguageConstruct[] Result { get; }
-
-		public void BeRecognizedAs(BasicAst.Builder expected)
-		{
-			var statements = expected.BuildRaw();
-			Success.Should()
-				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
-			Result.ShouldBeEquivalentTo(
-				statements,
-				options => options.IncludingFields()
-					.IncludingProperties()
-					.IncludingNestedObjects()
-					.RespectingRuntimeTypes());
-		}
-
-		internal void BeRecognizedAs(params BasicAst.Builder[] expected)
-		{
-			var statements = expected.SelectMany(b => b.BuildRaw());
-			Success.Should()
-				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
-			Result.ShouldBeEquivalentTo(
-				statements,
-				options => options.IncludingFields()
-					.IncludingProperties()
-					.IncludingNestedObjects()
-					.RespectingRuntimeTypes());
-		}
 	}
 }
