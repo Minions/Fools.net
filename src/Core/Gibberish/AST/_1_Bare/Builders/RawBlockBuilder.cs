@@ -4,46 +4,21 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class RawBlockBuilder : AstBuilder<LanguageConstruct>
+	public class RawBlockBuilder : BlockBuilderBase<RawBlockBuilder, RawBlockBuilder.PreludeBuilder, RawBlockBuilder.BodyBuilder, LanguageConstruct>
 	{
-		public RawBlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> func, int indentationDepth)
+		public RawBlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions, int indentationDepth)
+			: base(preludeOptions, new PreludeBuilder(prelude, indentationDepth))
 		{
 			IndentationDepth = indentationDepth;
-			Prelude = new PreludeBuilder(prelude, indentationDepth);
-			func(Prelude);
 		}
 
 		public int IndentationDepth { get; }
 
-		[NotNull]
-		public PreludeBuilder Prelude { get; }
-
-		[NotNull]
-		public RawBlockBuilder WithBody([NotNull] Action<BodyBuilder> bodyOptions)
+		public class PreludeBuilder : PreludeBuilderBase
 		{
-			bodyOptions(new BodyBuilder(this));
-			return this;
-		}
-
-		public class PreludeBuilder : AstBuilder<LanguageConstruct>
-		{
-			public PreludeBuilder([NotNull] string content, int indentationDepth)
+			public PreludeBuilder([NotNull] string content, int indentationDepth) : base(content)
 			{
-				Content = content;
 				IndentationDepth = indentationDepth;
-			}
-
-			[NotNull]
-			public string Content { get; }
-
-			[NotNull]
-			public List<int> Comments { get; } = new List<int>();
-
-			[NotNull]
-			public PreludeBuilder WithCommentRefs([NotNull] params int[] indices)
-			{
-				Comments.AddRange(indices);
-				return this;
 			}
 
 			public int IndentationDepth { get; }
@@ -54,11 +29,13 @@ namespace Gibberish.AST._1_Bare.Builders
 			}
 		}
 
-		public class BodyBuilder
+		public class BodyBuilder : BodyBuilderBase
 		{
-			public BodyBuilder([NotNull] RawBlockBuilder self)
+			public BodyBuilder([NotNull] RawBlockBuilder self) : base(self) {}
+
+			protected override RawBlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
 			{
-				_self = self;
+				return new RawBlockBuilder(prelude, preludeOptions, _self.IndentationDepth + 1);
 			}
 
 			[NotNull]
@@ -68,31 +45,17 @@ namespace Gibberish.AST._1_Bare.Builders
 				_self.Body.Add(statement);
 				return statement;
 			}
-
-			[NotNull]
-			public RawBlockBuilder AddBlock([NotNull] string prelude)
-			{
-				return AddBlock(prelude, _ => { });
-			}
-
-			[NotNull]
-			private RawBlockBuilder AddBlock([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions)
-			{
-				var result = new RawBlockBuilder(prelude, preludeOptions, _self.IndentationDepth + 1);
-				_self.Body.Add(result);
-				return result;
-			}
-
-			[NotNull] private readonly RawBlockBuilder _self;
 		}
-
-		[NotNull]
-		public List<AstBuilder<LanguageConstruct>> Body { get; } = new List<AstBuilder<LanguageConstruct>>();
 
 		internal override void Build(List<LanguageConstruct> destination)
 		{
 			Prelude.Build(destination);
 			foreach (var builder in Body) { builder.Build(destination); }
+		}
+
+		protected override BodyBuilder CreateBodyBuilder()
+		{
+			return new BodyBuilder(this);
 		}
 	}
 }
