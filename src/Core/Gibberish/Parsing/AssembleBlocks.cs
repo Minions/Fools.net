@@ -10,10 +10,10 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public List<LanguageConstruct> Transform([NotNull] List<LanguageConstruct> source)
 		{
-			return _CollectBodyAtLevel(new _SourceData(source), 0);
+			return _CollectBodyAtLevel(new SourceData(source), 0);
 		}
 
-		private static List<LanguageConstruct> _CollectBodyAtLevel(_SourceData sourceData, int level)
+		private static List<LanguageConstruct> _CollectBodyAtLevel(SourceData sourceData, int level)
 		{
 			var result = new List<LanguageConstruct>();
 			while (sourceData.HasMore)
@@ -70,14 +70,15 @@ namespace Gibberish.Parsing
 			return result;
 		}
 
-		private class _SourceData
+		private class SourceData
 		{
-			public _SourceData([NotNull] List<LanguageConstruct> source)
+			public SourceData([NotNull] List<LanguageConstruct> source)
 			{
 				_source = source.GetEnumerator();
 				HasMore = _source.MoveNext();
 			}
 
+			[NotNull]
 			public LanguageConstruct Current => _source.Current;
 			public bool NextItemStartsParagraph;
 			public bool HaveStartedCommentDefinitions;
