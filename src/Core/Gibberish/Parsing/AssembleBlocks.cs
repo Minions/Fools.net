@@ -7,6 +7,7 @@ namespace Gibberish.Parsing
 	public class AssembleBlocks
 	{
 		private static bool _nextItemStartsParagraph;
+		private static bool _haveStartedCommentDefinitions;
 
 		public List<LanguageConstruct> Transform(List<LanguageConstruct> source)
 		{
@@ -42,8 +43,10 @@ namespace Gibberish.Parsing
 					var commentDefinition = (CommentDefinition) line;
 					if (0 == level)
 					{
+						commentDefinition.StartsParagraph = PossiblySpecified<bool>.WithValue(!_haveStartedCommentDefinitions);
 						result.Add(commentDefinition);
 						source.RemoveAt(0);
+						_haveStartedCommentDefinitions = true;
 					}
 					else
 					{ return result; }

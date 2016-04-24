@@ -202,7 +202,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		}
 
 		[Test]
-		public void CommentDefinitionsShouldTerminatePreceedingBlocksAndAppearAtRootLevel()
+		public void CommentDefinitionsShouldTerminatePreceedingBlocksAndAppearAtRootLevelAsNewParagraph()
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
@@ -221,6 +221,33 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 						{
 							f.Block("outer block")
 								.WithBody(b => { b.AddStatement("outer 1"); });
+							f.CommentDefinition(3, "commet def")
+								.ThatStartsParagraph();
+						}));
+		}
+
+		[Test]
+		public void SubsequentCommentDefsNeverStartNewParagraphsEvenIfThereAreBlankLines()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.CommentDefinition(1, "commet def");
+						f.BlankLine(0);
+						f.CommentDefinition(2, "commet def");
+						f.CommentDefinition(3, "commet def");
+					})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.CommentDefinition(1, "commet def")
+								.ThatStartsParagraph();
+							f.CommentDefinition(2, "commet def");
 							f.CommentDefinition(3, "commet def");
 						}));
 		}

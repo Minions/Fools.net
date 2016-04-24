@@ -54,5 +54,11 @@ namespace Gibberish.AST
 		{
 			return !left.Equals(right);
 		}
+
+		public override string ToString()
+		{
+			return _isSpecified ? $"{_value}" : $"Unspecified<{typeof(T).Name}>";
+			;
+		}
 	}
 }

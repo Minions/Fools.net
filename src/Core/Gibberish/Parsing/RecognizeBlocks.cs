@@ -53,7 +53,7 @@ namespace Gibberish.Parsing
 			var errors = new List<ParseError>();
 			_RequireNewline(newline, errors);
 			var commentNumber = _ExtractCommentNumber(commentId, content, commentSeparator, errors);
-			return new CommentDefinition(commentNumber, content, errors);
+			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentNumber, content, errors);
 		}
 
 		[NotNull]
@@ -65,7 +65,7 @@ namespace Gibberish.Parsing
 				errors.Add(ParseError.MultilineCommentWithoutEnd());
 			}
 			else if (!"\"\"\"".Equals(commentEnd)) { errors.Add(ParseError.ErrorAtEndOfMultilineComment(commentEnd)); }
-			return new CommentDefinition(commentNumber, content, errors);
+			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentNumber, content, errors);
 		}
 
 		[NotNull]
