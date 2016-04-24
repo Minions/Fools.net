@@ -71,6 +71,8 @@ namespace Gibberish.Parsing
 
 			public bool Visit(UnknownStatement statement, int level, List<LanguageConstruct> result)
 			{
+				if (_requirePerfectIndentation && (statement.IndentationDepth.Value != level)) { return true; }
+				_requirePerfectIndentation = false;
 				if (statement.IndentationDepth.Value < level) { return true; }
 				if (statement.IndentationDepth.Value > level) { statement.Errors.Add(ParseError.IncorrectIndentation(level, statement.IndentationDepth.Value)); }
 				statement.StartsParagraph = _sourceData.ShouldStartParagraph;
@@ -91,11 +93,15 @@ namespace Gibberish.Parsing
 
 			public bool Visit(UnknownPrelude prelude, int level, List<LanguageConstruct> result)
 			{
+				if (_requirePerfectIndentation && (prelude.IndentationDepth.Value != level)) { return true; }
+				_requirePerfectIndentation = false;
 				if (prelude.IndentationDepth.Value < level) { return true; }
 
 				var startsParagraph = _sourceData.NextItemStartsParagraph;
 				_sourceData.ContinueToNextLine(false);
+				_requirePerfectIndentation = true;
 				var bodyContents = _CollectBodyAtLevel(this, prelude.IndentationDepth.Value + 1, _sourceData);
+				_requirePerfectIndentation = false;
 
 				var errors = new List<ParseError>();
 				if (prelude.IndentationDepth.Value > level)
@@ -104,7 +110,9 @@ namespace Gibberish.Parsing
 					else
 					{
 						errors.Add(ParseError.IncorrectIndentation(level, prelude.IndentationDepth.Value));
+						_requirePerfectIndentation = true;
 						bodyContents = _CollectBodyAtLevel(this, level + 1, _sourceData);
+						_requirePerfectIndentation = false;
 						if (bodyContents.Count == 0) { errors.Add(ParseError.MissingBody()); }
 					}
 				}
@@ -120,6 +128,7 @@ namespace Gibberish.Parsing
 			}
 
 			[NotNull] private readonly SourceData _sourceData;
+			private bool _requirePerfectIndentation;
 		}
 	}
 }

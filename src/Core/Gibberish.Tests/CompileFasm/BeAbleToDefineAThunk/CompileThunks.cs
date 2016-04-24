@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ApprovalTests;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Execution;
@@ -212,6 +213,57 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 								.WithError(ParseError.IncorrectIndentation(0, 3))
 								.WithError(ParseError.MissingBody());
 							f.Statement(ArbitraryContent);
+						}));
+		}
+
+		[Test]
+		public void BadPreludeIndentFollowedByMoreBadIndentingThatCannotBeInterpretedAnyOtherWayResultsInIndependentErrors()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				new List<LanguageConstruct>
+				{
+					StatementIndented(0, ArbitraryContent),
+					PreludeIndented(3, ArbitraryContent),
+					StatementIndented(2, ArbitraryContent)
+				});
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Statement(ArbitraryContent);
+							f.Block(ArbitraryContent)
+								.WithError(ParseError.IncorrectIndentation(0, 3))
+								.WithError(ParseError.MissingBody());
+							f.Statement(ArbitraryContent)
+								.WithError(ParseError.IncorrectIndentation(0, 2));
+						}));
+		}
+
+		[Test]
+		public void BadPreludeIndentFollowedByMoreBadIndentingInAnotherWayThatCannotBeInterpretedAnyOtherWayResultsInIndependentErrors()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				new List<LanguageConstruct>
+				{
+					StatementIndented(0, ArbitraryContent),
+					PreludeIndented(3, ArbitraryContent),
+					PreludeIndented(5, ArbitraryContent)
+				});
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Statement(ArbitraryContent);
+							f.Block(ArbitraryContent)
+								.WithError(ParseError.IncorrectIndentation(0, 3))
+								.WithError(ParseError.MissingBody());
+							f.Block(ArbitraryContent)
+								.WithError(ParseError.IncorrectIndentation(0, 5))
+								.WithError(ParseError.MissingBody());
 						}));
 		}
 

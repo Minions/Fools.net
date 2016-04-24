@@ -21,6 +21,18 @@ namespace Gibberish.Tests.ZzTestHelpers
 			return JsonConvert.SerializeObject(self.Results, WithTypeNames);
 		}
 
+		[NotNull, UsedImplicitly]
+		public static string PrettyPrint([CanBeNull] this object self)
+		{
+			return JsonConvert.SerializeObject(self, WithTypeNames);
+		}
+
+		[UsedImplicitly]
+		public static void ApproveJson<T>([CanBeNull] this T self)
+		{
+			ApprovalTests.Approvals.VerifyJson(self.PrettyPrint());
+		}
+
 		public static void ShouldHave([CanBeNull] this ThunkDescriptor subject, object expectation)
 		{
 			subject.ShouldBeEquivalentTo(expectation, c => c.ExcludingMissingMembers());
