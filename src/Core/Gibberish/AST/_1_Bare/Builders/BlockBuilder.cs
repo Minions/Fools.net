@@ -4,9 +4,9 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class RawBlockBuilder : BlockBuilderBase<RawBlockBuilder, RawBlockBuilder.PreludeBuilder, RawBlockBuilder.BodyBuilder, LanguageConstruct>
+	public class BlockBuilder : BlockBuilderBase<BlockBuilder, BlockBuilder.PreludeBuilder, BlockBuilder.BodyBuilder, LanguageConstruct>
 	{
-		public RawBlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions, int indentationDepth)
+		public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions, int indentationDepth)
 			: base(preludeOptions, new PreludeBuilder(prelude, indentationDepth))
 		{
 			IndentationDepth = indentationDepth;
@@ -31,7 +31,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 		public class BodyBuilder : BodyBuilderBase
 		{
-			public BodyBuilder([NotNull] RawBlockBuilder self) : base(self) {}
+			public BodyBuilder([NotNull] BlockBuilder self) : base(self) {}
 
 			[NotNull]
 			public StatementBuilder AddStatement([NotNull] string content)
@@ -41,9 +41,9 @@ namespace Gibberish.AST._1_Bare.Builders
 				return statement;
 			}
 
-			protected override RawBlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
+			protected override BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
 			{
-				return new RawBlockBuilder(prelude, preludeOptions, _self.IndentationDepth + 1);
+				return new BlockBuilder(prelude, preludeOptions, _self.IndentationDepth + 1);
 			}
 		}
 

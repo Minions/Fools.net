@@ -30,6 +30,18 @@ namespace Gibberish.AST._1_Bare
 			return new RawBlockBuilder(prelude, preludeOptions, 0);
 		}
 
+		[NotNull]
+		public static BlockBuilder Block([NotNull] string prelude)
+		{
+			return Block(prelude, x => { });
+		}
+
+		[NotNull]
+		public static BlockBuilder Block([NotNull] string prelude, [NotNull] Action<BlockBuilder.PreludeBuilder> preludeOptions)
+		{
+			return new BlockBuilder(prelude, preludeOptions, 0);
+		}
+
 		public static CommentBuilder CommentDefinition(int commentId, string content)
 		{
 			return new CommentBuilder(commentId, content);

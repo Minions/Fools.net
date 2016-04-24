@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
-using Gibberish.AST._2_Fasm;
 using Gibberish.Execution;
 using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
@@ -22,7 +21,9 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.WithBody(b => b.AddStatement("pass"))
 					.Build());
 			result.Should()
-				.BeRecognizedAs(BasicAst.RawBlock("define.named.thunk some.name").WithBody(b => b.AddStatement("pass")));
+				.BeRecognizedAs(
+					BasicAst.Block("define.named.thunk some.name")
+						.WithBody(b => b.AddStatement("pass")));
 		}
 
 		[Test]

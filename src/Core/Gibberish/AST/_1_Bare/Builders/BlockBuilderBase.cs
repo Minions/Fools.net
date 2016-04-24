@@ -61,14 +61,14 @@ namespace Gibberish.AST._1_Bare.Builders
 			}
 
 			[NotNull]
-			public TBlockBuilder AddBlock([NotNull] string prelude, [NotNull] Action<RawBlockBuilder.PreludeBuilder> preludeOptions)
+			public TBlockBuilder AddBlock([NotNull] string prelude, [NotNull] Action<TPreludeBuilder> preludeOptions)
 			{
 				var result = CreateBlockBuilder(prelude, preludeOptions);
 				_self.Body.Add(result);
 				return result;
 			}
 
-			protected abstract TBlockBuilder CreateBlockBuilder(string prelude, Action<RawBlockBuilder.PreludeBuilder> preludeOptions);
+			protected abstract TBlockBuilder CreateBlockBuilder(string prelude, Action<TPreludeBuilder> preludeOptions);
 
 			[NotNull] protected readonly TBlockBuilder _self;
 		}

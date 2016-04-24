@@ -68,6 +68,7 @@
     <Compile Include="AST\_1_Bare\BasicAst.cs" />
     <Compile Include="AST\_1_Bare\BlankLine.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlankLineBuilder.cs" />
+    <Compile Include="AST\_1_Bare\Builders\BlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlockBuilderBase.cs" />
     <Compile Include="AST\_1_Bare\Builders\RawBlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentBuilder.cs" />
