@@ -13,7 +13,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 	public class CompileThunks
 	{
 		[Test]
-		public void ShouldAssembleBlocksfromValidNesting()
+		public void ShouldFindBlockwithSimpleStatements()
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
@@ -22,19 +22,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 						b =>
 						{
 							b.AddStatement("outer 1");
-							b.AddBlock("nested 1")
-								.WithBody(inner => inner.AddStatement("nested 1.1"));
 							b.AddStatement("outer 2");
-							b.AddBlock("nested 2")
-								.WithBody(
-									inner =>
-									{
-										inner.AddStatement("nested 2.1");
-										inner.AddBlankLine();
-										inner.AddStatement("nested 2.2");
-									});
-							b.AddBlock("nested 3")
-								.WithBody(inner => inner.AddStatement("nested 3.1"));
 						})
 					.Build());
 			result.Should()
@@ -44,19 +32,135 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 							b =>
 							{
 								b.AddStatement("outer 1");
+								b.AddStatement("outer 2");
+							}));
+		}
+
+		[Test]
+		public void BlocksShouldBeNestable()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.RawBlock("outer block")
+					.WithBody(
+						b =>
+						{
+							b.AddBlock("nested 1")
+								.WithBody(inner => inner.AddStatement("nested 1.1"));
+						})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.Block("outer block")
+						.WithBody(
+							b =>
+							{
 								b.AddBlock("nested 1")
 									.WithBody(inner => inner.AddStatement("nested 1.1"));
-								b.AddStatement("outer 2");
+							}));
+		}
+
+		[Test]
+		public void FollowingABlockWithALessNestedStatementEndsTheInnerBlock()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.RawBlock("outer block")
+					.WithBody(
+						b =>
+						{
+							b.AddBlock("nested 1")
+								.WithBody(inner => inner.AddStatement("nested 1.1"));
+							b.AddStatement("outer 1");
+						})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.Block("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddBlock("nested 1")
+									.WithBody(inner => inner.AddStatement("nested 1.1"));
+								b.AddStatement("outer 1");
+							}));
+		}
+
+		[Test]
+		public void FollowingABlockWithALessNestedBlockEndsTheInnerBlockAndStartsANewOne()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.RawBlock("outer block")
+					.WithBody(
+						b =>
+						{
+							b.AddBlock("nested 1")
+								.WithBody(inner => inner.AddStatement("nested 1.1"));
+							b.AddBlock("nested 2")
+								.WithBody(inner => inner.AddStatement("nested 2.1"));
+						})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.Block("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddBlock("nested 1")
+									.WithBody(inner => inner.AddStatement("nested 1.1"));
 								b.AddBlock("nested 2")
-									.WithBody(
-										inner =>
-										{
-											inner.AddStatement("nested 2.1");
-											inner.AddBlankLine();
-											inner.AddStatement("nested 2.2");
-										});
-								b.AddBlock("nested 3")
-									.WithBody(inner => inner.AddStatement("nested 3.1"));
+									.WithBody(inner => inner.AddStatement("nested 2.1"));
+							}));
+		}
+
+		[Test]
+		public void BlankLinesInBlocksShouldBeSkipped()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.RawBlock("outer block")
+					.WithBody(
+						b =>
+						{
+							b.AddStatement("outer 1");
+							b.AddBlankLine();
+							b.AddStatement("outer 2");
+						})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.Block("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddStatement("outer 1");
+								b.AddBlankLine();
+								b.AddStatement("outer 2");
+							}));
+		}
+
+		[Test]
+		public void FilesEndingInNestedBlockShouldParseCleanly()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.RawBlock("outer block")
+					.WithBody(
+						b =>
+						{
+							b.AddBlock("nested 1")
+								.WithBody(inner => inner.AddStatement("nested 1.1"));
+						})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.Block("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddBlock("nested 1")
+									.WithBody(inner => inner.AddStatement("nested 1.1"));
 							}));
 		}
 
