@@ -1,34 +1,24 @@
 ﻿using System.Collections.Generic;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
+using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
 	public class AssembleBlocks
 	{
-		public List<LanguageConstruct> Transform(List<LanguageConstruct> source)
+		[NotNull]
+		public List<LanguageConstruct> Transform([NotNull] List<LanguageConstruct> source)
 		{
 			return _CollectBodyAtLevel(new _SourceData(source), 0);
-		}
-
-		public class _SourceData
-		{
-			public _SourceData(List<LanguageConstruct> source)
-			{
-				Source = source;
-			}
-
-			public List<LanguageConstruct> Source { get; }
-			public bool NextItemStartsParagraph;
-			public bool HaveStartedCommentDefinitions;
 		}
 
 		private static List<LanguageConstruct> _CollectBodyAtLevel(_SourceData sourceData, int level)
 		{
 			var result = new List<LanguageConstruct>();
-			while (sourceData.Source.Count != 0)
+			while (sourceData.HasMore)
 			{
-				var line = sourceData.Source[0];
+				var line = sourceData.Current;
 				if (line.GetType() == typeof (UnknownStatement))
 				{
 					var unknownStatement = (UnknownStatement) line;
@@ -37,7 +27,7 @@ namespace Gibberish.Parsing
 						unknownStatement.StartsParagraph = PossiblySpecified<bool>.WithValue(sourceData.NextItemStartsParagraph);
 						sourceData.NextItemStartsParagraph = false;
 						result.Add(unknownStatement);
-						sourceData.Source.RemoveAt(0);
+						sourceData.Advance();
 					}
 					else
 					{ return result; }
@@ -45,7 +35,7 @@ namespace Gibberish.Parsing
 				else if (line.GetType() == typeof (BlankLine))
 				{
 					sourceData.NextItemStartsParagraph = true;
-					sourceData.Source.RemoveAt(0);
+					sourceData.Advance();
 				}
 				else if (line.GetType() == typeof (CommentDefinition))
 				{
@@ -54,7 +44,7 @@ namespace Gibberish.Parsing
 					{
 						commentDefinition.StartsParagraph = PossiblySpecified<bool>.WithValue(!sourceData.HaveStartedCommentDefinitions);
 						result.Add(commentDefinition);
-						sourceData.Source.RemoveAt(0);
+						sourceData.Advance();
 						sourceData.HaveStartedCommentDefinitions = true;
 					}
 					else
@@ -65,7 +55,7 @@ namespace Gibberish.Parsing
 					var prelude = (UnknownPrelude) line;
 					if (prelude.IndentationDepth.Value == level)
 					{
-						sourceData.Source.RemoveAt(0);
+						sourceData.Advance();
 						var startsParagraph = sourceData.NextItemStartsParagraph;
 						sourceData.NextItemStartsParagraph = false;
 						var bodyContents = _CollectBodyAtLevel(sourceData, level + 1);
@@ -78,6 +68,27 @@ namespace Gibberish.Parsing
 				{ return result; }
 			}
 			return result;
+		}
+
+		private class _SourceData
+		{
+			public _SourceData([NotNull] List<LanguageConstruct> source)
+			{
+				_source = source.GetEnumerator();
+				HasMore = _source.MoveNext();
+			}
+
+			public LanguageConstruct Current => _source.Current;
+			public bool NextItemStartsParagraph;
+			public bool HaveStartedCommentDefinitions;
+			public bool HasMore;
+
+			public void Advance()
+			{
+				if (HasMore) { HasMore = _source.MoveNext(); }
+			}
+
+			private List<LanguageConstruct>.Enumerator _source;
 		}
 	}
 }
