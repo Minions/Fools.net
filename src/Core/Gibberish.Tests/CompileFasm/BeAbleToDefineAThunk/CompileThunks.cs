@@ -169,6 +169,27 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		}
 
 		[Test]
+		public void PreludeFollowedByNonIndentedStatementGivesError()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				new List<LanguageConstruct>
+				{
+					PreludeIndented(0, ArbitraryContent),
+					StatementIndented(0, ArbitraryContent)
+				});
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Block(ArbitraryContent)
+								.WithError(ParseError.MissingBody());
+							f.Statement(ArbitraryContent);
+						}));
+		}
+
+		[Test]
 		public void BlankLinesShouldStartNewParagraphAndMaintainSameBlock()
 		{
 			var testSubject = new AssembleBlocks();

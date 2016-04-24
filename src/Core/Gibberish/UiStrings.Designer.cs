@@ -151,6 +151,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We found a block prelude but couldn&apos;t find its body. Every block needs at least one line in its body. Most likely you either want an empty block or have an indentation error in the next line. We&apos;re going to continue parsing as if you wanted an empty body. If you do want an empty body, please add a body with a `pass` statement. If that wasn&apos;t your intention, please fix your indentation..
+        /// </summary>
+        internal static string MissingBody {
+            get {
+                return ResourceManager.GetString("MissingBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We found a comment defintion but couldn&apos;t find its ID. Each comment must begin with an ID in the form `#[23]: `. Your comment starts with `{0}`..
         /// </summary>
         internal static string MissingIdInCommentDefinition {

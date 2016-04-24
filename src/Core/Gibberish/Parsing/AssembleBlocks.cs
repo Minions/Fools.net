@@ -102,9 +102,19 @@ namespace Gibberish.Parsing
 				{
 					if (bodyContents.Count > 0)
 					{
-						errors = new List<ParseError>
+						errors = new[]
 						{
 							ParseError.IncorrectBlockIndentation(level, prelude.IndentationDepth.Value)
+						};
+					}
+				}
+				else
+				{
+					if (bodyContents.Count == 0)
+					{
+						errors = new[]
+						{
+							ParseError.MissingBody()
 						};
 					}
 				}
