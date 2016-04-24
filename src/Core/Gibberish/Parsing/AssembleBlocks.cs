@@ -22,15 +22,12 @@ namespace Gibberish.Parsing
 				if (line.GetType() == typeof (UnknownStatement))
 				{
 					var unknownStatement = (UnknownStatement) line;
-					if (unknownStatement.IndentationDepth.Value == level)
-					{
-						unknownStatement.StartsParagraph = PossiblySpecified<bool>.WithValue(sourceData.NextItemStartsParagraph);
-						sourceData.NextItemStartsParagraph = false;
-						result.Add(unknownStatement);
-						sourceData.Advance();
-					}
-					else
-					{ return result; }
+					if (unknownStatement.IndentationDepth.Value < level) { return result; }
+					if (unknownStatement.IndentationDepth.Value > level) { unknownStatement.Errors.Add(ParseError.IncorrectIndentation(level, unknownStatement.IndentationDepth.Value)); }
+					unknownStatement.StartsParagraph = PossiblySpecified<bool>.WithValue(sourceData.NextItemStartsParagraph);
+					sourceData.NextItemStartsParagraph = false;
+					result.Add(unknownStatement);
+					sourceData.Advance();
 				}
 				else if (line.GetType() == typeof (BlankLine))
 				{

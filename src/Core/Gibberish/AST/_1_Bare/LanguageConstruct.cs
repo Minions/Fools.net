@@ -8,10 +8,10 @@ namespace Gibberish.AST._1_Bare
 	{
 		protected LanguageConstruct([NotNull] IEnumerable<ParseError> errors)
 		{
-			Errors = errors.ToArray();
+			Errors = errors.ToList();
 		}
 
 		[NotNull]
-		public ParseError[] Errors { get; }
+		public List<ParseError> Errors { get; }
 	}
 }

@@ -156,4 +156,7 @@
 	<data name="MissingNewlineAtEndOfFile" xml:space="preserve">
 		<value>We couldn't find the newline at the end of the file. Each file is required to end with a newline. Please add it.</value>
 	</data>
+	<data name="IncorrectIndentation" xml:space="preserve">
+		<value>We found a statement with inconsistent indentation. Based on the blocks, the statement should be indented {0} or fewer levels, but it was indented {1} levels. Please clarify your indentation.</value>
+	</data>
 </root>

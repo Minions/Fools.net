@@ -133,6 +133,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We found a statement with inconsistent indentation. Based on the blocks, the statement should be indented {0} or fewer levels, but it was indented {1} levels. Please clarify your indentation..
+        /// </summary>
+        internal static string IncorrectIndentation {
+            get {
+                return ResourceManager.GetString("IncorrectIndentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We found a comment defintion but couldn&apos;t find its ID. Each comment must begin with an ID in the form `#[23]: `. Your comment starts with `{0}`..
         /// </summary>
         internal static string MissingIdInCommentDefinition {

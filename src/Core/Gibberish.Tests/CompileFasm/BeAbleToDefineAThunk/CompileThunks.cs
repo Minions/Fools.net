@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Execution;
@@ -120,6 +122,27 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 									b.AddBlock("nested 2")
 										.WithBody(inner => inner.AddStatement("nested 2.1"));
 								})));
+		}
+
+		[Test]
+		public void IndentingAStatementBeyondCurrentLevelGivesAnError()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				new List<LanguageConstruct>
+				{
+					StatementIndented(0, ArbitraryContent),
+					StatementIndented(1, ArbitraryContent)
+				});
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Statement(ArbitraryContent);
+							f.Statement(ArbitraryContent)
+								.WithError(ParseError.IncorrectIndentation(0, 1));
+						}));
 		}
 
 		[Test]
@@ -266,11 +289,22 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					});
 		}
 
+		private static UnknownStatement StatementIndented(int indentationLevel, string content)
+		{
+			return new UnknownStatement(
+				PossiblySpecified<bool>.Unspecifed,
+				PossiblySpecified<int>.WithValue(indentationLevel),
+				content,
+				Enumerable.Empty<int>(),
+				ParseError.NoErrors);
+		}
+
 		private const string ArbitraryName = "the.name";
 
 		[NotNull, SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private City _city;
 		[NotNull, SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private District _arbitraryDistrict;
 		private const string ArbitraryComment = "comment def";
+		private const string ArbitraryContent = "arbitrary.content";
 
 		[SetUp]
 		public void Setup()

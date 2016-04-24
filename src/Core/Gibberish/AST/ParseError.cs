@@ -75,6 +75,11 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.MissingNewlineAtEndOfFile);
 		}
 
+		public static ParseError IncorrectIndentation(int expectedIndentation, int actualIndentation)
+		{
+			return new ParseError(UiStrings.IncorrectIndentation, expectedIndentation, actualIndentation);
+		}
+
 		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
 
 		[NotNull] private static readonly string[] KnownLanguages = {
