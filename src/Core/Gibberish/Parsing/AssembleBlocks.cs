@@ -54,8 +54,10 @@ namespace Gibberish.Parsing
 					if (prelude.IndentationDepth.Value == level)
 					{
 						source.RemoveAt(0);
+						var startsParagraph = _nextItemStartsParagraph;
+						_nextItemStartsParagraph = false;
 						var bodyContents = _CollectBodyAtLevel(source, level + 1);
-						result.Add(new UnknownBlock(prelude, bodyContents, ParseError.NoErrors));
+						result.Add(new UnknownBlock(startsParagraph, prelude, bodyContents, ParseError.NoErrors));
 					}
 					else
 					{ return result; }

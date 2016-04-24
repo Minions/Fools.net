@@ -151,6 +151,57 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		}
 
 		[Test]
+		public void MultipleBlankLinesShouldBeTreatedLikeOne()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.Statement("1");
+						f.BlankLine();
+						f.BlankLine();
+						f.Statement("1");
+					})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Statement("1");
+							f.Statement("1")
+								.ThatStartsNewParagraph();
+						}));
+		}
+
+		[Test]
+		public void BlankLinesBeforeBlocksShouldStartNewParagraph()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.Statement("1");
+						f.BlankLine();
+						f.Block("outer")
+							.WithBody(b => b.AddStatement("outer 1"));
+					})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Statement("1");
+							f.Block("outer")
+								.WithBody(b => b.AddStatement("outer 1"))
+								.ThatStartsNewParagraph();
+						}));
+		}
+
+		[Test]
 		public void CommentDefinitionsShouldTerminatePreceedingBlocksAndAppearAtRootLevel()
 		{
 			var testSubject = new AssembleBlocks();

@@ -9,6 +9,8 @@ namespace Gibberish.AST._1_Bare.Builders
 	{
 		public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions) : base(preludeOptions, new PreludeBuilder(prelude)) {}
 
+		public bool StartsParagraph { get; private set; }
+
 		public class PreludeBuilder : PreludeBuilderBase
 		{
 			public PreludeBuilder([NotNull] string content) : base(content) {}
@@ -51,10 +53,17 @@ namespace Gibberish.AST._1_Bare.Builders
 			foreach (var builder in Body) { builder.BuildInto(bodyConstructs); }
 			destination.Add(
 				new UnknownBlock(
+					StartsParagraph,
 					prelude.Cast<UnknownPrelude>()
 						.Single(),
 					bodyConstructs,
 					ParseError.NoErrors));
+		}
+
+		public BlockBuilder ThatStartsNewParagraph()
+		{
+			StartsParagraph = true;
+			return this;
 		}
 
 		protected override BodyBuilder CreateBodyBuilder()
