@@ -9,19 +9,19 @@ namespace Gibberish.AST._1_Bare
 		[NotNull]
 		public static StatementBuilder Statement([NotNull] string content)
 		{
-			return new StatementBuilder(content, PossiblySpecified<int>.WithValue(0));
+			return SequenceOfRawLines(f => { }).Statement(content);
 		}
 
 		[NotNull]
 		public static RawBlockBuilder RawBlock([NotNull] string prelude)
 		{
-			return RawBlock(prelude, x => { });
+			return SequenceOfRawLines(f => { }).RawBlock(prelude);
 		}
 
 		[NotNull]
 		public static RawBlockBuilder RawBlock([NotNull] string prelude, [NotNull] Action<RawBlockBuilder.PreludeBuilder> preludeOptions)
 		{
-			return new RawBlockBuilder(prelude, preludeOptions, 0);
+			return SequenceOfRawLines(f => { }).RawBlock(prelude, preludeOptions);
 		}
 
 		[NotNull]
@@ -39,7 +39,7 @@ namespace Gibberish.AST._1_Bare
 		[NotNull]
 		public static CommentBuilder CommentDefinition(int commentId, string content)
 		{
-			return new CommentBuilder(commentId, content);
+			return SequenceOfRawLines(f => { }).CommentDefinition(commentId, content);
 		}
 
 		[NotNull]

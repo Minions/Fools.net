@@ -25,5 +25,25 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull] private readonly List<AstBuilder<LanguageConstruct>> _contents = new List<AstBuilder<LanguageConstruct>>();
+
+		public StatementBuilder Statement(string content)
+		{
+			return new StatementBuilder(content, PossiblySpecified<int>.WithValue(0));
+		}
+
+		public RawBlockBuilder RawBlock(string prelude, Action<RawBlockBuilder.PreludeBuilder> preludeOptions)
+		{
+			return new RawBlockBuilder(prelude, preludeOptions, 0);
+		}
+
+		public RawBlockBuilder RawBlock(string prelude)
+		{
+			return RawBlock(prelude, x => { });
+		}
+
+		public CommentBuilder CommentDefinition(int commentId, string content)
+		{
+			return new CommentBuilder(commentId, content);
+		}
 	}
 }
