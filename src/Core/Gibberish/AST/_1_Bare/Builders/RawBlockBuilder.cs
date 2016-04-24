@@ -54,7 +54,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		public override void BuildInto(List<LanguageConstruct> destination)
 		{
 			Prelude.BuildInto(destination);
-			foreach (var builder in Body) { builder.BuildInto(destination); }
+			_BuildBodyInto(destination);
 		}
 
 		protected override BodyBuilder CreateBodyBuilder()

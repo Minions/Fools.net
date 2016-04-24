@@ -106,6 +106,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We found a whole block that is indented too far, so we may even be incorrectly guessing about its contents. Based on the blocks, the block should start at indentation level {0} or lower (with the body indented one below that), but it started at indentation level {1}. We did find a properly-indented body. Please unindent the block and make sure you have the right body..
+        /// </summary>
+        internal static string IncorrectBlockIndentation {
+            get {
+                return ResourceManager.GetString("IncorrectBlockIndentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We found a nearly-valid comment definition, but it had the wrong whitespace between the ID and the content. Comment definitions must begin with `#[44]: `. Yours is like that, but instead of a single space after the colon you have `{0}`. Please fix it..
         /// </summary>
         internal static string IncorrectCommentDefinitionSeparator {

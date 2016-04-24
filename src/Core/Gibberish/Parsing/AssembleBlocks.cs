@@ -10,64 +10,11 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public List<LanguageConstruct> Transform([NotNull] List<LanguageConstruct> source)
 		{
-			return _CollectBodyAtLevel(new SourceData(source), 0);
+			var sourceData = new SourceData(source);
+			return _CollectBodyAtLevel(new BlockRecognizer(sourceData), 0, sourceData);
 		}
 
-		private static List<LanguageConstruct> _CollectBodyAtLevel(SourceData sourceData, int level)
-		{
-			var result = new List<LanguageConstruct>();
-			while (sourceData.HasMore)
-			{
-				var line = sourceData.Current;
-				if (line.GetType() == typeof (UnknownStatement))
-				{
-					var unknownStatement = (UnknownStatement) line;
-					if (unknownStatement.IndentationDepth.Value < level) { return result; }
-					if (unknownStatement.IndentationDepth.Value > level) { unknownStatement.Errors.Add(ParseError.IncorrectIndentation(level, unknownStatement.IndentationDepth.Value)); }
-					unknownStatement.StartsParagraph = PossiblySpecified<bool>.WithValue(sourceData.NextItemStartsParagraph);
-					sourceData.NextItemStartsParagraph = false;
-					result.Add(unknownStatement);
-					sourceData.Advance();
-				}
-				else if (line.GetType() == typeof (BlankLine))
-				{
-					sourceData.NextItemStartsParagraph = true;
-					sourceData.Advance();
-				}
-				else if (line.GetType() == typeof (CommentDefinition))
-				{
-					var commentDefinition = (CommentDefinition) line;
-					if (0 == level)
-					{
-						commentDefinition.StartsParagraph = PossiblySpecified<bool>.WithValue(!sourceData.HaveStartedCommentDefinitions);
-						result.Add(commentDefinition);
-						sourceData.Advance();
-						sourceData.HaveStartedCommentDefinitions = true;
-					}
-					else
-					{ return result; }
-				}
-				else if (line.GetType() == typeof (UnknownPrelude))
-				{
-					var prelude = (UnknownPrelude) line;
-					if (prelude.IndentationDepth.Value == level)
-					{
-						sourceData.Advance();
-						var startsParagraph = sourceData.NextItemStartsParagraph;
-						sourceData.NextItemStartsParagraph = false;
-						var bodyContents = _CollectBodyAtLevel(sourceData, level + 1);
-						result.Add(new UnknownBlock(startsParagraph, prelude, bodyContents, ParseError.NoErrors));
-					}
-					else
-					{ return result; }
-				}
-				else
-				{ return result; }
-			}
-			return result;
-		}
-
-		private class SourceData
+		public class SourceData
 		{
 			public SourceData([NotNull] List<LanguageConstruct> source)
 			{
@@ -77,16 +24,101 @@ namespace Gibberish.Parsing
 
 			[NotNull]
 			public LanguageConstruct Current => _source.Current;
-			public bool NextItemStartsParagraph;
-			public bool HaveStartedCommentDefinitions;
+			public bool NextItemStartsParagraph { get; private set; }
 			public bool HasMore;
 
-			public void Advance()
+			public void ContinueToNextLine(bool nextItemStartsParagraph)
 			{
+				NextItemStartsParagraph = nextItemStartsParagraph && !_haveStartedCommentDefinitions;
 				if (HasMore) { HasMore = _source.MoveNext(); }
 			}
 
+			public void HaveSeenAtLeastOneCommentDefinition()
+			{
+				NextItemStartsParagraph = !_haveStartedCommentDefinitions;
+				_haveStartedCommentDefinitions = true;
+			}
+
+			public PossiblySpecified<bool> ShouldStartParagraph => PossiblySpecified<bool>.WithValue(NextItemStartsParagraph);
+			private bool _haveStartedCommentDefinitions;
+
 			private List<LanguageConstruct>.Enumerator _source;
+		}
+
+		private static List<LanguageConstruct> _CollectBodyAtLevel(LanguageConstructVisitor worker, int level, SourceData sourceData)
+		{
+			var result = new List<LanguageConstruct>();
+			while (sourceData.HasMore)
+			{
+				var line = sourceData.Current;
+				if (line.Accept(worker, level, result)) { return result; }
+			}
+			return result;
+		}
+
+		private class BlockRecognizer : LanguageConstructVisitor
+		{
+			public BlockRecognizer([NotNull] SourceData sourceData)
+			{
+				_sourceData = sourceData;
+			}
+
+			public bool Visit(BlankLine line, int level, List<LanguageConstruct> result)
+			{
+				_sourceData.ContinueToNextLine(true);
+				return false;
+			}
+
+			public bool Visit(UnknownStatement statement, int level, List<LanguageConstruct> result)
+			{
+				if (statement.IndentationDepth.Value < level) { return true; }
+				if (statement.IndentationDepth.Value > level) { statement.Errors.Add(ParseError.IncorrectIndentation(level, statement.IndentationDepth.Value)); }
+				statement.StartsParagraph = _sourceData.ShouldStartParagraph;
+				result.Add(statement);
+				_sourceData.ContinueToNextLine(false);
+				return false;
+			}
+
+			public bool Visit(CommentDefinition commentDefinition, int level, List<LanguageConstruct> result)
+			{
+				if (0 != level) { return true; }
+				_sourceData.HaveSeenAtLeastOneCommentDefinition();
+				commentDefinition.StartsParagraph = _sourceData.ShouldStartParagraph;
+				result.Add(commentDefinition);
+				_sourceData.ContinueToNextLine(false);
+				return false;
+			}
+
+			public bool Visit(UnknownPrelude prelude, int level, List<LanguageConstruct> result)
+			{
+				if (prelude.IndentationDepth.Value < level) { return true; }
+
+				var startsParagraph = _sourceData.NextItemStartsParagraph;
+				_sourceData.ContinueToNextLine(false);
+				var bodyContents = _CollectBodyAtLevel(this, prelude.IndentationDepth.Value + 1, _sourceData);
+
+				var errors = ParseError.NoErrors;
+				if (prelude.IndentationDepth.Value > level)
+				{
+					if (bodyContents.Count > 0)
+					{
+						errors = new List<ParseError>
+						{
+							ParseError.IncorrectBlockIndentation(level, prelude.IndentationDepth.Value)
+						};
+					}
+				}
+
+				result.Add(new UnknownBlock(startsParagraph, prelude, bodyContents, errors));
+				return false;
+			}
+
+			public bool Visit(UnknownBlock block, int level, List<LanguageConstruct> result)
+			{
+				throw new UnfixableError($"a block somehow made into input data for {typeof (AssembleBlocks).Name}. Found value {block}.");
+			}
+
+			[NotNull] private readonly SourceData _sourceData;
 		}
 	}
 }

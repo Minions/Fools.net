@@ -68,16 +68,21 @@ namespace Gibberish.AST._1_Bare.Builders
 
 			protected abstract TBlockBuilder CreateBlockBuilder(string prelude, Action<TPreludeBuilder> preludeOptions);
 
-			[NotNull] protected readonly TBlockBuilder _self;
-
 			[NotNull]
 			protected TBuilder _AddToBody<TBuilder>([NotNull] TBuilder result) where TBuilder : AstBuilderSupportingErrors<TLang>
 			{
 				_self.Body.Add(result);
 				return result;
 			}
+
+			[NotNull] protected readonly TBlockBuilder _self;
 		}
 
 		protected abstract TBodyBuilder CreateBodyBuilder();
+
+		protected void _BuildBodyInto(List<TLang> destination)
+		{
+			foreach (var builder in Body) { builder.BuildInto(destination); }
+		}
 	}
 }

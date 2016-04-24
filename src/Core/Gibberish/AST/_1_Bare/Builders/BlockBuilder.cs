@@ -28,9 +28,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			[NotNull]
 			public StatementBuilder AddStatement([NotNull] string content)
 			{
-				var statement = new StatementBuilder(content, PossiblySpecified<int>.Unspecifed);
-				_self.Body.Add(statement);
-				return statement;
+				return _AddToBody(new StatementBuilder(content, PossiblySpecified<int>.Unspecifed));
 			}
 
 			[NotNull]
@@ -47,17 +45,17 @@ namespace Gibberish.AST._1_Bare.Builders
 
 		public override void BuildInto(List<LanguageConstruct> destination)
 		{
-			var bodyConstructs = new List<LanguageConstruct>();
 			var prelude = new List<LanguageConstruct>();
 			Prelude.BuildInto(prelude);
-			foreach (var builder in Body) { builder.BuildInto(bodyConstructs); }
+			var bodyConstructs = new List<LanguageConstruct>();
+			_BuildBodyInto(bodyConstructs);
 			destination.Add(
 				new UnknownBlock(
 					StartsParagraph,
 					prelude.Cast<UnknownPrelude>()
 						.Single(),
 					bodyConstructs,
-					ParseError.NoErrors));
+					Errors));
 		}
 
 		public BlockBuilder ThatStartsNewParagraph()

@@ -146,6 +146,29 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		}
 
 		[Test]
+		public void IndentingAPreludeBeyondCurrentLevelGivesAnError()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				new List<LanguageConstruct>
+				{
+					StatementIndented(0, ArbitraryContent),
+					PreludeIndented(1, ArbitraryContent),
+					StatementIndented(2, ArbitraryContent)
+				});
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Statement(ArbitraryContent);
+							f.Block(ArbitraryContent)
+								.WithBody(b => b.AddStatement(ArbitraryContent))
+								.WithError(ParseError.IncorrectBlockIndentation(0, 1));
+						}));
+		}
+
+		[Test]
 		public void BlankLinesShouldStartNewParagraphAndMaintainSameBlock()
 		{
 			var testSubject = new AssembleBlocks();
@@ -291,12 +314,12 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 
 		private static UnknownStatement StatementIndented(int indentationLevel, string content)
 		{
-			return new UnknownStatement(
-				PossiblySpecified<bool>.Unspecifed,
-				PossiblySpecified<int>.WithValue(indentationLevel),
-				content,
-				Enumerable.Empty<int>(),
-				ParseError.NoErrors);
+			return new UnknownStatement(PossiblySpecified<bool>.Unspecifed, PossiblySpecified<int>.WithValue(indentationLevel), content, Enumerable.Empty<int>(), ParseError.NoErrors);
+		}
+
+		private static UnknownPrelude PreludeIndented(int indentationLevel, string content)
+		{
+			return new UnknownPrelude(PossiblySpecified<int>.WithValue(indentationLevel), content, Enumerable.Empty<int>(), ParseError.NoErrors);
 		}
 
 		private const string ArbitraryName = "the.name";
