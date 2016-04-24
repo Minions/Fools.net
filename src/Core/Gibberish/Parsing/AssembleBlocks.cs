@@ -6,47 +6,56 @@ namespace Gibberish.Parsing
 {
 	public class AssembleBlocks
 	{
-		private static bool _nextItemStartsParagraph;
-		private static bool _haveStartedCommentDefinitions;
-
 		public List<LanguageConstruct> Transform(List<LanguageConstruct> source)
 		{
-			return _CollectBodyAtLevel(source, 0);
+			return _CollectBodyAtLevel(new _SourceData(source), 0);
 		}
 
-		private static List<LanguageConstruct> _CollectBodyAtLevel(List<LanguageConstruct> source, int level)
+		public class _SourceData
+		{
+			public _SourceData(List<LanguageConstruct> source)
+			{
+				Source = source;
+			}
+
+			public List<LanguageConstruct> Source { get; }
+			public bool NextItemStartsParagraph;
+			public bool HaveStartedCommentDefinitions;
+		}
+
+		private static List<LanguageConstruct> _CollectBodyAtLevel(_SourceData sourceData, int level)
 		{
 			var result = new List<LanguageConstruct>();
-			while (source.Count != 0)
+			while (sourceData.Source.Count != 0)
 			{
-				var line = source[0];
+				var line = sourceData.Source[0];
 				if (line.GetType() == typeof (UnknownStatement))
 				{
 					var unknownStatement = (UnknownStatement) line;
 					if (unknownStatement.IndentationDepth.Value == level)
 					{
-						unknownStatement.StartsParagraph = PossiblySpecified<bool>.WithValue(_nextItemStartsParagraph);
-						_nextItemStartsParagraph = false;
+						unknownStatement.StartsParagraph = PossiblySpecified<bool>.WithValue(sourceData.NextItemStartsParagraph);
+						sourceData.NextItemStartsParagraph = false;
 						result.Add(unknownStatement);
-						source.RemoveAt(0);
+						sourceData.Source.RemoveAt(0);
 					}
 					else
 					{ return result; }
 				}
 				else if (line.GetType() == typeof (BlankLine))
 				{
-					_nextItemStartsParagraph = true;
-					source.RemoveAt(0);
+					sourceData.NextItemStartsParagraph = true;
+					sourceData.Source.RemoveAt(0);
 				}
 				else if (line.GetType() == typeof (CommentDefinition))
 				{
 					var commentDefinition = (CommentDefinition) line;
 					if (0 == level)
 					{
-						commentDefinition.StartsParagraph = PossiblySpecified<bool>.WithValue(!_haveStartedCommentDefinitions);
+						commentDefinition.StartsParagraph = PossiblySpecified<bool>.WithValue(!sourceData.HaveStartedCommentDefinitions);
 						result.Add(commentDefinition);
-						source.RemoveAt(0);
-						_haveStartedCommentDefinitions = true;
+						sourceData.Source.RemoveAt(0);
+						sourceData.HaveStartedCommentDefinitions = true;
 					}
 					else
 					{ return result; }
@@ -56,10 +65,10 @@ namespace Gibberish.Parsing
 					var prelude = (UnknownPrelude) line;
 					if (prelude.IndentationDepth.Value == level)
 					{
-						source.RemoveAt(0);
-						var startsParagraph = _nextItemStartsParagraph;
-						_nextItemStartsParagraph = false;
-						var bodyContents = _CollectBodyAtLevel(source, level + 1);
+						sourceData.Source.RemoveAt(0);
+						var startsParagraph = sourceData.NextItemStartsParagraph;
+						sourceData.NextItemStartsParagraph = false;
+						var bodyContents = _CollectBodyAtLevel(sourceData, level + 1);
 						result.Add(new UnknownBlock(startsParagraph, prelude, bodyContents, ParseError.NoErrors));
 					}
 					else

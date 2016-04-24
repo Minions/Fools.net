@@ -270,7 +270,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 
 		[NotNull, SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private City _city;
 		[NotNull, SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private District _arbitraryDistrict;
-		private static readonly string ArbitraryComment = "comment def";
+		private const string ArbitraryComment = "comment def";
 
 		[SetUp]
 		public void Setup()
