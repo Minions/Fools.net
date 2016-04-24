@@ -11,7 +11,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 		public PossiblySpecified<int> IndentationDepth { get; }
 
-		internal override void Build(List<LanguageConstruct> destination)
+		public override void BuildInto(List<LanguageConstruct> destination)
 		{
 			destination.Add(new BlankLine(IndentationDepth, Errors));
 		}

@@ -26,7 +26,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			return this;
 		}
 
-		internal override void Build(List<LanguageConstruct> destination)
+		public override void BuildInto(List<LanguageConstruct> destination)
 		{
 			destination.Add(new UnknownStatement(IndentationDepth, Content, Comments, Errors));
 		}

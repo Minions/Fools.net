@@ -73,6 +73,7 @@
     <Compile Include="AST\_1_Bare\Builders\RawBlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentBuilder.cs" />
     <Compile Include="AST\_1_Bare\CommentDefinition.cs" />
+    <Compile Include="AST\_1_Bare\Builders\FileParseAsRawStatementSequenceBuilder.cs" />
     <Compile Include="AST\_1_Bare\LanguageConstruct.cs" />
     <Compile Include="AST\_1_Bare\Builders\StatementBuilder.cs" />
     <Compile Include="AST\_1_Bare\PossiblySpecified.cs" />

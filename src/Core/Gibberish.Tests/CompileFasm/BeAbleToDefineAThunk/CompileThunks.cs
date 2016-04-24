@@ -140,29 +140,27 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 							}));
 		}
 
-		[Test]
-		public void FilesEndingInNestedBlockShouldParseCleanly()
-		{
-			var testSubject = new AssembleBlocks();
-			var result = testSubject.Transform(
-				BasicAst.RawBlock("outer block")
-					.WithBody(
-						b =>
-						{
-							b.AddBlock("nested 1")
-								.WithBody(inner => inner.AddStatement("nested 1.1"));
-						})
-					.Build());
-			result.Should()
-				.BeRecognizedAs(
-					BasicAst.Block("outer block")
-						.WithBody(
-							b =>
-							{
-								b.AddBlock("nested 1")
-									.WithBody(inner => inner.AddStatement("nested 1.1"));
-							}));
-		}
+		//[Test]
+		//public void CommentDefinitionsShouldTerminatePreceedingBlocksAndAppearAtRootLevel()
+		//{
+		//	var testSubject = new AssembleBlocks();
+		//	var result = testSubject.Transform(
+		//		BasicAst.RawFile(
+		//			f =>
+		//			{
+		//				f.AddBlock("outer")
+		//					.WithBody(b => b.AddStatement("outer 1"));
+		//			})
+		//			.Build());
+		//	result.Should()
+		//		.BeRecognizedAs(
+		//			BasicAst.File(
+		//				f =>
+		//				{
+		//					f.AddBlock("outer")
+		//						.WithBody(b => b.AddStatement("outer 1"));
+		//				}));
+		//}
 
 		[Test]
 		public void CompilingATrivialDefineThunkNodeShouldCreateThunkInNameTable()

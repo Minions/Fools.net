@@ -11,7 +11,7 @@ namespace Gibberish.AST
 		public List<TConstruct> Build()
 		{
 			var statements = new List<TConstruct>();
-			Build(statements);
+			BuildInto(statements);
 			return statements;
 		}
 
@@ -30,7 +30,7 @@ namespace Gibberish.AST
 			return this;
 		}
 
-		internal abstract void Build([NotNull] List<TConstruct> destination);
+		public abstract void BuildInto([NotNull] List<TConstruct> destination);
 
 		private static readonly JsonSerializerSettings NoWhitespace = new JsonSerializerSettings
 		{

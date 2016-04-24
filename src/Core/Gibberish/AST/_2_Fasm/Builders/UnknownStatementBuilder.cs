@@ -24,7 +24,7 @@ namespace Gibberish.AST._2_Fasm.Builders
 			return this;
 		}
 
-		internal override void Build(List<FasmOrLanguageConstruct> destination)
+		public override void BuildInto(List<FasmOrLanguageConstruct> destination)
 		{
 			destination.Add(new UnknownStatement(PossiblySpecified<int>.WithValue(_indentationDepth), UnparsedContent, Comments, Errors));
 		}

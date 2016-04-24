@@ -40,10 +40,10 @@ namespace Gibberish.AST._2_Fasm.Builders
 		[NotNull]
 		public List<AstBuilder<FasmOrLanguageConstruct>> Body { get; } = new List<AstBuilder<FasmOrLanguageConstruct>>();
 
-		internal override void Build(List<FasmOrLanguageConstruct> destination)
+		public override void BuildInto(List<FasmOrLanguageConstruct> destination)
 		{
 			var body = new List<FasmOrLanguageConstruct>();
-			foreach (var builder in Body) { builder.Build(body); }
+			foreach (var builder in Body) { builder.BuildInto(body); }
 			destination.Add(new NamedThunk(Name, body));
 		}
 	}

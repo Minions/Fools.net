@@ -15,7 +15,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		[NotNull]
 		public string Content { get; }
 
-		internal override void Build(List<LanguageConstruct> destination)
+		public override void BuildInto(List<LanguageConstruct> destination)
 		{
 			destination.Add(new CommentDefinition(CommentId, Content, Errors));
 		}

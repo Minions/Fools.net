@@ -23,7 +23,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 			public int IndentationDepth { get; }
 
-			internal override void Build(List<LanguageConstruct> destination)
+			public override void BuildInto(List<LanguageConstruct> destination)
 			{
 				destination.Add(new UnknownPrelude(PossiblySpecified<int>.WithValue(IndentationDepth), Content, Comments, Errors));
 			}
@@ -51,10 +51,10 @@ namespace Gibberish.AST._1_Bare.Builders
 			}
 		}
 
-		internal override void Build(List<LanguageConstruct> destination)
+		public override void BuildInto(List<LanguageConstruct> destination)
 		{
-			Prelude.Build(destination);
-			foreach (var builder in Body) { builder.Build(destination); }
+			Prelude.BuildInto(destination);
+			foreach (var builder in Body) { builder.BuildInto(destination); }
 		}
 
 		protected override BodyBuilder CreateBodyBuilder()

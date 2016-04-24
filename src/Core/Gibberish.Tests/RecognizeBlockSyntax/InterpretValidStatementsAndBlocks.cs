@@ -25,37 +25,41 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"",
-				BasicAst.BlankLine(0)
-					.WithError(ParseError.MissingNewlineAtEndOfFile())
+				BasicAst.SequenceOfRawLines(
+					f => f.BlankLine(0)
+						.WithError(ParseError.MissingNewlineAtEndOfFile()))
 			},
 			new object[]
 			{
 				" ",
-				BasicAst.BlankLine(0)
-					.WithError(ParseError.IllegalWhitespaceOnBlankLine(" "))
-					.WithError(ParseError.MissingNewlineAtEndOfFile())
+				BasicAst.SequenceOfRawLines(
+					f => f.BlankLine(0)
+						.WithError(ParseError.IllegalWhitespaceOnBlankLine(" "))
+						.WithError(ParseError.MissingNewlineAtEndOfFile()))
 			},
 			new object[]
 			{
 				"\t",
-				BasicAst.BlankLine(1)
-					.WithError(ParseError.MissingNewlineAtEndOfFile())
+				BasicAst.SequenceOfRawLines(
+					f => f.BlankLine(1)
+						.WithError(ParseError.MissingNewlineAtEndOfFile()))
 			},
 			new object[]
 			{
 				"\r\n",
-				BasicAst.BlankLine(0)
+				BasicAst.SequenceOfRawLines(f => f.BlankLine(0))
 			},
 			new object[]
 			{
 				"\t\t\r\n",
-				BasicAst.BlankLine(2)
+				BasicAst.SequenceOfRawLines(f => f.BlankLine(2))
 			},
 			new object[]
 			{
 				"\t \t\r\n",
-				BasicAst.BlankLine(1)
-					.WithError(ParseError.IllegalWhitespaceOnBlankLine(" \t"))
+				BasicAst.SequenceOfRawLines(
+					f => f.BlankLine(1)
+						.WithError(ParseError.IllegalWhitespaceOnBlankLine(" \t")))
 			},
 			new object[]
 			{
@@ -205,7 +209,8 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"#[22]: comment content",
-				BasicAst.CommentDefinition(22, "comment content").WithError(ParseError.MissingNewlineAtEndOfFile())
+				BasicAst.CommentDefinition(22, "comment content")
+					.WithError(ParseError.MissingNewlineAtEndOfFile())
 			},
 			new object[]
 			{

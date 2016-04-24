@@ -24,12 +24,12 @@ define.thunk other.name:
 			var result = subject.GetMatch(input, subject.WholeFile);
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.BlankLine(0),
+					BasicAst.SequenceOfRawLines(f => f.BlankLine(0)),
 					BasicAst.Statement("using language fasm"),
-					BasicAst.BlankLine(0),
+					BasicAst.SequenceOfRawLines(f => f.BlankLine(0)),
 					BasicAst.RawBlock("define.thunk some.name")
 						.WithBody(b => b.AddStatement("pass")),
-					BasicAst.BlankLine(0),
+					BasicAst.SequenceOfRawLines(f => f.BlankLine(0)),
 					BasicAst.RawBlock("define.thunk other.name")
 						.WithBody(b => b.AddStatement("pass")));
 		}

@@ -7,12 +7,6 @@ namespace Gibberish.AST._1_Bare
 	public static class BasicAst
 	{
 		[NotNull]
-		public static BlankLineBuilder BlankLine(int indentationDepth)
-		{
-			return new BlankLineBuilder(PossiblySpecified<int>.WithValue(indentationDepth));
-		}
-
-		[NotNull]
 		public static StatementBuilder Statement([NotNull] string content)
 		{
 			return new StatementBuilder(content, PossiblySpecified<int>.WithValue(0));
@@ -42,9 +36,16 @@ namespace Gibberish.AST._1_Bare
 			return new BlockBuilder(prelude, preludeOptions);
 		}
 
+		[NotNull]
 		public static CommentBuilder CommentDefinition(int commentId, string content)
 		{
 			return new CommentBuilder(commentId, content);
+		}
+
+		[NotNull]
+		public static FileParseAsRawStatementSequenceBuilder SequenceOfRawLines(Action<FileParseAsRawStatementSequenceBuilder> contents)
+		{
+			return new FileParseAsRawStatementSequenceBuilder(contents);
 		}
 	}
 }

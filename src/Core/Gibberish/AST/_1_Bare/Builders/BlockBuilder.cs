@@ -13,7 +13,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		{
 			public PreludeBuilder([NotNull] string content) : base(content) {}
 
-			internal override void Build(List<LanguageConstruct> destination)
+			public override void BuildInto(List<LanguageConstruct> destination)
 			{
 				destination.Add(new UnknownPrelude(PossiblySpecified<int>.Unspecifed, Content, Comments, Errors));
 			}
@@ -43,12 +43,12 @@ namespace Gibberish.AST._1_Bare.Builders
 			}
 		}
 
-		internal override void Build(List<LanguageConstruct> destination)
+		public override void BuildInto(List<LanguageConstruct> destination)
 		{
 			var bodyConstructs = new List<LanguageConstruct>();
 			var prelude = new List<LanguageConstruct>();
-			Prelude.Build(prelude);
-			foreach (var builder in Body) { builder.Build(bodyConstructs); }
+			Prelude.BuildInto(prelude);
+			foreach (var builder in Body) { builder.BuildInto(bodyConstructs); }
 			destination.Add(
 				new UnknownBlock(
 					prelude.Cast<UnknownPrelude>()
