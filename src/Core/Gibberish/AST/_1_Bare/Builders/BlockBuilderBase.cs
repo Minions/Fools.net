@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public abstract class BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang> : AstBuilder<TLang>
+	public abstract class BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang> : AstBuilderSupportingErrors<TLang>
 		where TBlockBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang>
 		where TPreludeBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang>.PreludeBuilderBase
 		where TBodyBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang>.BodyBuilderBase
@@ -18,7 +18,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		[NotNull]
 		public TPreludeBuilder Prelude { get; }
 		[NotNull]
-		public List<AstBuilder<TLang>> Body { get; } = new List<AstBuilder<TLang>>();
+		public List<AstBuilderSupportingErrors<TLang>> Body { get; } = new List<AstBuilderSupportingErrors<TLang>>();
 
 		[NotNull]
 		public TBlockBuilder WithBody([NotNull] Action<TBodyBuilder> bodyOptions)
@@ -27,7 +27,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			return (TBlockBuilder) this;
 		}
 
-		public abstract class PreludeBuilderBase : AstBuilder<TLang>
+		public abstract class PreludeBuilderBase : AstBuilderSupportingErrors<TLang>
 		{
 			protected PreludeBuilderBase(string content)
 			{
@@ -71,7 +71,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			[NotNull] protected readonly TBlockBuilder _self;
 
 			[NotNull]
-			protected TBuilder _AddToBody<TBuilder>([NotNull] TBuilder result) where TBuilder : AstBuilder<TLang>
+			protected TBuilder _AddToBody<TBuilder>([NotNull] TBuilder result) where TBuilder : AstBuilderSupportingErrors<TLang>
 			{
 				_self.Body.Add(result);
 				return result;

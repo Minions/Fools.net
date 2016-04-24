@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._2_Fasm.Builders
 {
-	public class UnknownStatementBuilder : AstBuilder<FasmOrLanguageConstruct>
+	public class UnknownStatementBuilder : AstBuilderSupportingErrors<FasmOrLanguageConstruct>
 	{
 		public UnknownStatementBuilder(string unparsedContent, int indentationDepth)
 		{

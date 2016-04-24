@@ -32,7 +32,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			}
 
 			[NotNull]
-			public AstBuilder<LanguageConstruct> AddBlankLine()
+			public AstBuilderSupportingErrors<LanguageConstruct> AddBlankLine()
 			{
 				return _AddToBody(new BlankLineBuilder(PossiblySpecified<int>.Unspecifed));
 			}

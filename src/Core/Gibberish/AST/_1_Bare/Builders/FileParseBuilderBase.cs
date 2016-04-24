@@ -4,19 +4,19 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public abstract class FileParseBuilderBase : AstBuilder<LanguageConstruct>
+	public abstract class FileParseBuilderBase<TBlockBuilder, TPreludeBuilder> : AstBuilder<LanguageConstruct>
 	{
 		[NotNull]
-		public abstract BlankLineBuilder BlankLine(int indentationDepth);
+		public abstract BlankLineBuilder BlankLine();
 
 		[NotNull]
 		public abstract StatementBuilder Statement(string content);
 
 		[NotNull]
-		public abstract RawBlockBuilder Block(string prelude, Action<RawBlockBuilder.PreludeBuilder> preludeOptions);
+		public abstract TBlockBuilder Block(string prelude, Action<TPreludeBuilder> preludeOptions);
 
 		[NotNull]
-		public abstract RawBlockBuilder Block(string prelude);
+		public abstract TBlockBuilder Block(string prelude);
 
 		[NotNull]
 		public abstract CommentBuilder CommentDefinition(int commentId, string content);
@@ -27,12 +27,12 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull]
-		protected TBuilder _Remember<TBuilder>([NotNull] TBuilder line) where TBuilder : AstBuilder<LanguageConstruct>
+		protected TBuilder _Remember<TBuilder>([NotNull] TBuilder line) where TBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 		{
 			_contents.Add(line);
 			return line;
 		}
 
-		[NotNull] private readonly List<AstBuilder<LanguageConstruct>> _contents = new List<AstBuilder<LanguageConstruct>>();
+		[NotNull] private readonly List<AstBuilderSupportingErrors<LanguageConstruct>> _contents = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
 	}
 }

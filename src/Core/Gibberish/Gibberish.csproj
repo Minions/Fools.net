@@ -56,6 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\AstBuilder.cs" />
     <Compile Include="AST\Declaration.cs" />
     <Compile Include="AST\DefineThunkNode.cs" />
     <Compile Include="AST\FasmAstOld.cs" />
@@ -64,12 +65,13 @@
     <Compile Include="AST\Block.cs" />
     <Compile Include="AST\Namespace.cs" />
     <Compile Include="AST\SpecificationSection.cs" />
-    <Compile Include="AST\AstBuilder.cs" />
+    <Compile Include="AST\AstBuilderSupportingErrors.cs" />
     <Compile Include="AST\_1_Bare\BasicAst.cs" />
     <Compile Include="AST\_1_Bare\BlankLine.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlankLineBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlockBuilderBase.cs" />
+    <Compile Include="AST\_1_Bare\Builders\FileParseAsForestOfBlocksBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\FileParseBuilderBase.cs" />
     <Compile Include="AST\_1_Bare\Builders\RawBlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentBuilder.cs" />

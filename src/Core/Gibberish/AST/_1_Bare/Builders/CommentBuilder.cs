@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class CommentBuilder : AstBuilder<LanguageConstruct>
+	public class CommentBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 	{
 		public CommentBuilder(int commentId, [NotNull] string content)
 		{

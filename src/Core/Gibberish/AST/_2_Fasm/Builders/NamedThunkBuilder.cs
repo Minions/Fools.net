@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._2_Fasm.Builders
 {
-	public class NamedThunkBuilder : AstBuilder<FasmOrLanguageConstruct>
+	public class NamedThunkBuilder : AstBuilderSupportingErrors<FasmOrLanguageConstruct>
 	{
 		public NamedThunkBuilder([NotNull] string name)
 		{
@@ -38,7 +38,7 @@ namespace Gibberish.AST._2_Fasm.Builders
 		}
 
 		[NotNull]
-		public List<AstBuilder<FasmOrLanguageConstruct>> Body { get; } = new List<AstBuilder<FasmOrLanguageConstruct>>();
+		public List<AstBuilderSupportingErrors<FasmOrLanguageConstruct>> Body { get; } = new List<AstBuilderSupportingErrors<FasmOrLanguageConstruct>>();
 
 		public override void BuildInto(List<FasmOrLanguageConstruct> destination)
 		{

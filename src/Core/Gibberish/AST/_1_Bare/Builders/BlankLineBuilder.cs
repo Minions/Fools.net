@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class BlankLineBuilder : AstBuilder<LanguageConstruct>
+	public class BlankLineBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 	{
 		public BlankLineBuilder(PossiblySpecified<int> indentationDepth)
 		{

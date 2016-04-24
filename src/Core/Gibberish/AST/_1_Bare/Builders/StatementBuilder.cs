@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class StatementBuilder : AstBuilder<LanguageConstruct>
+	public class StatementBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 	{
 		public StatementBuilder([NotNull] string content, PossiblySpecified<int> indentationDepth)
 		{

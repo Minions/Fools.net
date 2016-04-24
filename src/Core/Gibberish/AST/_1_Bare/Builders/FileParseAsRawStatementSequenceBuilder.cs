@@ -2,14 +2,19 @@ using System;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class FileParseAsRawStatementSequenceBuilder : FileParseBuilderBase
+	public class FileParseAsRawStatementSequenceBuilder : FileParseBuilderBase<RawBlockBuilder, RawBlockBuilder.PreludeBuilder>
 	{
 		public FileParseAsRawStatementSequenceBuilder(Action<FileParseAsRawStatementSequenceBuilder> content)
 		{
 			content(this);
 		}
 
-		public override BlankLineBuilder BlankLine(int indentationDepth)
+		public override BlankLineBuilder BlankLine()
+		{
+			return _Remember(new BlankLineBuilder(PossiblySpecified<int>.Unspecifed));
+		}
+
+		public BlankLineBuilder BlankLine(int indentationDepth)
 		{
 			return _Remember(new BlankLineBuilder(PossiblySpecified<int>.WithValue(indentationDepth)));
 		}
