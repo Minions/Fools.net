@@ -164,7 +164,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 							f.Statement(ArbitraryContent);
 							f.Block(ArbitraryContent)
 								.WithBody(b => b.AddStatement(ArbitraryContent))
-								.WithError(ParseError.IncorrectBlockIndentation(0, 1));
+								.WithError(ParseError.WholeBlockIsIndentedTooFar(0, 1));
 						}));
 		}
 
@@ -188,6 +188,30 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 							f.Block(ArbitraryContent)
 								.WithBody(b => b.AddStatement(ArbitraryContent))
 								.WithError(ParseError.IncorrectIndentation(0, 3));
+						}));
+		}
+
+		[Test]
+		public void IndentingThePreludeLineTooFarWithNoBlockBodyGivesCorrectErrors()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				new List<LanguageConstruct>
+				{
+					StatementIndented(0, ArbitraryContent),
+					PreludeIndented(3, ArbitraryContent),
+					StatementIndented(0, ArbitraryContent)
+				});
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Statement(ArbitraryContent);
+							f.Block(ArbitraryContent)
+								.WithError(ParseError.IncorrectIndentation(0, 3))
+								.WithError(ParseError.MissingBody());
+							f.Statement(ArbitraryContent);
 						}));
 		}
 

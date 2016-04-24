@@ -80,7 +80,7 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.IncorrectIndentation, expectedIndentation, actualIndentation);
 		}
 
-		public static ParseError IncorrectBlockIndentation(int expectedIndentation, int actualIndentation)
+		public static ParseError WholeBlockIsIndentedTooFar(int expectedIndentation, int actualIndentation)
 		{
 			return new ParseError(UiStrings.IncorrectBlockIndentation, expectedIndentation, actualIndentation);
 		}

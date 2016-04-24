@@ -97,35 +97,18 @@ namespace Gibberish.Parsing
 				_sourceData.ContinueToNextLine(false);
 				var bodyContents = _CollectBodyAtLevel(this, prelude.IndentationDepth.Value + 1, _sourceData);
 
-				var errors = ParseError.NoErrors;
+				var errors = new List<ParseError>();
 				if (prelude.IndentationDepth.Value > level)
 				{
-					if (bodyContents.Count == 0)
-					{
-						bodyContents = _CollectBodyAtLevel(this, level + 1, _sourceData);
-						errors = new[]
-						{
-							ParseError.IncorrectIndentation(level, prelude.IndentationDepth.Value)
-						};
-					}
+					if (bodyContents.Count != 0) { errors.Add(ParseError.WholeBlockIsIndentedTooFar(level, prelude.IndentationDepth.Value)); }
 					else
 					{
-						errors = new[]
-						{
-							ParseError.IncorrectBlockIndentation(level, prelude.IndentationDepth.Value)
-						};
+						errors.Add(ParseError.IncorrectIndentation(level, prelude.IndentationDepth.Value));
+						bodyContents = _CollectBodyAtLevel(this, level + 1, _sourceData);
+						if (bodyContents.Count == 0) { errors.Add(ParseError.MissingBody()); }
 					}
 				}
-				else
-				{
-					if (bodyContents.Count == 0)
-					{
-						errors = new[]
-						{
-							ParseError.MissingBody()
-						};
-					}
-				}
+				else if (bodyContents.Count == 0) { errors.Add(ParseError.MissingBody()); }
 
 				result.Add(new UnknownBlock(startsParagraph, prelude, bodyContents, errors));
 				return false;
