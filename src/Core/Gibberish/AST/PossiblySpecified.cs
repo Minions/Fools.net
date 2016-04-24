@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace Gibberish.AST._1_Bare
+namespace Gibberish.AST
 {
 	public struct PossiblySpecified<T> : IEquatable<PossiblySpecified<T>> where T : struct
 	{

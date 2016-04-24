@@ -79,7 +79,7 @@
     <Compile Include="AST\_1_Bare\Builders\FileParseAsRawStatementSequenceBuilder.cs" />
     <Compile Include="AST\_1_Bare\LanguageConstruct.cs" />
     <Compile Include="AST\_1_Bare\Builders\StatementBuilder.cs" />
-    <Compile Include="AST\_1_Bare\PossiblySpecified.cs" />
+    <Compile Include="AST\PossiblySpecified.cs" />
     <Compile Include="AST\_1_Bare\UnknownBlock.cs" />
     <Compile Include="AST\_1_Bare\FasmOrLanguageConstruct.cs" />
     <Compile Include="AST\_2_Fasm\Builders\UnknownStatementBuilder.cs" />
