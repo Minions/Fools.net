@@ -100,7 +100,15 @@ namespace Gibberish.Parsing
 				var errors = ParseError.NoErrors;
 				if (prelude.IndentationDepth.Value > level)
 				{
-					if (bodyContents.Count > 0)
+					if (bodyContents.Count == 0)
+					{
+						bodyContents = _CollectBodyAtLevel(this, level + 1, _sourceData);
+						errors = new[]
+						{
+							ParseError.IncorrectIndentation(level, prelude.IndentationDepth.Value)
+						};
+					}
+					else
 					{
 						errors = new[]
 						{

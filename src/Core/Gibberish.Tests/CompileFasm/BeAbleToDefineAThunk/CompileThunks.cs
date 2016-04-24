@@ -169,6 +169,29 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		}
 
 		[Test]
+		public void IndentingJustThePreludeLineTooFarGivesSpecialError()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				new List<LanguageConstruct>
+				{
+					StatementIndented(0, ArbitraryContent),
+					PreludeIndented(3, ArbitraryContent),
+					StatementIndented(1, ArbitraryContent)
+				});
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Statement(ArbitraryContent);
+							f.Block(ArbitraryContent)
+								.WithBody(b => b.AddStatement(ArbitraryContent))
+								.WithError(ParseError.IncorrectIndentation(0, 3));
+						}));
+		}
+
+		[Test]
 		public void PreludeFollowedByNonIndentedStatementGivesError()
 		{
 			var testSubject = new AssembleBlocks();
@@ -186,6 +209,28 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 							f.Block(ArbitraryContent)
 								.WithError(ParseError.MissingBody());
 							f.Statement(ArbitraryContent);
+						}));
+		}
+
+		[Test]
+		public void PreludeFollowedCommentDefinitionGivesError()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				new List<LanguageConstruct>
+				{
+					PreludeIndented(0, ArbitraryContent),
+					Comment(1, ArbitraryContent)
+				});
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Block(ArbitraryContent)
+								.WithError(ParseError.MissingBody());
+							f.CommentDefinition(1, ArbitraryContent)
+								.ThatStartsParagraph();
 						}));
 		}
 
@@ -331,6 +376,11 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					{
 						name = ArbitraryName
 					});
+		}
+
+		private static CommentDefinition Comment(int commentId, string content)
+		{
+			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentId, content, ParseError.NoErrors);
 		}
 
 		private static UnknownStatement StatementIndented(int indentationLevel, string content)
