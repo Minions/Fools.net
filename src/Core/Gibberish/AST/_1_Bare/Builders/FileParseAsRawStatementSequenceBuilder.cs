@@ -22,14 +22,14 @@ namespace Gibberish.AST._1_Bare.Builders
 			return _Remember(new StatementBuilder(content, PossiblySpecified<int>.WithValue(0)));
 		}
 
-		public RawBlockBuilder RawBlock(string prelude, Action<RawBlockBuilder.PreludeBuilder> preludeOptions)
+		public RawBlockBuilder Block(string prelude, Action<RawBlockBuilder.PreludeBuilder> preludeOptions)
 		{
 			return _Remember(new RawBlockBuilder(prelude, preludeOptions, 0));
 		}
 
-		public RawBlockBuilder RawBlock(string prelude)
+		public RawBlockBuilder Block(string prelude)
 		{
-			return RawBlock(prelude, x => { });
+			return Block(prelude, x => { });
 		}
 
 		public CommentBuilder CommentDefinition(int commentId, string content)

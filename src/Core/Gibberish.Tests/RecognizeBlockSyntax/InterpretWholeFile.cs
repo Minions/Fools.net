@@ -30,10 +30,10 @@ define.thunk other.name:
 							f.BlankLine(0);
 							f.Statement("using language fasm");
 							f.BlankLine(0);
-							f.RawBlock("define.thunk some.name")
+							f.Block("define.thunk some.name")
 								.WithBody(b => b.AddStatement("pass"));
 							f.BlankLine(0);
-							f.RawBlock("define.thunk other.name")
+							f.Block("define.thunk other.name")
 								.WithBody(b => b.AddStatement("pass"));
 						}));
 		}

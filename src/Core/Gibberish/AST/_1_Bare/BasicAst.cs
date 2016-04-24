@@ -7,12 +7,6 @@ namespace Gibberish.AST._1_Bare
 	public static class BasicAst
 	{
 		[NotNull]
-		public static RawBlockBuilder RawBlock([NotNull] string prelude, [NotNull] Action<RawBlockBuilder.PreludeBuilder> preludeOptions)
-		{
-			return SequenceOfRawLines(f => { }).RawBlock(prelude, preludeOptions);
-		}
-
-		[NotNull]
 		public static BlockBuilder Block([NotNull] string prelude)
 		{
 			return Block(prelude, x => { });

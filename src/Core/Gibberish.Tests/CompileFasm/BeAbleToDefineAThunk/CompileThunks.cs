@@ -18,7 +18,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
 				BasicAst.SequenceOfRawLines(
-					f => f.RawBlock("outer block")
+					f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
@@ -43,7 +43,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
 				BasicAst.SequenceOfRawLines(
-					f => f.RawBlock("outer block")
+					f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
@@ -68,7 +68,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
 				BasicAst.SequenceOfRawLines(
-					f => f.RawBlock("outer block")
+					f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
@@ -95,7 +95,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
 				BasicAst.SequenceOfRawLines(
-					f => f.RawBlock("outer block")
+					f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
@@ -124,7 +124,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
 				BasicAst.SequenceOfRawLines(
-					f => f.RawBlock("outer block")
+					f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{

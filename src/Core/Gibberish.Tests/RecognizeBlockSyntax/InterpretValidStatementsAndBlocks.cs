@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
-using Gibberish.AST._1_Bare.Builders;
 using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
@@ -70,26 +69,30 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"arbitrary statement",
-				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
-					.WithError(ParseError.MissingNewlineAtEndOfFile()))
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary statement")
+						.WithError(ParseError.MissingNewlineAtEndOfFile()))
 			},
 			new object[]
 			{
 				"arbitrary statement \r\n",
-				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
-					.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary statement")
+						.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
 			},
 			new object[]
 			{
 				"arbitrary statement\t\r\n",
-				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
-					.WithError(ParseError.IllegalWhitespaceAtEnd("\t")))
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary statement")
+						.WithError(ParseError.IllegalWhitespaceAtEnd("\t")))
 			},
 			new object[]
 			{
 				"arbitrary\tstatement\r\n",
-				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary\tstatement")
-					.WithError(ParseError.IllegalTabInLine()))
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary\tstatement")
+						.WithError(ParseError.IllegalTabInLine()))
 			},
 			new object[]
 			{
@@ -108,14 +111,16 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"arbitrary statement\t\t#[2],[4]\r\n",
-				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
-					.WithError(ParseError.IncorrectCommentFormat("[2],[4]")))
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary statement")
+						.WithError(ParseError.IncorrectCommentFormat("[2],[4]")))
 			},
 			new object[]
 			{
 				"arbitrary statement\t\t#[2a4]\r\n",
-				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
-					.WithError(ParseError.IncorrectCommentFormat("[2a4]")))
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary statement")
+						.WithError(ParseError.IncorrectCommentFormat("[2a4]")))
 			},
 			new object[]
 			{
@@ -128,82 +133,92 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"arbitrary block:\r\n\tpass\r\n",
-				BasicAst.SequenceOfRawLines(f => f.RawBlock("arbitrary block")
-					.WithBody(b => b.AddStatement("pass")))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block("arbitrary block")
+						.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
 				"arbitrary block:",
-				BasicAst.RawBlock("arbitrary block", p => p.WithError(ParseError.MissingNewlineAtEndOfFile()))
+				BasicAst.SequenceOfRawLines(f => f.Block("arbitrary block", p => p.WithError(ParseError.MissingNewlineAtEndOfFile())))
 			},
 			new object[]
 			{
 				"arbitrary block:\r\n\tfirst\r\n\tsecond block:\r\n\t\tpass\r\n\tlast\r\n",
-				BasicAst.SequenceOfRawLines(f => f.RawBlock("arbitrary block")
-					.WithBody(
-						b =>
-						{
-							b.AddStatement("first");
-							b.AddBlock("second block")
-								.WithBody(inner => inner.AddStatement("pass"));
-							b.AddStatement("last");
-						}))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block("arbitrary block")
+						.WithBody(
+							b =>
+							{
+								b.AddStatement("first");
+								b.AddBlock("second block")
+									.WithBody(inner => inner.AddStatement("pass"));
+								b.AddStatement("last");
+							}))
 			},
 			new object[]
 			{
 				"arbitrary block:\t\t#[3]\r\n\tpass\r\n",
-				BasicAst.RawBlock("arbitrary block", p => p.WithCommentRefs(3))
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block("arbitrary block", p => p.WithCommentRefs(3))
+						.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
 				"arbitrary block: \t\t#[3]\r\n\tpass\r\n",
-				BasicAst.RawBlock(
-					"arbitrary block",
-					p => p.WithCommentRefs(3)
-						.WithError(ParseError.IncorrectCommentSeparator(" \t\t#")))
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block(
+						"arbitrary block",
+						p => p.WithCommentRefs(3)
+							.WithError(ParseError.IncorrectCommentSeparator(" \t\t#")))
+						.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
 				"arbitrary block:\r\n\tpass \r\n",
-				BasicAst.SequenceOfRawLines(f => f.RawBlock("arbitrary block")
-					.WithBody(
-						b => b.AddStatement("pass")
-							.WithError(ParseError.IllegalWhitespaceAtEnd(" "))))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block("arbitrary block")
+						.WithBody(
+							b => b.AddStatement("pass")
+								.WithError(ParseError.IllegalWhitespaceAtEnd(" "))))
 			},
 			new object[]
 			{
 				"arbitrary block: \r\n\tpass\r\n",
-				BasicAst.RawBlock("arbitrary block", p => p.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block("arbitrary block", p => p.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
+						.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
 				"arbitrary block:\t\t#[4] \r\n\tpass\r\n",
-				BasicAst.RawBlock(
-					"arbitrary block",
-					p => p.WithCommentRefs(4)
-						.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block(
+						"arbitrary block",
+						p => p.WithCommentRefs(4)
+							.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
+						.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
 				"arbitrary block:\t\r\n\tpass\r\n",
-				BasicAst.RawBlock("arbitrary block", p => p.WithError(ParseError.IllegalWhitespaceAtEnd("\t")))
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block("arbitrary block", p => p.WithError(ParseError.IllegalWhitespaceAtEnd("\t")))
+						.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
 				"arbitrary block\t:\r\n\tpass\r\n",
-				BasicAst.RawBlock("arbitrary block\t", p => p.WithError(ParseError.IllegalTabInLine()))
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block("arbitrary block\t", p => p.WithError(ParseError.IllegalTabInLine()))
+						.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
 				"arbitrary\tblock:\r\n\tpass\r\n",
-				BasicAst.RawBlock("arbitrary\tblock", p => p.WithError(ParseError.IllegalTabInLine()))
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.SequenceOfRawLines(
+					f => f.Block("arbitrary\tblock", p => p.WithError(ParseError.IllegalTabInLine()))
+						.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
