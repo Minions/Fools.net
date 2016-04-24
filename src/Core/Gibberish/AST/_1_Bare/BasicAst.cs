@@ -15,7 +15,7 @@ namespace Gibberish.AST._1_Bare
 		[NotNull]
 		public static StatementBuilder Statement([NotNull] string content)
 		{
-			return new StatementBuilder(content, 0);
+			return new StatementBuilder(content, PossiblySpecified<int>.WithValue(0));
 		}
 
 		[NotNull]
@@ -39,7 +39,7 @@ namespace Gibberish.AST._1_Bare
 		[NotNull]
 		public static BlockBuilder Block([NotNull] string prelude, [NotNull] Action<BlockBuilder.PreludeBuilder> preludeOptions)
 		{
-			return new BlockBuilder(prelude, preludeOptions, 0);
+			return new BlockBuilder(prelude, preludeOptions);
 		}
 
 		public static CommentBuilder CommentDefinition(int commentId, string content)

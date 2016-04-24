@@ -6,14 +6,14 @@ namespace Gibberish.AST._1_Bare
 {
 	public class UnknownPrelude : LanguageConstruct
 	{
-		public UnknownPrelude(int indentationDepth, [NotNull] string content, IEnumerable<int> comments, [NotNull] IEnumerable<ParseError> errors) : base(errors)
+		public UnknownPrelude(PossiblySpecified<int> indentationDepth, [NotNull] string content, IEnumerable<int> comments, [NotNull] IEnumerable<ParseError> errors) : base(errors)
 		{
 			IndentationDepth = indentationDepth;
 			Content = content;
 			Comments = comments.ToArray();
 		}
 
-		public int IndentationDepth { get; }
+		public PossiblySpecified<int> IndentationDepth { get; }
 		[NotNull]
 		public string Content { get; }
 		[NotNull]

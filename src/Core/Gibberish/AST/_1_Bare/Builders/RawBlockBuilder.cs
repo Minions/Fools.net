@@ -25,7 +25,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 			internal override void Build(List<LanguageConstruct> destination)
 			{
-				destination.Add(new UnknownPrelude(IndentationDepth, Content, Comments, Errors));
+				destination.Add(new UnknownPrelude(PossiblySpecified<int>.WithValue(IndentationDepth), Content, Comments, Errors));
 			}
 		}
 
@@ -36,7 +36,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			[NotNull]
 			public StatementBuilder AddStatement([NotNull] string content)
 			{
-				var statement = new StatementBuilder(content, _self.IndentationDepth + 1);
+				var statement = new StatementBuilder(content, PossiblySpecified<int>.WithValue(_self.IndentationDepth + 1));
 				_self.Body.Add(statement);
 				return statement;
 			}

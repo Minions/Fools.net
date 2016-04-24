@@ -30,7 +30,7 @@ namespace Gibberish.Parsing
 			_RequireNewline(newline, errors);
 			var statement = _ExtractCommentsAndReturnEverythingBeforeThem(errors, coreContent, comments);
 			_CheckForWhitespaceErrors(errors, statement, extraAtEnd);
-			return new UnknownStatement(indentationDepth, statement, comments, errors);
+			return new UnknownStatement(PossiblySpecified<int>.WithValue(indentationDepth), statement, comments, errors);
 		}
 
 		[NotNull]
@@ -44,7 +44,7 @@ namespace Gibberish.Parsing
 			_RequireNewline(newline, errors);
 			_ExtractCommentsAndReturnEverythingBeforeThem(errors, possibleComment, comments);
 			_CheckForWhitespaceErrors(errors, content, extraAtEnd);
-			return new UnknownPrelude(indentationDepth, content, comments, errors);
+			return new UnknownPrelude(PossiblySpecified<int>.WithValue(indentationDepth), content, comments, errors);
 		}
 
 		[NotNull]

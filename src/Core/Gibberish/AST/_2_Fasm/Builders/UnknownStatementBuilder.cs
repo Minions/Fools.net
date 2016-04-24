@@ -26,7 +26,7 @@ namespace Gibberish.AST._2_Fasm.Builders
 
 		internal override void Build(List<FasmOrLanguageConstruct> destination)
 		{
-			destination.Add(new UnknownStatement(_indentationDepth, UnparsedContent, Comments, Errors));
+			destination.Add(new UnknownStatement(PossiblySpecified<int>.WithValue(_indentationDepth), UnparsedContent, Comments, Errors));
 		}
 
 		private readonly int _indentationDepth;

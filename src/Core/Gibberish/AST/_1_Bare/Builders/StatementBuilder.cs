@@ -5,7 +5,7 @@ namespace Gibberish.AST._1_Bare.Builders
 {
 	public class StatementBuilder : AstBuilder<LanguageConstruct>
 	{
-		public StatementBuilder([NotNull] string content, int indentationDepth)
+		public StatementBuilder([NotNull] string content, PossiblySpecified<int> indentationDepth)
 		{
 			Content = content;
 			IndentationDepth = indentationDepth;
@@ -17,7 +17,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		[NotNull]
 		public List<int> Comments { get; } = new List<int>();
 
-		public int IndentationDepth { get; }
+		public PossiblySpecified<int> IndentationDepth { get; }
 
 		[NotNull]
 		public StatementBuilder WithCommentRefs([NotNull] params int[] indices)
