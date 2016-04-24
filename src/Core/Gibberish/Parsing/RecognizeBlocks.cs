@@ -16,7 +16,7 @@ namespace Gibberish.Parsing
 			var errors = new List<ParseError>();
 			_RequireNewline(newline, errors);
 			if (illegalWhitespace.Length > 0) { errors.Add(ParseError.IllegalWhitespaceOnBlankLine(illegalWhitespace)); }
-			return new BlankLine(indentationDepth, errors);
+			return new BlankLine(PossiblySpecified<int>.WithValue(indentationDepth), errors);
 		}
 
 		[NotNull]
@@ -115,8 +115,6 @@ namespace Gibberish.Parsing
 			if (coreContent.Contains('\t')) { errors.Add(ParseError.IllegalTabInLine()); }
 		}
 
-		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
-
 		private static void _RequireNewline(string newline, List<ParseError> errors)
 		{
 			if (newline.Length == 0) { errors.Add(ParseError.MissingNewlineAtEndOfFile()); }
@@ -125,9 +123,13 @@ namespace Gibberish.Parsing
 		private static int _ExtractCommentNumber(string commentId, string content, string commentSeparator, List<ParseError> errors)
 		{
 			int commentNumber;
-			if (!int.TryParse(commentId, out commentNumber)) { errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8))); }
+			if (!int.TryParse(commentId, out commentNumber)) {
+				errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8)));
+			}
 			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
 			return commentNumber;
 		}
+
+		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
 	}
 }

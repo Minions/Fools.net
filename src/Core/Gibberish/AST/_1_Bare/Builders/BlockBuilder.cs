@@ -31,6 +31,12 @@ namespace Gibberish.AST._1_Bare.Builders
 				return statement;
 			}
 
+			[NotNull]
+			public BlankLineBuilder AddBlankLine()
+			{
+				return _AddToBody(new BlankLineBuilder(PossiblySpecified<int>.Unspecifed));
+			}
+
 			protected override BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
 			{
 				return new BlockBuilder(prelude, preludeOptions);

@@ -36,9 +36,13 @@ namespace Gibberish.AST._1_Bare.Builders
 			[NotNull]
 			public StatementBuilder AddStatement([NotNull] string content)
 			{
-				var statement = new StatementBuilder(content, PossiblySpecified<int>.WithValue(_self.IndentationDepth + 1));
-				_self.Body.Add(statement);
-				return statement;
+				return _AddToBody(new StatementBuilder(content, PossiblySpecified<int>.WithValue(_self.IndentationDepth + 1)));
+			}
+
+			[NotNull]
+			public BlankLineBuilder AddBlankLine()
+			{
+				return _AddToBody(new BlankLineBuilder(PossiblySpecified<int>.WithValue(_self.IndentationDepth)));
 			}
 
 			protected override RawBlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)

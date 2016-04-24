@@ -28,6 +28,11 @@ namespace Gibberish.Parsing
 					else
 					{ return result; }
 				}
+				else if (line.GetType() == typeof (BlankLine))
+				{
+					result.Add(line);
+					source.RemoveAt(0);
+				}
 
 				//else
 				//if (line.GetType() == typeof (CommentDefinition))

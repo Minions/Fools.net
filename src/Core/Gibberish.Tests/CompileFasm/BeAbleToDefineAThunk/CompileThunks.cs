@@ -30,6 +30,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 									inner =>
 									{
 										inner.AddStatement("nested 2.1");
+										inner.AddBlankLine();
 										inner.AddStatement("nested 2.2");
 									});
 							b.AddBlock("nested 3")
@@ -51,6 +52,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 										inner =>
 										{
 											inner.AddStatement("nested 2.1");
+											inner.AddBlankLine();
 											inner.AddStatement("nested 2.2");
 										});
 								b.AddBlock("nested 3")

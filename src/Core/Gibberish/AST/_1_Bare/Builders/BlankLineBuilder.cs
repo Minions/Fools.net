@@ -4,12 +4,12 @@ namespace Gibberish.AST._1_Bare.Builders
 {
 	public class BlankLineBuilder : AstBuilder<LanguageConstruct>
 	{
-		public BlankLineBuilder(int indentationDepth)
+		public BlankLineBuilder(PossiblySpecified<int> indentationDepth)
 		{
 			IndentationDepth = indentationDepth;
 		}
 
-		public int IndentationDepth { get; }
+		public PossiblySpecified<int> IndentationDepth { get; }
 
 		internal override void Build(List<LanguageConstruct> destination)
 		{

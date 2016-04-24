@@ -9,7 +9,7 @@ namespace Gibberish.AST._1_Bare
 		[NotNull]
 		public static BlankLineBuilder BlankLine(int indentationDepth)
 		{
-			return new BlankLineBuilder(indentationDepth);
+			return new BlankLineBuilder(PossiblySpecified<int>.WithValue(indentationDepth));
 		}
 
 		[NotNull]
