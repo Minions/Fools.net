@@ -64,62 +64,65 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"arbitrary statement\r\n",
-				BasicAst.Statement("arbitrary statement")
+				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement"))
 			},
 			new object[]
 			{
 				"arbitrary statement",
-				BasicAst.Statement("arbitrary statement")
-					.WithError(ParseError.MissingNewlineAtEndOfFile())
+				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
+					.WithError(ParseError.MissingNewlineAtEndOfFile()))
 			},
 			new object[]
 			{
 				"arbitrary statement \r\n",
-				BasicAst.Statement("arbitrary statement")
-					.WithError(ParseError.IllegalWhitespaceAtEnd(" "))
+				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
+					.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
 			},
 			new object[]
 			{
 				"arbitrary statement\t\r\n",
-				BasicAst.Statement("arbitrary statement")
-					.WithError(ParseError.IllegalWhitespaceAtEnd("\t"))
+				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
+					.WithError(ParseError.IllegalWhitespaceAtEnd("\t")))
 			},
 			new object[]
 			{
 				"arbitrary\tstatement\r\n",
-				BasicAst.Statement("arbitrary\tstatement")
-					.WithError(ParseError.IllegalTabInLine())
+				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary\tstatement")
+					.WithError(ParseError.IllegalTabInLine()))
 			},
 			new object[]
 			{
 				"arbitrary statement\t\t#[2]\r\n",
-				BasicAst.Statement("arbitrary statement")
-					.WithCommentRefs(2)
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary statement")
+						.WithCommentRefs(2))
 			},
 			new object[]
 			{
 				"arbitrary statement\t\t#[2], [42], [3]\r\n",
-				BasicAst.Statement("arbitrary statement")
-					.WithCommentRefs(2, 42, 3)
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary statement")
+						.WithCommentRefs(2, 42, 3))
 			},
 			new object[]
 			{
 				"arbitrary statement\t\t#[2],[4]\r\n",
-				BasicAst.Statement("arbitrary statement")
-					.WithError(ParseError.IncorrectCommentFormat("[2],[4]"))
+				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
+					.WithError(ParseError.IncorrectCommentFormat("[2],[4]")))
 			},
 			new object[]
 			{
 				"arbitrary statement\t\t#[2a4]\r\n",
-				BasicAst.Statement("arbitrary statement")
-					.WithError(ParseError.IncorrectCommentFormat("[2a4]"))
+				BasicAst.SequenceOfRawLines(f => f.Statement("arbitrary statement")
+					.WithError(ParseError.IncorrectCommentFormat("[2a4]")))
 			},
 			new object[]
 			{
 				"arbitrary statement\t\t\t#[2]\r\n",
-				BasicAst.Statement("arbitrary statement")
-					.WithCommentRefs(2)
-					.WithError(ParseError.IncorrectCommentSeparator("\t\t\t#"))
+				BasicAst.SequenceOfRawLines(
+					f => f.Statement("arbitrary statement")
+						.WithCommentRefs(2)
+						.WithError(ParseError.IncorrectCommentSeparator("\t\t\t#")))
 			},
 			new object[]
 			{

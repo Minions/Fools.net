@@ -1,4 +1,5 @@
 ﻿using Gibberish.AST._1_Bare;
+using Gibberish.AST._1_Bare.Builders;
 using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
@@ -25,7 +26,7 @@ define.thunk other.name:
 			result.Should()
 				.BeRecognizedAs(
 					BasicAst.SequenceOfRawLines(f => f.BlankLine(0)),
-					BasicAst.Statement("using language fasm"),
+					BasicAst.SequenceOfRawLines(f => f.Statement("using language fasm")),
 					BasicAst.SequenceOfRawLines(f => f.BlankLine(0)),
 					BasicAst.RawBlock("define.thunk some.name")
 						.WithBody(b => b.AddStatement("pass")),
