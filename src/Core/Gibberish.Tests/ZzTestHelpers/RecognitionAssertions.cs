@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Primitives;
 using Gibberish.AST;
+using Gibberish.AST._1_Bare;
 using JetBrains.Annotations;
 
 namespace Gibberish.Tests.ZzTestHelpers
@@ -29,7 +30,7 @@ namespace Gibberish.Tests.ZzTestHelpers
 				options => options.IncludingFields()
 					.IncludingProperties()
 					.IncludingNestedObjects()
-					.RespectingRuntimeTypes());
+					.RespectingRuntimeTypes().ComparingByValue<PossiblySpecified<int>>());
 		}
 
 		internal void BeRecognizedAs(params AstBuilder<TConstruct>[] expected)
