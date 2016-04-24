@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
+using Gibberish.AST._1_Bare.Builders;
 using Gibberish.Execution;
 using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
@@ -28,13 +29,13 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.Block("outer block")
+					BasicAst.BlockTree(f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
 								b.AddStatement("outer 1");
 								b.AddStatement("outer 2");
-							}));
+							})));
 		}
 
 		[Test]
@@ -53,13 +54,13 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.Block("outer block")
+					BasicAst.BlockTree(f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
 								b.AddBlock("nested 1")
 									.WithBody(inner => inner.AddStatement("nested 1.1"));
-							}));
+							})));
 		}
 
 		[Test]
@@ -79,14 +80,14 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.Block("outer block")
+					BasicAst.BlockTree(f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
 								b.AddBlock("nested 1")
 									.WithBody(inner => inner.AddStatement("nested 1.1"));
 								b.AddStatement("outer 1");
-							}));
+							})));
 		}
 
 		[Test]
@@ -107,7 +108,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.Block("outer block")
+					BasicAst.BlockTree(f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
@@ -115,7 +116,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 									.WithBody(inner => inner.AddStatement("nested 1.1"));
 								b.AddBlock("nested 2")
 									.WithBody(inner => inner.AddStatement("nested 2.1"));
-							}));
+							})));
 		}
 
 		[Test]
@@ -135,14 +136,14 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.Block("outer block")
+					BasicAst.BlockTree(f => f.Block("outer block")
 						.WithBody(
 							b =>
 							{
 								b.AddStatement("outer 1");
 								b.AddBlankLine();
 								b.AddStatement("outer 2");
-							}));
+							})));
 		}
 
 		//[Test]
