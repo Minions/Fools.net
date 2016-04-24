@@ -13,17 +13,49 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 	public class CompileThunks
 	{
 		[Test]
-		public void ShouldRecognizeADefineThunkBlock()
+		public void ShouldAssembleBlocksfromValidNesting()
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
-				BasicAst.RawBlock("define.named.thunk some.name")
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.RawBlock("outer block")
+					.WithBody(
+						b =>
+						{
+							b.AddStatement("outer 1");
+							b.AddBlock("nested 1")
+								.WithBody(inner => inner.AddStatement("nested 1.1"));
+							b.AddStatement("outer 2");
+							b.AddBlock("nested 2")
+								.WithBody(
+									inner =>
+									{
+										inner.AddStatement("nested 2.1");
+										inner.AddStatement("nested 2.2");
+									});
+							b.AddBlock("nested 3")
+								.WithBody(inner => inner.AddStatement("nested 3.1"));
+						})
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.Block("define.named.thunk some.name")
-						.WithBody(b => b.AddStatement("pass")));
+					BasicAst.Block("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddStatement("outer 1");
+								b.AddBlock("nested 1")
+									.WithBody(inner => inner.AddStatement("nested 1.1"));
+								b.AddStatement("outer 2");
+								b.AddBlock("nested 2")
+									.WithBody(
+										inner =>
+										{
+											inner.AddStatement("nested 2.1");
+											inner.AddStatement("nested 2.2");
+										});
+								b.AddBlock("nested 3")
+									.WithBody(inner => inner.AddStatement("nested 3.1"));
+							}));
 		}
 
 		[Test]
