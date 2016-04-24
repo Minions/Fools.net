@@ -19,11 +19,6 @@ namespace Gibberish.Tests.ZzTestHelpers
 		[NotNull]
 		public TConstruct[] Result { get; }
 
-		public void BeRecognizedAs(AstBuilder<TConstruct> expected)
-		{
-			_Verify(expected.Build());
-		}
-
 		internal void BeRecognizedAs(params AstBuilder<TConstruct>[] expected)
 		{
 			_Verify(
