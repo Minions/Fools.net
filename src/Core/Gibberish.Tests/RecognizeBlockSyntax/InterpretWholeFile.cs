@@ -1,5 +1,4 @@
 ﻿using Gibberish.AST._1_Bare;
-using Gibberish.AST._1_Bare.Builders;
 using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
@@ -25,14 +24,18 @@ define.thunk other.name:
 			var result = subject.GetMatch(input, subject.WholeFile);
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.SequenceOfRawLines(f => f.BlankLine(0)),
-					BasicAst.SequenceOfRawLines(f => f.Statement("using language fasm")),
-					BasicAst.SequenceOfRawLines(f => f.BlankLine(0)),
-					BasicAst.RawBlock("define.thunk some.name")
-						.WithBody(b => b.AddStatement("pass")),
-					BasicAst.SequenceOfRawLines(f => f.BlankLine(0)),
-					BasicAst.RawBlock("define.thunk other.name")
-						.WithBody(b => b.AddStatement("pass")));
+					BasicAst.SequenceOfRawLines(
+						f =>
+						{
+							f.BlankLine(0);
+							f.Statement("using language fasm");
+							f.BlankLine(0);
+							f.RawBlock("define.thunk some.name")
+								.WithBody(b => b.AddStatement("pass"));
+							f.BlankLine(0);
+							f.RawBlock("define.thunk other.name")
+								.WithBody(b => b.AddStatement("pass"));
+						}));
 		}
 	}
 }

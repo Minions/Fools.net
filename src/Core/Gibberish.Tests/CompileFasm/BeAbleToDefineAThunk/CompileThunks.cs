@@ -17,13 +17,14 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
-				BasicAst.RawBlock("outer block")
-					.WithBody(
-						b =>
-						{
-							b.AddStatement("outer 1");
-							b.AddStatement("outer 2");
-						})
+				BasicAst.SequenceOfRawLines(
+					f => f.RawBlock("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddStatement("outer 1");
+								b.AddStatement("outer 2");
+							}))
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
@@ -41,13 +42,14 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
-				BasicAst.RawBlock("outer block")
-					.WithBody(
-						b =>
-						{
-							b.AddBlock("nested 1")
-								.WithBody(inner => inner.AddStatement("nested 1.1"));
-						})
+				BasicAst.SequenceOfRawLines(
+					f => f.RawBlock("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddBlock("nested 1")
+									.WithBody(inner => inner.AddStatement("nested 1.1"));
+							}))
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
@@ -65,14 +67,15 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
-				BasicAst.RawBlock("outer block")
-					.WithBody(
-						b =>
-						{
-							b.AddBlock("nested 1")
-								.WithBody(inner => inner.AddStatement("nested 1.1"));
-							b.AddStatement("outer 1");
-						})
+				BasicAst.SequenceOfRawLines(
+					f => f.RawBlock("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddBlock("nested 1")
+									.WithBody(inner => inner.AddStatement("nested 1.1"));
+								b.AddStatement("outer 1");
+							}))
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
@@ -91,15 +94,16 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
-				BasicAst.RawBlock("outer block")
-					.WithBody(
-						b =>
-						{
-							b.AddBlock("nested 1")
-								.WithBody(inner => inner.AddStatement("nested 1.1"));
-							b.AddBlock("nested 2")
-								.WithBody(inner => inner.AddStatement("nested 2.1"));
-						})
+				BasicAst.SequenceOfRawLines(
+					f => f.RawBlock("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddBlock("nested 1")
+									.WithBody(inner => inner.AddStatement("nested 1.1"));
+								b.AddBlock("nested 2")
+									.WithBody(inner => inner.AddStatement("nested 2.1"));
+							}))
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
@@ -119,14 +123,15 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
-				BasicAst.RawBlock("outer block")
-					.WithBody(
-						b =>
-						{
-							b.AddStatement("outer 1");
-							b.AddBlankLine();
-							b.AddStatement("outer 2");
-						})
+				BasicAst.SequenceOfRawLines(
+					f => f.RawBlock("outer block")
+						.WithBody(
+							b =>
+							{
+								b.AddStatement("outer 1");
+								b.AddBlankLine();
+								b.AddStatement("outer 2");
+							}))
 					.Build());
 			result.Should()
 				.BeRecognizedAs(

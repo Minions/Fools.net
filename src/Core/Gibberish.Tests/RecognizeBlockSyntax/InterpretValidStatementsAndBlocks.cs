@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
+using Gibberish.AST._1_Bare.Builders;
 using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
@@ -127,8 +128,8 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"arbitrary block:\r\n\tpass\r\n",
-				BasicAst.RawBlock("arbitrary block")
-					.WithBody(b => b.AddStatement("pass"))
+				BasicAst.SequenceOfRawLines(f => f.RawBlock("arbitrary block")
+					.WithBody(b => b.AddStatement("pass")))
 			},
 			new object[]
 			{
@@ -138,7 +139,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"arbitrary block:\r\n\tfirst\r\n\tsecond block:\r\n\t\tpass\r\n\tlast\r\n",
-				BasicAst.RawBlock("arbitrary block")
+				BasicAst.SequenceOfRawLines(f => f.RawBlock("arbitrary block")
 					.WithBody(
 						b =>
 						{
@@ -146,7 +147,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 							b.AddBlock("second block")
 								.WithBody(inner => inner.AddStatement("pass"));
 							b.AddStatement("last");
-						})
+						}))
 			},
 			new object[]
 			{
@@ -166,10 +167,10 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"arbitrary block:\r\n\tpass \r\n",
-				BasicAst.RawBlock("arbitrary block")
+				BasicAst.SequenceOfRawLines(f => f.RawBlock("arbitrary block")
 					.WithBody(
 						b => b.AddStatement("pass")
-							.WithError(ParseError.IllegalWhitespaceAtEnd(" ")))
+							.WithError(ParseError.IllegalWhitespaceAtEnd(" "))))
 			},
 			new object[]
 			{
