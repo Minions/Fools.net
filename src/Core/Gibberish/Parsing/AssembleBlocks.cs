@@ -33,19 +33,17 @@ namespace Gibberish.Parsing
 					result.Add(line);
 					source.RemoveAt(0);
 				}
-
-				//else
-				//if (line.GetType() == typeof (CommentDefinition))
-				//{
-				//	var commentDefinition = (CommentDefinition) line;
-				//	if (0 == level)
-				//	{
-				//		result.Add(commentDefinition);
-				//		source.RemoveAt(0);
-				//	}
-				//	else
-				//	{ return result; }
-				//}
+				else if (line.GetType() == typeof (CommentDefinition))
+				{
+					var commentDefinition = (CommentDefinition) line;
+					if (0 == level)
+					{
+						result.Add(commentDefinition);
+						source.RemoveAt(0);
+					}
+					else
+					{ return result; }
+				}
 				else if (line.GetType() == typeof (UnknownPrelude))
 				{
 					var prelude = (UnknownPrelude) line;

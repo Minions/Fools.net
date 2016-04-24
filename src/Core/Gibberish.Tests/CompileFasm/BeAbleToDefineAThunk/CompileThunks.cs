@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
-using Gibberish.AST._1_Bare.Builders;
 using Gibberish.Execution;
 using Gibberish.Parsing;
 using Gibberish.Tests.ZzTestHelpers;
@@ -29,13 +28,14 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.BlockTree(f => f.Block("outer block")
-						.WithBody(
-							b =>
-							{
-								b.AddStatement("outer 1");
-								b.AddStatement("outer 2");
-							})));
+					BasicAst.BlockTree(
+						f => f.Block("outer block")
+							.WithBody(
+								b =>
+								{
+									b.AddStatement("outer 1");
+									b.AddStatement("outer 2");
+								})));
 		}
 
 		[Test]
@@ -54,13 +54,14 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.BlockTree(f => f.Block("outer block")
-						.WithBody(
-							b =>
-							{
-								b.AddBlock("nested 1")
-									.WithBody(inner => inner.AddStatement("nested 1.1"));
-							})));
+					BasicAst.BlockTree(
+						f => f.Block("outer block")
+							.WithBody(
+								b =>
+								{
+									b.AddBlock("nested 1")
+										.WithBody(inner => inner.AddStatement("nested 1.1"));
+								})));
 		}
 
 		[Test]
@@ -80,14 +81,15 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.BlockTree(f => f.Block("outer block")
-						.WithBody(
-							b =>
-							{
-								b.AddBlock("nested 1")
-									.WithBody(inner => inner.AddStatement("nested 1.1"));
-								b.AddStatement("outer 1");
-							})));
+					BasicAst.BlockTree(
+						f => f.Block("outer block")
+							.WithBody(
+								b =>
+								{
+									b.AddBlock("nested 1")
+										.WithBody(inner => inner.AddStatement("nested 1.1"));
+									b.AddStatement("outer 1");
+								})));
 		}
 
 		[Test]
@@ -108,15 +110,16 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.BlockTree(f => f.Block("outer block")
-						.WithBody(
-							b =>
-							{
-								b.AddBlock("nested 1")
-									.WithBody(inner => inner.AddStatement("nested 1.1"));
-								b.AddBlock("nested 2")
-									.WithBody(inner => inner.AddStatement("nested 2.1"));
-							})));
+					BasicAst.BlockTree(
+						f => f.Block("outer block")
+							.WithBody(
+								b =>
+								{
+									b.AddBlock("nested 1")
+										.WithBody(inner => inner.AddStatement("nested 1.1"));
+									b.AddBlock("nested 2")
+										.WithBody(inner => inner.AddStatement("nested 2.1"));
+								})));
 		}
 
 		[Test]
@@ -136,37 +139,40 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					.Build());
 			result.Should()
 				.BeRecognizedAs(
-					BasicAst.BlockTree(f => f.Block("outer block")
-						.WithBody(
-							b =>
-							{
-								b.AddStatement("outer 1");
-								b.AddBlankLine();
-								b.AddStatement("outer 2");
-							})));
+					BasicAst.BlockTree(
+						f => f.Block("outer block")
+							.WithBody(
+								b =>
+								{
+									b.AddStatement("outer 1");
+									b.AddBlankLine();
+									b.AddStatement("outer 2");
+								})));
 		}
 
-		//[Test]
-		//public void CommentDefinitionsShouldTerminatePreceedingBlocksAndAppearAtRootLevel()
-		//{
-		//	var testSubject = new AssembleBlocks();
-		//	var result = testSubject.Transform(
-		//		BasicAst.RawFile(
-		//			f =>
-		//			{
-		//				f.AddBlock("outer")
-		//					.WithBody(b => b.AddStatement("outer 1"));
-		//			})
-		//			.Build());
-		//	result.Should()
-		//		.BeRecognizedAs(
-		//			BasicAst.File(
-		//				f =>
-		//				{
-		//					f.AddBlock("outer")
-		//						.WithBody(b => b.AddStatement("outer 1"));
-		//				}));
-		//}
+		[Test]
+		public void CommentDefinitionsShouldTerminatePreceedingBlocksAndAppearAtRootLevel()
+		{
+			var testSubject = new AssembleBlocks();
+			var result = testSubject.Transform(
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.Block("outer block")
+							.WithBody(b => { b.AddStatement("outer 1"); });
+						f.CommentDefinition(3, "commet def");
+					})
+					.Build());
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.Block("outer block")
+								.WithBody(b => { b.AddStatement("outer 1"); });
+							f.CommentDefinition(3, "commet def");
+						}));
+		}
 
 		[Test]
 		public void CompilingATrivialDefineThunkNodeShouldCreateThunkInNameTable()
