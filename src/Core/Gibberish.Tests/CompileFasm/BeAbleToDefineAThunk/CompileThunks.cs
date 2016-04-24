@@ -123,7 +123,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		}
 
 		[Test]
-		public void BlankLinesInBlocksShouldBeSkipped()
+		public void BlankLinesShouldStartNewParagraphAndMaintainSameBlock()
 		{
 			var testSubject = new AssembleBlocks();
 			var result = testSubject.Transform(
@@ -145,8 +145,8 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 								b =>
 								{
 									b.AddStatement("outer 1");
-									b.AddBlankLine();
-									b.AddStatement("outer 2");
+									b.AddStatement("outer 2")
+										.ThatStartsNewParagraph();
 								})));
 		}
 

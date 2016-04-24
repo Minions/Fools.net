@@ -30,7 +30,7 @@ namespace Gibberish.Parsing
 			_RequireNewline(newline, errors);
 			var statement = _ExtractCommentsAndReturnEverythingBeforeThem(errors, coreContent, comments);
 			_CheckForWhitespaceErrors(errors, statement, extraAtEnd);
-			return new UnknownStatement(PossiblySpecified<int>.WithValue(indentationDepth), statement, comments, errors);
+			return new UnknownStatement(PossiblySpecified<bool>.Unspecifed, PossiblySpecified<int>.WithValue(indentationDepth), statement, comments, errors);
 		}
 
 		[NotNull]

@@ -14,6 +14,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		[NotNull]
 		public string Content { get; }
 
+		public bool StartsParagraph { get; private set; }
 		[NotNull]
 		public List<int> Comments { get; } = new List<int>();
 
@@ -28,7 +29,13 @@ namespace Gibberish.AST._1_Bare.Builders
 
 		public override void BuildInto(List<LanguageConstruct> destination)
 		{
-			destination.Add(new UnknownStatement(IndentationDepth, Content, Comments, Errors));
+			destination.Add(new UnknownStatement(PossiblySpecified<bool>.WithValue(StartsParagraph), IndentationDepth, Content, Comments, Errors));
+		}
+
+		public StatementBuilder ThatStartsNewParagraph()
+		{
+			StartsParagraph = true;
+			return this;
 		}
 	}
 }

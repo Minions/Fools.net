@@ -3,7 +3,6 @@ using System.Linq;
 using FluentAssertions;
 using FluentAssertions.Primitives;
 using Gibberish.AST;
-using Gibberish.AST._1_Bare;
 using JetBrains.Annotations;
 
 namespace Gibberish.Tests.ZzTestHelpers
@@ -22,20 +21,18 @@ namespace Gibberish.Tests.ZzTestHelpers
 
 		public void BeRecognizedAs(AstBuilder<TConstruct> expected)
 		{
-			var statements = expected.Build();
-			Success.Should()
-				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
-			Result.ShouldBeEquivalentTo(
-				statements,
-				options => options.IncludingFields()
-					.IncludingProperties()
-					.IncludingNestedObjects()
-					.RespectingRuntimeTypes().ComparingByValue<PossiblySpecified<int>>());
+			_Verify(expected.Build());
 		}
 
 		internal void BeRecognizedAs(params AstBuilder<TConstruct>[] expected)
 		{
-			var statements = expected.SelectMany(b => b.Build());
+			_Verify(
+				expected.SelectMany(b => b.Build())
+					.ToList());
+		}
+
+		private void _Verify(List<TConstruct> statements)
+		{
 			Success.Should()
 				.BeTrue("parse should have fully matched the input. This is probably an error in the test");
 			Result.ShouldBeEquivalentTo(
@@ -43,7 +40,9 @@ namespace Gibberish.Tests.ZzTestHelpers
 				options => options.IncludingFields()
 					.IncludingProperties()
 					.IncludingNestedObjects()
-					.RespectingRuntimeTypes());
+					.RespectingRuntimeTypes()
+					.ComparingByValue<PossiblySpecified<bool>>()
+					.ComparingByValue<PossiblySpecified<int>>());
 		}
 	}
 }

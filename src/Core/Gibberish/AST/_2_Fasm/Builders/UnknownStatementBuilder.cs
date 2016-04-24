@@ -26,7 +26,7 @@ namespace Gibberish.AST._2_Fasm.Builders
 
 		public override void BuildInto(List<FasmOrLanguageConstruct> destination)
 		{
-			destination.Add(new UnknownStatement(PossiblySpecified<int>.WithValue(_indentationDepth), UnparsedContent, Comments, Errors));
+			destination.Add(new UnknownStatement(PossiblySpecified<bool>.Unspecifed, PossiblySpecified<int>.WithValue(_indentationDepth), UnparsedContent, Comments, Errors));
 		}
 
 		private readonly int _indentationDepth;

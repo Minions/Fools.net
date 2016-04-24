@@ -6,13 +6,15 @@ namespace Gibberish.AST._1_Bare
 {
 	public class UnknownStatement : LanguageConstruct
 	{
-		public UnknownStatement(PossiblySpecified<int> indentationDepth, string content, IEnumerable<int> comments, IEnumerable<ParseError> errors) : base(errors)
+		public UnknownStatement(PossiblySpecified<bool> startsParagraph, PossiblySpecified<int> indentationDepth, string content, IEnumerable<int> comments, IEnumerable<ParseError> errors) : base(errors)
 		{
+			StartsParagraph = startsParagraph;
 			IndentationDepth = indentationDepth;
 			Content = content;
 			Comments = comments.ToArray();
 		}
 
+		public PossiblySpecified<bool> StartsParagraph { get; set; }
 		public PossiblySpecified<int> IndentationDepth { get; }
 		[NotNull]
 		public string Content { get; }

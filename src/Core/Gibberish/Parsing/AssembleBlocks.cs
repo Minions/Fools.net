@@ -6,6 +6,8 @@ namespace Gibberish.Parsing
 {
 	public class AssembleBlocks
 	{
+		private static bool _nextItemStartsParagraph;
+
 		public List<LanguageConstruct> Transform(List<LanguageConstruct> source)
 		{
 			return _CollectBodyAtLevel(source, 0);
@@ -22,6 +24,8 @@ namespace Gibberish.Parsing
 					var unknownStatement = (UnknownStatement) line;
 					if (unknownStatement.IndentationDepth.Value == level)
 					{
+						unknownStatement.StartsParagraph = PossiblySpecified<bool>.WithValue(_nextItemStartsParagraph);
+						_nextItemStartsParagraph = false;
 						result.Add(unknownStatement);
 						source.RemoveAt(0);
 					}
@@ -30,7 +34,7 @@ namespace Gibberish.Parsing
 				}
 				else if (line.GetType() == typeof (BlankLine))
 				{
-					result.Add(line);
+					_nextItemStartsParagraph = true;
 					source.RemoveAt(0);
 				}
 				else if (line.GetType() == typeof (CommentDefinition))
