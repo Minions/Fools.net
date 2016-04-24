@@ -161,7 +161,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 						f.Statement("1");
 						f.BlankLine();
 						f.BlankLine();
-						f.Statement("1");
+						f.Statement("2");
 					})
 					.Build());
 			result.Should()
@@ -170,7 +170,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 						f =>
 						{
 							f.Statement("1");
-							f.Statement("1")
+							f.Statement("2")
 								.ThatStartsNewParagraph();
 						}));
 		}
@@ -211,7 +211,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					{
 						f.Block("outer block")
 							.WithBody(b => { b.AddStatement("outer 1"); });
-						f.CommentDefinition(3, "commet def");
+						f.CommentDefinition(3, ArbitraryComment);
 					})
 					.Build());
 			result.Should()
@@ -221,7 +221,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 						{
 							f.Block("outer block")
 								.WithBody(b => { b.AddStatement("outer 1"); });
-							f.CommentDefinition(3, "commet def")
+							f.CommentDefinition(3, ArbitraryComment)
 								.ThatStartsParagraph();
 						}));
 		}
@@ -234,10 +234,10 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 				BasicAst.SequenceOfRawLines(
 					f =>
 					{
-						f.CommentDefinition(1, "commet def");
+						f.CommentDefinition(1, ArbitraryComment);
 						f.BlankLine(0);
-						f.CommentDefinition(2, "commet def");
-						f.CommentDefinition(3, "commet def");
+						f.CommentDefinition(2, ArbitraryComment);
+						f.CommentDefinition(3, ArbitraryComment);
 					})
 					.Build());
 			result.Should()
@@ -245,10 +245,10 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 					BasicAst.BlockTree(
 						f =>
 						{
-							f.CommentDefinition(1, "commet def")
+							f.CommentDefinition(1, ArbitraryComment)
 								.ThatStartsParagraph();
-							f.CommentDefinition(2, "commet def");
-							f.CommentDefinition(3, "commet def");
+							f.CommentDefinition(2, ArbitraryComment);
+							f.CommentDefinition(3, ArbitraryComment);
 						}));
 		}
 
@@ -270,6 +270,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 
 		[NotNull, SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private City _city;
 		[NotNull, SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private District _arbitraryDistrict;
+		private static readonly string ArbitraryComment = "comment def";
 
 		[SetUp]
 		public void Setup()
