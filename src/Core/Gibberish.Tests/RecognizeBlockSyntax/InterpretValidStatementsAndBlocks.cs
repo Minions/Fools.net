@@ -223,36 +223,40 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			new object[]
 			{
 				"#[2]: comment content\r\n",
-				BasicAst.CommentDefinition(2, "comment content")
+				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(2, "comment content"))
 			},
 			new object[]
 			{
 				"#[22]: comment content",
-				BasicAst.CommentDefinition(22, "comment content")
-					.WithError(ParseError.MissingNewlineAtEndOfFile())
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinition(22, "comment content")
+						.WithError(ParseError.MissingNewlineAtEndOfFile()))
 			},
 			new object[]
 			{
 				"#[9]:\tcomment content\r\n",
-				BasicAst.CommentDefinition(9, "comment content")
-					.WithError(ParseError.IncorrectCommentDefinitionSeparator("\t"))
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinition(9, "comment content")
+						.WithError(ParseError.IncorrectCommentDefinitionSeparator("\t")))
 			},
 			new object[]
 			{
 				"# just a bare comment\r\n",
-				BasicAst.CommentDefinition(0, "just a bare comment")
-					.WithError(ParseError.MissingIdInCommentDefinition("just a b"))
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinition(0, "just a bare comment")
+						.WithError(ParseError.MissingIdInCommentDefinition("just a b")))
 			},
 			new object[]
 			{
 				"#[3a3]: almost right\r\n",
-				BasicAst.CommentDefinition(0, "[3a3]: almost right")
-					.WithError(ParseError.MissingIdInCommentDefinition("[3a3]: a"))
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinition(0, "[3a3]: almost right")
+						.WithError(ParseError.MissingIdInCommentDefinition("[3a3]: a")))
 			},
 			new object[]
 			{
 				"#[8]: \"\"\"\r\n\"\"\"\r\n",
-				BasicAst.CommentDefinition(8, "\r\n")
+				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(8, "\r\n"))
 			},
 			new object[]
 			{
@@ -261,28 +265,31 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 more
 """"""
 ",
-				BasicAst.CommentDefinition(9, @"first
+				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(9, @"first
 
 more
-")
+"))
 			},
 			new object[]
 			{
 				"#[16]: \"\"\"\r\n#[12]: hi\r\n",
-				BasicAst.CommentDefinition(16, "\r\n#[12]: hi\r\n")
-					.WithError(ParseError.MultilineCommentWithoutEnd())
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinition(16, "\r\n#[12]: hi\r\n")
+						.WithError(ParseError.MultilineCommentWithoutEnd()))
 			},
 			new object[]
 			{
 				"#[13]: \"\"\"\r\n \"\"\"\r\n",
-				BasicAst.CommentDefinition(13, "\r\n")
-					.WithError(ParseError.ErrorAtEndOfMultilineComment(" \"\"\""))
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinition(13, "\r\n")
+						.WithError(ParseError.ErrorAtEndOfMultilineComment(" \"\"\"")))
 			},
 			new object[]
 			{
 				"#[17]: \"\"\"\r\n\"\"\" \r\n",
-				BasicAst.CommentDefinition(17, "\r\n")
-					.WithError(ParseError.ErrorAtEndOfMultilineComment("\"\"\" "))
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinition(17, "\r\n")
+						.WithError(ParseError.ErrorAtEndOfMultilineComment("\"\"\" ")))
 			}
 		};
 	}

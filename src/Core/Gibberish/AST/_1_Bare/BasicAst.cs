@@ -19,12 +19,6 @@ namespace Gibberish.AST._1_Bare
 		}
 
 		[NotNull]
-		public static CommentBuilder CommentDefinition(int commentId, string content)
-		{
-			return SequenceOfRawLines(f => { }).CommentDefinition(commentId, content);
-		}
-
-		[NotNull]
 		public static FileParseAsRawStatementSequenceBuilder SequenceOfRawLines(Action<FileParseAsRawStatementSequenceBuilder> contents)
 		{
 			return new FileParseAsRawStatementSequenceBuilder(contents);
