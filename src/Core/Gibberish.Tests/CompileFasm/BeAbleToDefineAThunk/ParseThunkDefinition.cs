@@ -17,7 +17,7 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 			var subject = new ParseFasm();
 			var result = subject.GetMatch(input, subject.OneDeclaration);
 			result.Should()
-				.ParseAs(FasmAst.Thunk("some.name", FasmAst.PassRaw));
+				.ParseAs(FasmAstOld.Thunk("some.name", FasmAstOld.PassRaw));
 		}
 	}
 }

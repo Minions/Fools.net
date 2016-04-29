@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibberish", "Gibberish\Gibberish.csproj", "{706A822C-C45E-4B09-BCAE-34A71DED812D}"
 EndProject
@@ -11,6 +11,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "acceptance tests", "accepta
 	ProjectSection(SolutionItems) = preProject
 		..\Fools.spec\compile_fragments\define_thunk.assertions.fool = ..\Fools.spec\compile_fragments\define_thunk.assertions.fool
 		..\Fools.spec\compile_fragments\define_thunk.fool = ..\Fools.spec\compile_fragments\define_thunk.fool
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{67466D4F-B0CA-4FDB-8B18-58192319671A}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\README.md = ..\..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "spec", "spec", "{C1A47AD0-5A59-425C-9C46-EB864889E33D}"
+	ProjectSection(SolutionItems) = preProject
+		..\Fools.spec\README.md = ..\Fools.spec\README.md
 	EndProjectSection
 EndProject
 Global
@@ -30,5 +40,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C1A47AD0-5A59-425C-9C46-EB864889E33D} = {67466D4F-B0CA-4FDB-8B18-58192319671A}
 	EndGlobalSection
 EndGlobal

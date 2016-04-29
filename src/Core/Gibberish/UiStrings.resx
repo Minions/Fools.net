@@ -156,4 +156,13 @@
 	<data name="MissingNewlineAtEndOfFile" xml:space="preserve">
 		<value>We couldn't find the newline at the end of the file. Each file is required to end with a newline. Please add it.</value>
 	</data>
+	<data name="IncorrectIndentation" xml:space="preserve">
+		<value>We found a statement with inconsistent indentation. Based on the blocks, the statement should be indented {0} or fewer levels, but it was indented {1} levels. Please clarify your indentation.</value>
+	</data>
+	<data name="IncorrectBlockIndentation" xml:space="preserve">
+		<value>We found a whole block that is indented too far, so we may even be incorrectly guessing about its contents. Based on the blocks, the block should start at indentation level {0} or lower (with the body indented one below that), but it started at indentation level {1}. We did find a properly-indented body. Please unindent the block and make sure you have the right body.</value>
+	</data>
+	<data name="MissingBody" xml:space="preserve">
+		<value>We found a block prelude but couldn't find its body. Every block needs at least one line in its body. Most likely you either want an empty block or have an indentation error in the next line. We're going to continue parsing as if you wanted an empty body. If you do want an empty body, please add a body with a `pass` statement. If that wasn't your intention, please fix your indentation.</value>
+	</data>
 </root>

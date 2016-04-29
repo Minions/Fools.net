@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace Gibberish.AST
 {
-	public static class FasmAst
+	public static class FasmAstOld
 	{
 		[NotNull]
 		public static Parse Thunk([NotNull] string name, [NotNull] params Statement[] body)
