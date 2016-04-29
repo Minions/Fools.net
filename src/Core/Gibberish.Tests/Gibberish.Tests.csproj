@@ -80,7 +80,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompileFasm\BeAbleToDefineAThunk\CompileThunks.cs" />
+    <Compile Include="RecognizeBlockSyntax\ConvertSequenceOfLinesIntoForestOfBlocks.cs" />
     <Compile Include="CompileFools\CanGiveDecentSyntaxErrors.cs" />
     <Compile Include="CompileFools\RecognizeDeclarations\CanParseANamespace.cs" />
     <Compile Include="CompileFools\RecognizeDeclarations\CanParseASpecification.cs" />
@@ -90,7 +90,6 @@
     <Compile Include="ZzTestHelpers\ParseResultAssertions.cs" />
     <Compile Include="ZzTestHelpers\RecognitionAssertions.cs" />
     <Compile Include="ZzTestHelpers\ResultExtensions.cs" />
-    <Compile Include="CompileFasm\BeAbleToDefineAThunk\ParseThunkDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZzTestHelpers\TestsShouldBeClean.cs" />
   </ItemGroup>
@@ -103,7 +102,9 @@
       <Name>Gibberish</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CompileFasm\BeAbleToDefineAThunk\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
