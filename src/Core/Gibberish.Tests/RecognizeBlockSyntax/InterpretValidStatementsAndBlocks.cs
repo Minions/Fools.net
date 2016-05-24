@@ -14,7 +14,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		public void should_recognize_as(string input, AstBuilder<LanguageConstruct> expected)
 		{
 			var subject = new RecognizeBlocks();
-			var result = subject.GetMatch(input, subject.WholeFile);
+			var result = subject.ParseWholeFile(input);
 
 			result.Should()
 				.BeRecognizedAs(expected);

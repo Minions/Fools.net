@@ -21,7 +21,7 @@ define.thunk some.name:
 define.thunk other.name:
 	pass
 ";
-			var result = subject.GetMatch(input, subject.WholeFile);
+			var result = subject.ParseWholeFile(input);
 			result.Should()
 				.BeRecognizedAs(
 					BasicAst.SequenceOfRawLines(

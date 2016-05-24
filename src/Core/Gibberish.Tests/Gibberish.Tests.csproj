@@ -81,10 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RecognizeBlockSyntax\ConvertSequenceOfLinesIntoForestOfBlocks.cs" />
-    <Compile Include="CompileFools\CanGiveDecentSyntaxErrors.cs" />
-    <Compile Include="CompileFools\RecognizeDeclarations\CanParseANamespace.cs" />
-    <Compile Include="CompileFools\RecognizeDeclarations\CanParseASpecification.cs" />
-    <Compile Include="PickTheRightLanguageForFile\ParserChooseLanguageBasedOnUseLanguageStatement.cs" />
     <Compile Include="RecognizeBlockSyntax\InterpretValidStatementsAndBlocks.cs" />
     <Compile Include="RecognizeBlockSyntax\InterpretWholeFile.cs" />
     <Compile Include="ZzTestHelpers\ParseResultAssertions.cs" />
