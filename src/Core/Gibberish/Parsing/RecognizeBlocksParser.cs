@@ -1,14 +1,16 @@
-﻿using Gibberish.AST._1_Bare;
-using IronMeta.Matcher;
+﻿using System.Collections.Generic;
+using Gibberish.AST._1_Bare;
+using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
 	partial class RecognizeBlocks
 	{
-		public MatchResult<char, LanguageConstruct> ParseWholeFile(string input)
+		[NotNull]
+		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
 			var result = GetMatch(input, WholeFile);
-			return result;
+			return result.Results;
 		}
 	}
 }

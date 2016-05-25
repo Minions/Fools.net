@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
-using FluentAssertions;
-using Gibberish.AST;
 using Gibberish.AST._1_Bare;
-using Gibberish.Execution;
 using IronMeta.Matcher;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
@@ -33,69 +30,10 @@ namespace Gibberish.Tests.ZzTestHelpers
 			ApprovalTests.Approvals.VerifyJson(self.PrettyPrint());
 		}
 
-		public static void ShouldHave([CanBeNull] this ThunkDescriptor subject, object expectation)
-		{
-			subject.ShouldBeEquivalentTo(expectation, c => c.ExcludingMissingMembers());
-		}
-
-		[NotNull]
-		public static ParseResultAssertions Should([NotNull] this MatchResult<char, Parse> parseResult)
-		{
-			return new ParseResultAssertions(parseResult);
-		}
-
-		[NotNull]
-		public static RecognitionAssertions<LanguageConstruct> Should([NotNull] this MatchResult<char, LanguageConstruct> result)
-		{
-			var recognition = result.Success ? result.Results : Enumerable.Empty<LanguageConstruct>();
-			return new RecognitionAssertions<LanguageConstruct>(result.Success, recognition);
-		}
-
 		[NotNull]
 		public static RecognitionAssertions<LanguageConstruct> Should([NotNull] this IEnumerable<LanguageConstruct> result)
 		{
 			return new RecognitionAssertions<LanguageConstruct>(true, result);
-		}
-
-		[NotNull]
-		public static ParseResultAssertions ParseAs([NotNull] this ParseResultAssertions target, [NotNull] Parse expectation)
-		{
-			target.Subject.ShouldBeEquivalentTo(
-				new
-				{
-					Success = true
-				},
-				options => options.ExcludingMissingMembers());
-			target.Parse.ShouldBeEquivalentTo(
-				expectation,
-				options => options.IncludingFields()
-					.IncludingNestedObjects()
-					.RespectingRuntimeTypes());
-			return target;
-		}
-
-		[NotNull]
-		public static ParseResultAssertions ParseWithErrors([NotNull] this ParseResultAssertions target, [NotNull] ParseError expected)
-		{
-			target.Subject.ShouldBeEquivalentTo(
-				new
-				{
-					Success = true
-				},
-				options => options.ExcludingMissingMembers());
-			target.Parse.ShouldBeEquivalentTo(
-				new
-				{
-					Errors = new[]
-					{
-						expected
-					}
-				},
-				options => options.ExcludingMissingMembers()
-					.IncludingFields()
-					.IncludingNestedObjects()
-					.RespectingRuntimeTypes());
-			return target;
 		}
 
 		private static readonly JsonSerializerSettings WithTypeNames = new JsonSerializerSettings
