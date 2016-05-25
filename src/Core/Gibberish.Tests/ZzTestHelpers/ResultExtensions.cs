@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization.Formatters;
 using Gibberish.AST._1_Bare;
-using IronMeta.Matcher;
 using JetBrains.Annotations;
 using Newtonsoft.Json;
 
@@ -10,14 +8,6 @@ namespace Gibberish.Tests.ZzTestHelpers
 {
 	internal static class ResultExtensions
 	{
-		[NotNull, UsedImplicitly]
-		public static string PrettyPrint<T>([CanBeNull] this MatchResult<char, T> self)
-		{
-			if (!self.Success) { return "Unhandled low-level error: " + (self.Error ?? "<null>"); }
-			if (!self.Results.Any()) { return "Low-level parser matched, but no results found."; }
-			return JsonConvert.SerializeObject(self.Results, WithTypeNames);
-		}
-
 		[NotNull, UsedImplicitly]
 		public static string PrettyPrint([CanBeNull] this object self)
 		{
