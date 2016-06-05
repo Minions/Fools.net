@@ -65,7 +65,7 @@ namespace Gibberish.Parsing
 			if (commentEnd.Length == 0) {
 				errors.Add(ParseError.MultilineCommentWithoutEnd());
 			}
-			else if (!"\"\"\"".Equals(commentEnd)) { errors.Add(ParseError.ErrorAtEndOfMultilineComment(commentEnd)); }
+			else if (!"##".Equals(commentEnd)) { errors.Add(ParseError.ErrorAtEndOfMultilineComment(commentEnd)); }
 			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentNumber, content, errors);
 		}
 

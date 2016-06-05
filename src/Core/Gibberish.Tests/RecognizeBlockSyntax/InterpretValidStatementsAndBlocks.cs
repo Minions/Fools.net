@@ -255,15 +255,15 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			},
 			new object[]
 			{
-				"#[8]: \"\"\"\r\n\"\"\"\r\n",
+				"##[8]: \r\n##\r\n",
 				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(8, "\r\n"))
 			},
 			new object[]
 			{
-				@"#[9]: """"""first
+				@"##[9]: first
 
 more
-""""""
+##
 ",
 				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(9, @"first
 
@@ -272,24 +272,24 @@ more
 			},
 			new object[]
 			{
-				"#[16]: \"\"\"\r\n#[12]: hi\r\n",
+				"##[16]: \r\n#[12]: hi\r\n",
 				BasicAst.SequenceOfRawLines(
 					f => f.CommentDefinition(16, "\r\n#[12]: hi\r\n")
 						.WithError(ParseError.MultilineCommentWithoutEnd()))
 			},
 			new object[]
 			{
-				"#[13]: \"\"\"\r\n \"\"\"\r\n",
+				"##[13]: \r\n ##\r\n",
 				BasicAst.SequenceOfRawLines(
 					f => f.CommentDefinition(13, "\r\n")
-						.WithError(ParseError.ErrorAtEndOfMultilineComment(" \"\"\"")))
+						.WithError(ParseError.ErrorAtEndOfMultilineComment(" ##")))
 			},
 			new object[]
 			{
-				"#[17]: \"\"\"\r\n\"\"\" \r\n",
+				"##[17]: \r\n## \r\n",
 				BasicAst.SequenceOfRawLines(
 					f => f.CommentDefinition(17, "\r\n")
-						.WithError(ParseError.ErrorAtEndOfMultilineComment("\"\"\" ")))
+						.WithError(ParseError.ErrorAtEndOfMultilineComment("## ")))
 			}
 		};
 	}
