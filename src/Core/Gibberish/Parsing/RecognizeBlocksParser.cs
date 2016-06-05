@@ -12,9 +12,12 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
+#if true
 			var result = GetMatch(input, WholeFile);
 			return result.Results;
-			//return ParseWholeFileNewImpl(input);
+#else
+			return ParseWholeFileNewImpl(input);
+#endif
 		}
 
 		[NotNull]
@@ -50,7 +53,8 @@ namespace Gibberish.Parsing
 		{
 			var content = line.TrimStart('\t');
 			var indentationDepth = line.Length - content.Length;
-			if (content.Contains(":"))
+			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content, CRLF); }
+			else if (content.Contains(":"))
 			{
 				var parts = content.Split(
 					new[]
