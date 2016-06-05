@@ -270,13 +270,14 @@ more
 more
 "))
 			},
-			new object[]
-			{
-				"##[16]: \r\n#[12]: hi\r\n",
-				BasicAst.SequenceOfRawLines(
-					f => f.CommentDefinition(16, "\r\n#[12]: hi\r\n")
-						.WithError(ParseError.MultilineCommentWithoutEnd()))
-			},
+			// We're thinking about changing the syntax, such that this is no longer interesting or valid
+			//new object[]
+			//{
+			//	"##[16]: \r\n#[12]: hi\r\n",
+			//	BasicAst.SequenceOfRawLines(
+			//		f => f.CommentDefinition(16, "\r\n#[12]: hi\r\n")
+			//			.WithError(ParseError.MultilineCommentWithoutEnd()))
+			//},
 			new object[]
 			{
 				"##[13]: \r\n ##\r\n",
