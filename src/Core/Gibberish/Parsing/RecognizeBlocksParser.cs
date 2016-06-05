@@ -13,7 +13,7 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
-#if true
+#if false
 			var result = GetMatch(input, WholeFile);
 			return result.Results;
 #else
@@ -68,8 +68,16 @@ namespace Gibberish.Parsing
 			var content = line.TrimStart('\t');
 			var indentationDepth = line.Length - content.Length;
 			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content, CRLF); }
-			if (content.StartsWith("##")) {
-				return _SaveProgress(line);
+			if (content.StartsWith("##")) { return _SaveProgress(line); }
+			if (content.StartsWith("#"))
+			{
+				var match = _commentIdRegex.Match(content);
+				if (!match.Success) { return _ExtractSingleLineCommentDefinition("", content.Substring(1).TrimStart(), "", CRLF); }
+				var commentId = match.Groups["commentId"].Value;
+				var commentSeparator = match.Groups["commentSeparator"].Value;
+				var firstLineContent = match.Groups["firstLineContent"].Value;
+
+				return _ExtractSingleLineCommentDefinition(commentId, firstLineContent, commentSeparator, CRLF);
 			}
 			else if (content.Contains(":"))
 			{
