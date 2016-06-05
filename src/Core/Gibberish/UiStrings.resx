@@ -148,10 +148,10 @@
 		<value>We found bad whitespace on a blank line. Blank lines must either consist of just a newline, or must be indented the current indentation level and then have a newline. This blank line has the whitespace `{0}`. Please remove it.</value>
 	</data>
 	<data name="ErrorAtEndOfMultilineComment" xml:space="preserve">
-		<value>We might have found the end of your multi-line comment, but we can't be sure. A multi-line comment must end with `"""` on its own line. We found something similar: `{0}`. Please end the comment properly.</value>
+		<value>We might have found the end of your multi-line comment, but we can't be sure. A multi-line comment must end with `##` on its own line. We found something similar: `{0}`. Please end the comment properly.</value>
 	</data>
 	<data name="MultilineCommentWithoutEnd" xml:space="preserve">
-		<value>We tried our best, but just couldn't find the end of this multi-line comment. Multi-line comments must end with a line containing just `"""`. Please end your comment.</value>
+		<value>We tried our best, but just couldn't find the end of this multi-line comment. Multi-line comments must end with a line containing just `##`. Please end your comment.</value>
 	</data>
 	<data name="MissingNewlineAtEndOfFile" xml:space="preserve">
 		<value>We couldn't find the newline at the end of the file. Each file is required to end with a newline. Please add it.</value>
