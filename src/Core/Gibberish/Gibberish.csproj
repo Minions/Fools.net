@@ -69,6 +69,8 @@
     <Compile Include="AST\_1_Bare\Builders\BlockBuilderBase.cs" />
     <Compile Include="AST\_1_Bare\Builders\FileParseAsForestOfBlocksBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\FileParseBuilderBase.cs" />
+    <Compile Include="AST\_1_Bare\Builders\MultilineCommentPreludeBuilder.cs" />
+    <Compile Include="AST\_1_Bare\Builders\MultilineCommentStatementBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\RawBlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentBuilder.cs" />
     <Compile Include="AST\_1_Bare\CommentDefinition.cs" />
@@ -76,6 +78,8 @@
     <Compile Include="AST\_1_Bare\LanguageConstruct.cs" />
     <Compile Include="AST\_1_Bare\Builders\StatementBuilder.cs" />
     <Compile Include="AST\PossiblySpecified.cs" />
+    <Compile Include="AST\_1_Bare\MultilineCommentDefinitionStatement.cs" />
+    <Compile Include="AST\_1_Bare\MultilineCommentDefinitionPrelude.cs" />
     <Compile Include="AST\_1_Bare\UnknownBlock.cs" />
     <Compile Include="AST\_1_Bare\FasmOrLanguageConstruct.cs" />
     <Compile Include="AST\_2_Fasm\Builders\UnknownStatementBuilder.cs" />

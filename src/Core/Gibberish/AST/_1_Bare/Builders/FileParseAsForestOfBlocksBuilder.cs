@@ -33,5 +33,15 @@ namespace Gibberish.AST._1_Bare.Builders
 		{
 			return _Remember(new CommentBuilder(commentId, content));
 		}
+
+		public override MultilineCommentPreludeBuilder MultilineCommentPrelude(int commentId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override MultilineCommentStatementBuilder MultilineCommentDefinitionStatement(string content)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

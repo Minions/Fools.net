@@ -53,25 +53,33 @@ namespace Gibberish.Parsing
 		[NotNull]
 		private LanguageConstruct _InterpretLine([NotNull] string line)
 		{
-			if (_commentProgress.Any())
-			{
-				if (line.Trim() == "##")
-				{
-					_SaveProgress(line);
-					var result = _ExtractMultiLineCommentDefinition();
-					_commentProgress.Clear();
-					return result;
-				}
-				return _SaveProgress(line);
-			}
+			//if (_commentProgress.Any())
+			//{
+			//	if (line.Trim() == "##")
+			//	{
+			//		_SaveProgress(line);
+			//		var result = _ExtractMultiLineCommentDefinition();
+			//		_commentProgress.Clear();
+			//		return result;
+			//	}
+			//	return _SaveProgress(line);
+			//}
 
 			var content = line.TrimStart('\t');
 			var indentationDepth = line.Length - content.Length;
 			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content, CRLF); }
-			if (content.StartsWith("##")) { return _SaveProgress(line); }
+			if (content.StartsWith("##"))
+			{
+				inCommentSection = true;
+				var match = _multiLineCommentPreludeRegex.Match(content);
+				if (!match.Success) { return _ExtractMultiLineCommentPrelude(indentationDepth, ""); }
+				var commentId = match.Groups["commentId"].Value;
+				return _ExtractMultiLineCommentPrelude(indentationDepth, commentId); 
+			}
 			if (content.StartsWith("#"))
 			{
-				var match = _commentIdRegex.Match(content);
+				inCommentSection = true;
+				var match = _singleLineCommentRegex.Match(content);
 				if (!match.Success) { return _ExtractSingleLineCommentDefinition("", content.Substring(1).TrimStart(), "", CRLF); }
 				var commentId = match.Groups["commentId"].Value;
 				var commentSeparator = match.Groups["commentSeparator"].Value;
@@ -79,6 +87,11 @@ namespace Gibberish.Parsing
 
 				return _ExtractSingleLineCommentDefinition(commentId, firstLineContent, commentSeparator, CRLF);
 			}
+			if (inCommentSection)
+			{
+				return _ExtractMultiLineCommentStatement(indentationDepth, content);
+			}
+
 			if (content.Contains(":"))
 			{
 				var parts = content.Split(
@@ -92,34 +105,42 @@ namespace Gibberish.Parsing
 			return _ExtractStatementAndErrors(indentationDepth, content, CRLF);
 		}
 
-		private readonly Regex _commentIdRegex = new Regex(@"(?x)^\#\#?
+		bool inCommentSection = false;
+
+		private readonly Regex _multiLineCommentPreludeRegex = new Regex(@"(?x)
+				^\#\#
+					\[(?<commentId>[0-9]+)\]\:
+				$
+", RegexOptions.Compiled);
+
+		private readonly Regex _singleLineCommentRegex = new Regex(@"(?x)^\#
 				\[(?<commentId>[0-9]+)\]\:
 				(?<commentSeparator>\s+)
 				(?<firstLineContent>.*)
 ", RegexOptions.Compiled);
 
-		private LanguageConstruct _ExtractMultiLineCommentDefinition()
-		{
-			var commentEnd = _commentProgress.Last();
-			_commentProgress.RemoveAt(_commentProgress.Count - 1);
-			var match = _commentIdRegex.Match(_commentProgress[0]);
-			if (!match.Success) { return _ExtractMultiLineCommentDefinition("", _commentProgress[0], "", commentEnd); }
-			var commentId = match.Groups["commentId"].Value;
-			var commentSeparator = match.Groups["commentSeparator"].Value;
-			var firstLineContent = match.Groups["firstLineContent"].Value;
-			_commentProgress[0] = firstLineContent;
-			var content = string.Join(Environment.NewLine, _commentProgress) + Environment.NewLine;
+		//private LanguageConstruct _ExtractMultiLineCommentDefinition()
+		//{
+		//	var commentEnd = _commentProgress.Last();
+		//	_commentProgress.RemoveAt(_commentProgress.Count - 1);
+		//	var match = _singleLineCommentRegex.Match(_commentProgress[0]);
+		//	if (!match.Success) { return _ExtractMultiLineCommentDefinition("", _commentProgress[0], "", commentEnd); }
+		//	var commentId = match.Groups["commentId"].Value;
+		//	var commentSeparator = match.Groups["commentSeparator"].Value;
+		//	var firstLineContent = match.Groups["firstLineContent"].Value;
+		//	_commentProgress[0] = firstLineContent;
+		//	var content = string.Join(Environment.NewLine, _commentProgress) + Environment.NewLine;
 
-			return _ExtractMultiLineCommentDefinition(commentId, content, commentSeparator, commentEnd);
-		}
+		//	return _ExtractMultiLineCommentDefinition(commentId, content, commentSeparator, commentEnd);
+		//}
 
-		private readonly List<string> _commentProgress = new List<string>();
+		//private readonly List<string> _commentProgress = new List<string>();
 
-		private LanguageConstruct _SaveProgress(string line)
-		{
-			_commentProgress.Add(line);
-			return null;
-		}
+		//private LanguageConstruct _SaveProgress(string line)
+		//{
+		//	_commentProgress.Add(line);
+		//	return null;
+		//}
 
 		private const string CRLF = CR + LF;
 		private const string CR = "\r";

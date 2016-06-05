@@ -38,5 +38,16 @@ namespace Gibberish.AST._1_Bare.Builders
 		{
 			return _Remember(new CommentBuilder(commentId, content));
 		}
+
+		public override MultilineCommentPreludeBuilder MultilineCommentPrelude(int commentId)
+		{
+			return _Remember(new MultilineCommentPreludeBuilder(commentId));
+		}
+
+		public override MultilineCommentStatementBuilder MultilineCommentDefinitionStatement(string content)
+		{
+			return _Remember(new MultilineCommentStatementBuilder(content));
+
+		}
 	}
 }

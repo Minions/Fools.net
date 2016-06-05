@@ -132,5 +132,25 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
+
+		private LanguageConstruct _ExtractMultiLineCommentPrelude(int indentationDepth, string commentId)
+		{
+			var errors = new List<ParseError>();
+
+			int commentNumber;
+			if (!int.TryParse(commentId, out commentNumber))
+			{
+				errors.Add(ParseError.MissingIdInCommentDefinition(commentId.Substring(0, 8)));
+			}
+
+			return new MultilineCommentDefinitionPrelude(PossiblySpecified<bool>.Unspecifed, commentNumber, errors);
+		}
+
+		private LanguageConstruct _ExtractMultiLineCommentStatement(int indentationDepth, string content)
+		{
+			var errors = new List<ParseError>();
+
+			return new MultilineCommentDefinitionStatement(indentationDepth, content, errors);
+		}
 	}
 }

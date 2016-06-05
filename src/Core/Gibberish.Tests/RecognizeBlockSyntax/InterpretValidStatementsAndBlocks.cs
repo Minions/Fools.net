@@ -256,45 +256,63 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			},
 			new object[]
 			{
-				"##[8]: \r\n##\r\n",
-				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(8, "\r\n"))
-			},
-			new object[]
-			{
-				"##[9]: first\r\rmore\n##\n",
+				@"##[8]:
+	first
+",
 				BasicAst.SequenceOfRawLines(
-					f => f.CommentDefinition(
-						9,
-						string.Join(
-							Environment.NewLine,
-							"first",
-							"",
-							"more",
-							"")))
+					f =>
+					{
+						f.MultilineCommentPrelude(8);
+						f.MultilineCommentDefinitionStatement("first");
+					})
 			},
+//			new object[]
+//			{
+//				@"##[8]:
+//	first
+//		second
+//",
+//				BasicAst.SequenceOfRawLines(
+//					f =>
+//					{
+//						f.MultilineCommentPrelude(8);
+//						f.MultilineCommentBody("first");
+//						f.MultilineCommentBody("	second");
+//					})
+//			},
 
-			// We're thinking about changing the syntax, such that this is no longer interesting or valid
 			//new object[]
 			//{
-			//	"##[16]: \r\n#[12]: hi\r\n",
-			//	BasicAst.SequenceOfRawLines(
-			//		f => f.CommentDefinition(16, "\r\n#[12]: hi\r\n")
-			//			.WithError(ParseError.MultilineCommentWithoutEnd()))
+			//	"##[8]: \r\n",
+			//	BasicAst.SequenceOfRawLines(f => f.CommentDefinition(8, "\r\n"))
 			//},
-			new object[]
-			{
-				"##[13]: \r\n ##\r\n",
-				BasicAst.SequenceOfRawLines(
-					f => f.CommentDefinition(13, "\r\n")
-						.WithError(ParseError.ErrorAtEndOfMultilineComment(" ##")))
-			},
-			new object[]
-			{
-				"##[17]: \r\n## \r\n",
-				BasicAst.SequenceOfRawLines(
-					f => f.CommentDefinition(17, "\r\n")
-						.WithError(ParseError.ErrorAtEndOfMultilineComment("## ")))
-			}
+			//new object[]
+			//{
+			//	"##[9]:\r\tfirst\r\r\tmore\n",
+			//	BasicAst.SequenceOfRawLines(
+			//		f => f.CommentDefinition(
+			//			9,
+			//			string.Join(
+			//				Environment.NewLine,
+			//				"first",
+			//				"",
+			//				"more",
+			//				"")))
+			//},
+			//new object[]
+			//{
+			//	"##[13]: \r\n ##\r\n",
+			//	BasicAst.SequenceOfRawLines(
+			//		f => f.CommentDefinition(13, "\r\n")
+			//			.WithError(ParseError.ErrorAtEndOfMultilineComment(" ##")))
+			//},
+			//new object[]
+			//{
+			//	"##[17]: \r\n## \r\n",
+			//	BasicAst.SequenceOfRawLines(
+			//		f => f.CommentDefinition(17, "\r\n")
+			//			.WithError(ParseError.ErrorAtEndOfMultilineComment("## ")))
+			//}
 		};
 	}
 }

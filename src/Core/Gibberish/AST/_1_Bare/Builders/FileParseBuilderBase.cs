@@ -34,5 +34,9 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull] private readonly List<AstBuilderSupportingErrors<LanguageConstruct>> _contents = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
+
+		public abstract MultilineCommentPreludeBuilder MultilineCommentPrelude(int commentId);
+
+		public abstract MultilineCommentStatementBuilder MultilineCommentDefinitionStatement(string content);
 	}
 }
