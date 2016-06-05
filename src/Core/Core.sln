@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibberish", "Gibberish\Gibberish.csproj", "{706A822C-C45E-4B09-BCAE-34A71DED812D}"
 EndProject
@@ -23,6 +23,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "spec", "spec", "{C1A47AD0-5
 		..\Fools.spec\README.md = ..\Fools.spec\README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World", "World\World.csproj", "{F36927AC-B09F-472E-8C6D-775BA48007E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform", "Platform\Platform.csproj", "{69C2530F-7C74-42D9-B4AD-4BEFA2941963}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F36927AC-B09F-472E-8C6D-775BA48007E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F36927AC-B09F-472E-8C6D-775BA48007E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F36927AC-B09F-472E-8C6D-775BA48007E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F36927AC-B09F-472E-8C6D-775BA48007E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69C2530F-7C74-42D9-B4AD-4BEFA2941963}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69C2530F-7C74-42D9-B4AD-4BEFA2941963}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69C2530F-7C74-42D9-B4AD-4BEFA2941963}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69C2530F-7C74-42D9-B4AD-4BEFA2941963}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

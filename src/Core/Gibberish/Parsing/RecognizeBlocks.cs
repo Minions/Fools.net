@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
+using IronMeta.Matcher;
 using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
-	partial class RecognizeBlocks
+	public partial class RecognizeBlocks
 	{
 		[NotNull]
 		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace, string newline)
@@ -64,7 +65,7 @@ namespace Gibberish.Parsing
 			if (commentEnd.Length == 0) {
 				errors.Add(ParseError.MultilineCommentWithoutEnd());
 			}
-			else if (!"\"\"\"".Equals(commentEnd)) { errors.Add(ParseError.ErrorAtEndOfMultilineComment(commentEnd)); }
+			else if (!"##".Equals(commentEnd)) { errors.Add(ParseError.ErrorAtEndOfMultilineComment(commentEnd)); }
 			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentNumber, content, errors);
 		}
 

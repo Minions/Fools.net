@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using ApprovalTests;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Execution;
@@ -10,10 +9,10 @@ using Gibberish.Tests.ZzTestHelpers;
 using JetBrains.Annotations;
 using NUnit.Framework;
 
-namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
+namespace Gibberish.Tests.RecognizeBlockSyntax
 {
 	[TestFixture]
-	public class CompileThunks
+	public class ConvertSequenceOfLinesIntoForestOfBlocks
 	{
 		[Test]
 		public void ShouldFindBlockwithSimpleStatements()
@@ -440,20 +439,6 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 						}));
 		}
 
-		[Test]
-		public void CompilingATrivialDefineThunkNodeShouldCreateThunkInNameTable()
-		{
-			var testSubject = Tools.Fasm_Old.Compiler_OldApi;
-			var parse = FasmAstOld.Thunk(ArbitraryName, FasmAstOld.PassRaw);
-			testSubject.CompileFragment(parse, _arbitraryDistrict);
-			_arbitraryDistrict.Name(ArbitraryName)
-				.ShouldHave(
-					new
-					{
-						name = ArbitraryName
-					});
-		}
-
 		private static CommentDefinition Comment(int commentId, string content)
 		{
 			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentId, content, ParseError.NoErrors);
@@ -468,8 +453,6 @@ namespace Gibberish.Tests.CompileFasm.BeAbleToDefineAThunk
 		{
 			return new UnknownPrelude(PossiblySpecified<int>.WithValue(indentationLevel), content, Enumerable.Empty<int>(), ParseError.NoErrors);
 		}
-
-		private const string ArbitraryName = "the.name";
 
 		[NotNull, SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private City _city;
 		[NotNull, SuppressMessage("ReSharper", "NotNullMemberIsNotInitialized")] private District _arbitraryDistrict;

@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IronMeta.Library, Version=4.2.5820.22861, Culture=neutral, PublicKeyToken=53410376b33c6719, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronMeta.4.2.3\lib\net45\IronMeta.Library.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="JetBrains.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
@@ -88,50 +84,21 @@
     <Compile Include="AST\_2_Fasm\Builders\NamedThunkBuilder.cs" />
     <Compile Include="AST\_2_Fasm\FasmConstruct.cs" />
     <Compile Include="Execution\City.cs" />
-    <Compile Include="Compiler_Old.cs" />
     <Compile Include="Execution\District.cs" />
-    <Compile Include="Execution\FasmCompiler_Old.cs" />
     <Compile Include="Execution\ThunkDescriptor.cs" />
-    <Compile Include="LanguageTools.cs" />
     <Compile Include="AST\Parse.cs" />
     <Compile Include="AST\PassStatement.cs" />
     <Compile Include="AST\_1_Bare\UnknownStatement.cs" />
     <Compile Include="Parsing\AssembleBlocks.cs" />
     <Compile Include="AST\_1_Bare\LanguageConstructVisitor.cs" />
-    <Compile Include="Parsing\ParseBlockLanguage.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParseBlockLanguage.ironmeta</DependentUpon>
-    </Compile>
     <Compile Include="AST\ParseError.cs" />
-    <Compile Include="Parsing\ParseFasm.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParseFasm.ironmeta</DependentUpon>
-    </Compile>
-    <Compile Include="Parsing\ParseFools.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParseFools.ironmeta</DependentUpon>
-    </Compile>
-    <Compile Include="Parsing\ParseLanguageFile.cs" />
-    <Compile Include="Parsing\ParseLanguageFile.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParseLanguageFile.ironmeta</DependentUpon>
-    </Compile>
     <Compile Include="Parsing\ParsingExtensions.cs" />
     <Compile Include="Parsing\RecognizeBlocks.cs" />
-    <Compile Include="Parsing\RecognizeBlocks.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RecognizeBlocks.ironmeta</DependentUpon>
-    </Compile>
     <Compile Include="AST\_1_Bare\UnknownPrelude.cs" />
+    <Compile Include="Parsing\RecognizeBlocksParser.cs" />
     <Compile Include="Parsing\UnfixableError.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AST\Statement.cs" />
-    <Compile Include="Tools.cs" />
     <Compile Include="UiStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,26 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Parsing\ParseBlockLanguage.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>ParseBlockLanguage.g.cs</LastGenOutput>
-    </None>
-    <None Include="Parsing\ParseFasm.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>ParseFasm.g.cs</LastGenOutput>
-    </None>
-    <None Include="Parsing\ParseFools.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>ParseFools.g.cs</LastGenOutput>
-    </None>
-    <None Include="Parsing\ParseLanguageFile.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>ParseLanguageFile.g.cs</LastGenOutput>
-    </None>
-    <None Include="Parsing\RecognizeBlocks.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>RecognizeBlocks.g.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UiStrings.resx">
@@ -170,18 +117,4 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!--<UsingTask TaskName="IronMetaGenerate" AssemblyFile=" ..\packages\IronMeta.4.2.3\lib\net45\IronMeta.Library.dll" />-->
-  <Target Name="BeforeBuild">
-    <!--<IronMetaGenerate Input="Parsing\ParseFasm.ironmeta" Output="Parsing\ParseFasm.g.cs" Namespace="Gibberish.Parsing" />-->
-    <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\ParseFasm.g.cs Parsing\ParseFasm.ironmeta" />
-    <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\ParseFasm.g.cs Parsing\ParseFasm.ironmeta" />
-    <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\ParseFools.g.cs Parsing\ParseFools.ironmeta" />
-    <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\ParseFools.g.cs Parsing\ParseFools.ironmeta" />
-    <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\ParseLanguageFile.g.cs Parsing\ParseLanguageFile.ironmeta" />
-    <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\ParseLanguageFile.g.cs Parsing\ParseLanguageFile.ironmeta" />
-    <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\ParseBlockLanguage.g.cs Parsing\ParseBlockLanguage.ironmeta" />
-    <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\ParseBlockLanguage.g.cs Parsing\ParseBlockLanguage.ironmeta" />
-    <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\RecognizeBlocks.g.cs Parsing\RecognizeBlocks.ironmeta" />
-    <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\RecognizeBlocks.g.cs Parsing\RecognizeBlocks.ironmeta" />
-  </Target>
 </Project>

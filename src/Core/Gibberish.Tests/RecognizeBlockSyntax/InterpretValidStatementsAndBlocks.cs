@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
@@ -14,7 +15,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		public void should_recognize_as(string input, AstBuilder<LanguageConstruct> expected)
 		{
 			var subject = new RecognizeBlocks();
-			var result = subject.GetMatch(input, subject.WholeFile);
+			var result = subject.ParseWholeFile(input);
 
 			result.Should()
 				.BeRecognizedAs(expected);
@@ -255,41 +256,44 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			},
 			new object[]
 			{
-				"#[8]: \"\"\"\r\n\"\"\"\r\n",
+				"##[8]: \r\n##\r\n",
 				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(8, "\r\n"))
 			},
 			new object[]
 			{
-				@"#[9]: """"""first
-
-more
-""""""
-",
-				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(9, @"first
-
-more
-"))
-			},
-			new object[]
-			{
-				"#[16]: \"\"\"\r\n#[12]: hi\r\n",
+				"##[9]: first\r\rmore\n##\n",
 				BasicAst.SequenceOfRawLines(
-					f => f.CommentDefinition(16, "\r\n#[12]: hi\r\n")
-						.WithError(ParseError.MultilineCommentWithoutEnd()))
+					f => f.CommentDefinition(
+						9,
+						string.Join(
+							Environment.NewLine,
+							"first",
+							"",
+							"more",
+							"")))
 			},
+
+			// We're thinking about changing the syntax, such that this is no longer interesting or valid
+			//new object[]
+			//{
+			//	"##[16]: \r\n#[12]: hi\r\n",
+			//	BasicAst.SequenceOfRawLines(
+			//		f => f.CommentDefinition(16, "\r\n#[12]: hi\r\n")
+			//			.WithError(ParseError.MultilineCommentWithoutEnd()))
+			//},
 			new object[]
 			{
-				"#[13]: \"\"\"\r\n \"\"\"\r\n",
+				"##[13]: \r\n ##\r\n",
 				BasicAst.SequenceOfRawLines(
 					f => f.CommentDefinition(13, "\r\n")
-						.WithError(ParseError.ErrorAtEndOfMultilineComment(" \"\"\"")))
+						.WithError(ParseError.ErrorAtEndOfMultilineComment(" ##")))
 			},
 			new object[]
 			{
-				"#[17]: \"\"\"\r\n\"\"\" \r\n",
+				"##[17]: \r\n## \r\n",
 				BasicAst.SequenceOfRawLines(
 					f => f.CommentDefinition(17, "\r\n")
-						.WithError(ParseError.ErrorAtEndOfMultilineComment("\"\"\" ")))
+						.WithError(ParseError.ErrorAtEndOfMultilineComment("## ")))
 			}
 		};
 	}
