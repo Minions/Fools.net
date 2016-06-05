@@ -439,6 +439,31 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 						}));
 		}
 
+		[Test]
+		public void MultiLineCommentPreludeFollowedByStatmentBecomesAMultiLineComment()
+		{
+			var testSubject = new AssembleBlocks();
+
+			var result = testSubject.Transform(
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.MultilineCommentPrelude(8);
+						f.MultilineCommentDefinitionStatement("first");
+					})
+					.Build());
+
+			result.Should()
+				.BeRecognizedAs(
+					BasicAst.BlockTree(
+						f =>
+						{
+							f.MultiLineComment(8)
+								.WithBody(b => { b.AddStatement("first"); })
+								.ThatStartsParagraph();
+						}));
+		}
+
 		private static CommentDefinition Comment(int commentId, string content)
 		{
 			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentId, content, ParseError.NoErrors);

@@ -43,5 +43,10 @@ namespace Gibberish.AST._1_Bare.Builders
 		{
 			throw new NotImplementedException();
 		}
+
+		public CommentBlockBuilder MultiLineComment(int commentId)
+		{
+			return _Remember(new CommentBlockBuilder(commentId, delegate { }));
+		}
 	}
 }

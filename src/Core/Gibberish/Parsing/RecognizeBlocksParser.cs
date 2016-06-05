@@ -13,12 +13,7 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
-#if false
-			var result = GetMatch(input, WholeFile);
-			return result.Results;
-#else
 			return ParseWholeFileNewImpl(input);
-#endif
 		}
 
 		[NotNull]

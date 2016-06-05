@@ -7,7 +7,7 @@ namespace Gibberish.AST._1_Bare
 		public int IndentationDepth { get; }
 		public string Content { get; }
 
-		public MultilineCommentDefinitionStatement(int indentationDepth, string content, List<ParseError> errors) : base(errors)
+		public MultilineCommentDefinitionStatement(int indentationDepth, string content, IEnumerable<ParseError> errors) : base(errors)
 		{
 			IndentationDepth = indentationDepth;
 			Content = content;

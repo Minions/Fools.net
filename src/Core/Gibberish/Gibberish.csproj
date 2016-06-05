@@ -67,6 +67,7 @@
     <Compile Include="AST\_1_Bare\Builders\BlankLineBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlockBuilderBase.cs" />
+    <Compile Include="AST\_1_Bare\Builders\CommentBlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\FileParseAsForestOfBlocksBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\FileParseBuilderBase.cs" />
     <Compile Include="AST\_1_Bare\Builders\MultilineCommentPreludeBuilder.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Parsing\AssembleBlocks.cs" />
     <Compile Include="AST\_1_Bare\LanguageConstructVisitor.cs" />
     <Compile Include="AST\ParseError.cs" />
+    <Compile Include="AST\_1_Bare\CommentDefinitionBlock.cs" />
     <Compile Include="Parsing\ParsingExtensions.cs" />
     <Compile Include="Parsing\RecognizeBlocks.cs" />
     <Compile Include="AST\_1_Bare\UnknownPrelude.cs" />

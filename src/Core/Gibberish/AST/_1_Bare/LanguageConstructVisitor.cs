@@ -13,5 +13,9 @@ namespace Gibberish.AST._1_Bare
 		bool Visit(UnknownPrelude prelude, int level, List<LanguageConstruct> result);
 
 		bool Visit(UnknownBlock block, int level, List<LanguageConstruct> result);
+
+		bool Visit(MultilineCommentDefinitionPrelude prelude, int level, List<LanguageConstruct> result);
+
+		bool Visit(MultilineCommentDefinitionStatement statement, int level, List<LanguageConstruct> result);
 	}
 }

@@ -22,6 +22,8 @@ namespace Gibberish.AST._1_Bare
 			if (GetType() == typeof (CommentDefinition)) { return worker.Visit((CommentDefinition) this, level, result); }
 			if (GetType() == typeof (UnknownPrelude)) { return worker.Visit((UnknownPrelude) this, level, result); }
 			if (GetType() == typeof (UnknownBlock)) { return worker.Visit((UnknownBlock) this, level, result); }
+			if (GetType() == typeof (MultilineCommentDefinitionPrelude)) { return worker.Visit((MultilineCommentDefinitionPrelude) this, level, result); }
+			if (GetType() == typeof (MultilineCommentDefinitionStatement)) { return worker.Visit((MultilineCommentDefinitionStatement) this, level, result); }
 			throw new UnfixableError($"a new type got added to the concrete children of {typeof (LanguageConstruct).Name}, but the Accept function does not know the type. Found value of type {GetType().Name}, value {this}.");
 		}
 	}
