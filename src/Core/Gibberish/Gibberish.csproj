@@ -30,10 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IronMeta.Library, Version=4.2.5820.22861, Culture=neutral, PublicKeyToken=53410376b33c6719, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronMeta.4.2.3\lib\net45\IronMeta.Library.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="JetBrains.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
@@ -98,11 +94,6 @@
     <Compile Include="AST\ParseError.cs" />
     <Compile Include="Parsing\ParsingExtensions.cs" />
     <Compile Include="Parsing\RecognizeBlocks.cs" />
-    <Compile Include="Parsing\RecognizeBlocks.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RecognizeBlocks.ironmeta</DependentUpon>
-    </Compile>
     <Compile Include="AST\_1_Bare\UnknownPrelude.cs" />
     <Compile Include="Parsing\RecognizeBlocksParser.cs" />
     <Compile Include="Parsing\UnfixableError.cs" />
@@ -116,10 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Parsing\RecognizeBlocks.ironmeta">
-      <Generator>IronMetaGenerator</Generator>
-      <LastGenOutput>RecognizeBlocks.g.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UiStrings.resx">
@@ -130,10 +117,4 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!--<UsingTask TaskName="IronMetaGenerate" AssemblyFile=" ..\packages\IronMeta.4.2.3\lib\net45\IronMeta.Library.dll" />-->
-  <Target Name="BeforeBuild">
-    <!--<IronMetaGenerate Input="Parsing\RecognizeBlocks.ironmeta" Output="Parsing\RecognizeBlocks.g.cs" Namespace="Gibberish.Parsing" />-->
-    <Exec Condition=" $(OS) == 'Windows_NT'" Command="     ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\RecognizeBlocks.g.cs Parsing\RecognizeBlocks.ironmeta" />
-    <Exec Condition=" $(OS) != 'Windows_NT'" Command="mono ..\packages\IronMeta.4.2.3\tools\IronMeta.exe -n Gibberish.Parsing -o Parsing\RecognizeBlocks.g.cs Parsing\RecognizeBlocks.ironmeta" />
-  </Target>
 </Project>

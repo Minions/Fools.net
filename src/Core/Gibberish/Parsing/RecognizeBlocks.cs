@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
-	partial class RecognizeBlocks
+	public partial class RecognizeBlocks
 	{
 		[NotNull]
 		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace, string newline)

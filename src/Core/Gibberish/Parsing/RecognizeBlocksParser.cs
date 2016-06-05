@@ -79,7 +79,7 @@ namespace Gibberish.Parsing
 
 				return _ExtractSingleLineCommentDefinition(commentId, firstLineContent, commentSeparator, CRLF);
 			}
-			else if (content.Contains(":"))
+			if (content.Contains(":"))
 			{
 				var parts = content.Split(
 					new[]
@@ -93,11 +93,9 @@ namespace Gibberish.Parsing
 		}
 
 		private readonly Regex _commentIdRegex = new Regex(@"(?x)^\#\#?
-				\[
-					(?<commentId>[0-9]+)
-				\]\:
-					(?<commentSeparator>\s+)
-					(?<firstLineContent>.*)
+				\[(?<commentId>[0-9]+)\]\:
+				(?<commentSeparator>\s+)
+				(?<firstLineContent>.*)
 ", RegexOptions.Compiled);
 
 		private LanguageConstruct _ExtractMultiLineCommentDefinition()
@@ -123,7 +121,7 @@ namespace Gibberish.Parsing
 			return null;
 		}
 
-		private const string CRLF = "\r\n";
+		private const string CRLF = CR + LF;
 		private const string CR = "\r";
 		private const string LF = "\n";
 	}

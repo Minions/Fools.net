@@ -50,10 +50,6 @@
       <HintPath>..\packages\FluentAssertions.4.1.1\lib\net45\FluentAssertions.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="IronMeta.Library, Version=4.2.5820.22861, Culture=neutral, PublicKeyToken=53410376b33c6719, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronMeta.4.2.3\lib\net45\IronMeta.Library.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="JetBrains.Annotations">
       <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
