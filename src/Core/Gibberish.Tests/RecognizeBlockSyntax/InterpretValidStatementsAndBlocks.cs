@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
@@ -260,16 +261,18 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			},
 			new object[]
 			{
-				@"##[9]: first
-
-more
-##
-",
-				BasicAst.SequenceOfRawLines(f => f.CommentDefinition(9, @"first
-
-more
-"))
+				"##[9]: first\r\rmore\n##\n",
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinition(
+						9,
+						string.Join(
+							Environment.NewLine,
+							"first",
+							"",
+							"more",
+							"")))
 			},
+
 			// We're thinking about changing the syntax, such that this is no longer interesting or valid
 			//new object[]
 			//{
