@@ -9,8 +9,108 @@ using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
-	public partial class RecognizeBlocks
-	{
+	public class RecognizeLines {
+		[NotNull]
+		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
+		{
+			return ParseWholeFileNewImpl(input);
+		}
+
+		[NotNull]
+		private IEnumerable<LanguageConstruct> ParseWholeFileNewImpl([NotNull] string input)
+		{
+			var hasNewlineatEndOfFile = false;
+			if (input.EndsWith(CRLF))
+			{
+				hasNewlineatEndOfFile = true;
+				input = input.Substring(0, input.Length - 2);
+			}
+			else if (input.EndsWith(LF) || input.EndsWith(CR))
+			{
+				hasNewlineatEndOfFile = true;
+				input = input.Substring(0, input.Length - 1);
+			}
+			var result = input.Split(
+				new[]
+				{
+					CRLF,
+					LF,
+					CR
+				},
+				StringSplitOptions.None)
+				.Select(_InterpretLine)
+				.Where(_ => _ != null)
+				.ToList();
+			if (!hasNewlineatEndOfFile) { result[result.Count - 1].Errors.Add(ParseError.MissingNewlineAtEndOfFile()); }
+			return result;
+		}
+
+		[NotNull]
+		private LanguageConstruct _InterpretLine([NotNull] string line)
+		{
+			var content = line.TrimStart('\t');
+			var indentationDepth = line.Length - content.Length;
+			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content, CRLF); }
+			if (content.StartsWith("##"))
+			{
+				inCommentSection = true;
+				var match = _commentDefinitionBlockPreludePattern.Match(content);
+				if (!match.Success) { return _ExtractCommentDefinitionBlockPrelude(indentationDepth, "", ""); }
+				var commentId = match.Groups["commentId"].Value;
+				var extra = match.Groups["extra"].Value;
+				return _ExtractCommentDefinitionBlockPrelude(indentationDepth, commentId, extra);
+			}
+			if (content.StartsWith("#"))
+			{
+				inCommentSection = true;
+				var match = _commentDefinitionPattern.Match(content);
+				if (!match.Success)
+				{
+					return _ExtractSingleLineCommentDefinition(
+						"",
+						content.Substring(1)
+							.TrimStart(),
+						"",
+						CRLF);
+				}
+				var commentId = match.Groups["commentId"].Value;
+				var commentSeparator = match.Groups["commentSeparator"].Value;
+				var firstLineContent = match.Groups["firstLineContent"].Value;
+
+				return _ExtractSingleLineCommentDefinition(commentId, firstLineContent, commentSeparator, CRLF);
+			}
+			if (inCommentSection) { return _ExtractMultiLineCommentStatement(indentationDepth, content); }
+
+			if (content.Contains(":"))
+			{
+				var parts = content.Split(
+					new[]
+					{
+						':'
+					},
+					2);
+				return _ExtractPreludeAndErrors(indentationDepth, parts[0], parts[1], CRLF);
+			}
+			return _ExtractStatementAndErrors(indentationDepth, content, CRLF);
+		}
+
+		private const string CRLF = CR + LF;
+		private const string CR = "\r";
+		private const string LF = "\n";
+
+		[NotNull] private readonly Regex _commentDefinitionBlockPreludePattern = new Regex(@"(?x)
+				^\#\#
+					\[(?<commentId>[0-9]+)\]\:(?<extra>.*)
+", RegexOptions.Compiled);
+
+		[NotNull] private readonly Regex _commentDefinitionPattern = new Regex(@"(?x)^\#
+				\[(?<commentId>[0-9]+)\]\:
+				(?<commentSeparator>\s+)
+				(?<firstLineContent>.*)
+", RegexOptions.Compiled);
+
+		bool inCommentSection;
+
 		[NotNull]
 		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace, string newline)
 		{

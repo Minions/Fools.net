@@ -13,7 +13,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		[Test, TestCaseSource(nameof(valid_recognitions))]
 		public void should_recognize_as(string input, AstBuilder<LanguageConstruct> expected)
 		{
-			var subject = new RecognizeBlocks();
+			var subject = new RecognizeLines();
 			var result = subject.ParseWholeFile(input);
 
 			result.Should()
