@@ -9,7 +9,8 @@ using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
-	public class RecognizeLines {
+	public class RecognizeLines
+	{
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
@@ -50,7 +51,6 @@ namespace Gibberish.Parsing
 		{
 			var content = line.TrimStart('\t');
 			var indentationDepth = line.Length - content.Length;
-			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content, CRLF); }
 			if (content.StartsWith("##"))
 			{
 				inCommentSection = true;
@@ -80,6 +80,7 @@ namespace Gibberish.Parsing
 				return _ExtractSingleLineCommentDefinition(commentId, firstLineContent, commentSeparator, CRLF);
 			}
 			if (inCommentSection) { return _ExtractMultiLineCommentStatement(indentationDepth, content); }
+			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content, CRLF); }
 
 			if (content.Contains(":"))
 			{
@@ -93,23 +94,6 @@ namespace Gibberish.Parsing
 			}
 			return _ExtractStatementAndErrors(indentationDepth, content, CRLF);
 		}
-
-		private const string CRLF = CR + LF;
-		private const string CR = "\r";
-		private const string LF = "\n";
-
-		[NotNull] private readonly Regex _commentDefinitionBlockPreludePattern = new Regex(@"(?x)
-				^\#\#
-					\[(?<commentId>[0-9]+)\]\:(?<extra>.*)
-", RegexOptions.Compiled);
-
-		[NotNull] private readonly Regex _commentDefinitionPattern = new Regex(@"(?x)^\#
-				\[(?<commentId>[0-9]+)\]\:
-				(?<commentSeparator>\s+)
-				(?<firstLineContent>.*)
-", RegexOptions.Compiled);
-
-		bool inCommentSection;
 
 		[NotNull]
 		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace, string newline)
@@ -154,18 +138,6 @@ namespace Gibberish.Parsing
 			var errors = new List<ParseError>();
 			_RequireNewline(newline, errors);
 			var commentNumber = _ExtractCommentNumber(commentId, content, commentSeparator, errors);
-			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentNumber, content, errors);
-		}
-
-		[NotNull]
-		private LanguageConstruct _ExtractMultiLineCommentDefinition(string commentId, string content, string commentSeparator, string commentEnd)
-		{
-			var errors = new List<ParseError>();
-			var commentNumber = _ExtractCommentNumber(commentId, content, commentSeparator, errors);
-			if (commentEnd.Length == 0) {
-				errors.Add(ParseError.MultilineCommentWithoutEnd());
-			}
-			else if (!"##".Equals(commentEnd)) { errors.Add(ParseError.ErrorAtEndOfMultilineComment(commentEnd)); }
 			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentNumber, content, errors);
 		}
 
@@ -258,6 +230,23 @@ namespace Gibberish.Parsing
 			return new CommentDefinitionBlockStatement(indentationDepth, content, errors);
 		}
 
+		private const string CRLF = CR + LF;
+		private const string CR = "\r";
+		private const string LF = "\n";
+
 		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
+
+		[NotNull] private readonly Regex _commentDefinitionBlockPreludePattern = new Regex(@"(?x)
+				^\#\#
+					\[(?<commentId>[0-9]+)\]\:(?<extra>.*)
+", RegexOptions.Compiled);
+
+		[NotNull] private readonly Regex _commentDefinitionPattern = new Regex(@"(?x)^\#
+				\[(?<commentId>[0-9]+)\]\:
+				(?<commentSeparator>\s+)
+				(?<firstLineContent>.*)
+", RegexOptions.Compiled);
+
+		bool inCommentSection;
 	}
 }
