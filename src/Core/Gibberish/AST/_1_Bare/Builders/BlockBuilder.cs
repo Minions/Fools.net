@@ -6,28 +6,28 @@ namespace Gibberish.AST._1_Bare.Builders
 {
 	public abstract class BlockBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 	{
-		protected BlockBuilder([NotNull] Action<PreludeBuilderBase> preludeOptions, PreludeBuilderBase preludeBuilder)
+		protected BlockBuilder([NotNull] Action<PreludeBuilder> preludeOptions, PreludeBuilder preludeBuilder)
 		{
 			Prelude = preludeBuilder;
 			preludeOptions(Prelude);
 		}
 
 		[NotNull]
-		public PreludeBuilderBase Prelude { get; }
+		public PreludeBuilder Prelude { get; }
 		[NotNull]
 		public List<AstBuilderSupportingErrors<LanguageConstruct>> Body { get; } = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
 		public bool StartsParagraph { get; private set; }
 
 		[NotNull]
-		public BlockBuilder WithBody([NotNull] Action<BodyBuilderBase> bodyOptions)
+		public BlockBuilder WithBody([NotNull] Action<BodyBuilder> bodyOptions)
 		{
-			bodyOptions(CreateBodyBuilder());
+			bodyOptions(_CreateBodyBuilder());
 			return this;
 		}
 
-		public abstract class PreludeBuilderBase : AstBuilderSupportingErrors<LanguageConstruct>
+		public abstract class PreludeBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 		{
-			protected PreludeBuilderBase(string content)
+			protected PreludeBuilder(string content)
 			{
 				Content = content;
 			}
@@ -36,18 +36,24 @@ namespace Gibberish.AST._1_Bare.Builders
 			public string Content { get; }
 			[NotNull]
 			public List<int> Comments { get; } = new List<int>();
+			public abstract PossiblySpecified<int> IndentationDepth { get; }
 
 			[NotNull]
-			public PreludeBuilderBase WithCommentRefs([NotNull] params int[] indices)
+			public PreludeBuilder WithCommentRefs([NotNull] params int[] indices)
 			{
 				Comments.AddRange(indices);
 				return this;
 			}
+
+			public override void BuildInto(List<LanguageConstruct> destination)
+			{
+				destination.Add(new UnknownPrelude(IndentationDepth, Content, Comments, Errors));
+			}
 		}
 
-		public abstract class BodyBuilderBase
+		public abstract class BodyBuilder
 		{
-			protected BodyBuilderBase([NotNull] BlockBuilder self)
+			protected BodyBuilder([NotNull] BlockBuilder self)
 			{
 				_self = self;
 			}
@@ -59,7 +65,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			}
 
 			[NotNull]
-			public BlockBuilder AddBlock([NotNull] string prelude, [NotNull] Action<PreludeBuilderBase> preludeOptions)
+			public BlockBuilder AddBlock([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions)
 			{
 				return _AddToBody(CreateBlockBuilder(prelude, preludeOptions));
 			}
@@ -78,7 +84,7 @@ namespace Gibberish.AST._1_Bare.Builders
 				return _AddToBody(new BlankLineBuilder(IndentationDepth));
 			}
 
-			protected abstract BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilderBase> preludeOptions);
+			protected abstract BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions);
 
 			[NotNull]
 			private TBuilder _AddToBody<TBuilder>([NotNull] TBuilder result) where TBuilder : AstBuilderSupportingErrors<LanguageConstruct>
@@ -90,17 +96,17 @@ namespace Gibberish.AST._1_Bare.Builders
 			[NotNull] protected readonly BlockBuilder _self;
 		}
 
-		protected abstract BodyBuilderBase CreateBodyBuilder();
-
-		protected void _BuildBodyInto(List<LanguageConstruct> destination)
-		{
-			foreach (var builder in Body) { builder.BuildInto(destination); }
-		}
-
 		public BlockBuilder ThatStartsNewParagraph()
 		{
 			StartsParagraph = true;
 			return this;
+		}
+
+		protected abstract BodyBuilder _CreateBodyBuilder();
+
+		protected void _BuildBodyInto(List<LanguageConstruct> destination)
+		{
+			foreach (var builder in Body) { builder.BuildInto(destination); }
 		}
 	}
 }

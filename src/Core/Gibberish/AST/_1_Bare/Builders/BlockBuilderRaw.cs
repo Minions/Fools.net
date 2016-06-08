@@ -6,36 +6,31 @@ namespace Gibberish.AST._1_Bare.Builders
 {
 	public class BlockBuilderRaw : BlockBuilder
 	{
-		public BlockBuilderRaw([NotNull] string prelude, [NotNull] Action<PreludeBuilderBase> preludeOptions, int indentationDepth)
-			: base(preludeOptions, new PreludeBuilder(prelude, indentationDepth))
+		public BlockBuilderRaw([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions, int indentationDepth)
+			: base(preludeOptions, new PreludeBuilderImpl(prelude, indentationDepth))
 		{
 			IndentationDepth = indentationDepth;
 		}
 
-		public int IndentationDepth { get; }
+		private int IndentationDepth { get; }
 
-		public class PreludeBuilder : PreludeBuilderBase
+		private class PreludeBuilderImpl : PreludeBuilder
 		{
-			public PreludeBuilder([NotNull] string content, int indentationDepth) : base(content)
+			public PreludeBuilderImpl([NotNull] string content, int indentationDepth) : base(content)
 			{
-				IndentationDepth = indentationDepth;
+				IndentationDepth = PossiblySpecified<int>.WithValue(indentationDepth);
 			}
 
-			public int IndentationDepth { get; }
-
-			public override void BuildInto(List<LanguageConstruct> destination)
-			{
-				destination.Add(new UnknownPrelude(PossiblySpecified<int>.WithValue(IndentationDepth), Content, Comments, Errors));
-			}
+			public override PossiblySpecified<int> IndentationDepth { get; }
 		}
 
-		public class BodyBuilder : BodyBuilderBase
+		private class BodyBuilderImpl : BodyBuilder
 		{
-			public BodyBuilder([NotNull] BlockBuilderRaw self) : base(self) {}
+			public BodyBuilderImpl([NotNull] BlockBuilderRaw self) : base(self) {}
 
 			public override PossiblySpecified<int> IndentationDepth => PossiblySpecified<int>.WithValue(((BlockBuilderRaw) _self).IndentationDepth + 1);
 
-			protected override BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilderBase> preludeOptions)
+			protected override BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
 			{
 				return new BlockBuilderRaw(prelude, preludeOptions, IndentationDepth.Value);
 			}
@@ -47,9 +42,9 @@ namespace Gibberish.AST._1_Bare.Builders
 			_BuildBodyInto(destination);
 		}
 
-		protected override BodyBuilderBase CreateBodyBuilder()
+		protected override BodyBuilder _CreateBodyBuilder()
 		{
-			return new BodyBuilder(this);
+			return new BodyBuilderImpl(this);
 		}
 	}
 }
