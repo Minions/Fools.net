@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
@@ -144,6 +145,14 @@ namespace Gibberish.Parsing
 
 		private LanguageConstruct _ExtractMultiLineCommentStatement(int indentationDepth, string content)
 		{
+			if (indentationDepth > 1)
+			{
+				var c = new StringBuilder();
+				c.Append('\t', indentationDepth - 1);
+				c.Append(content);
+				content = c.ToString();
+				indentationDepth = 1;
+			}
 			var errors = new List<ParseError>();
 
 			return new CommentDefinitionBlockStatement(indentationDepth, content, errors);

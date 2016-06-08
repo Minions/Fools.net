@@ -264,28 +264,26 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 			},
 			new object[]
 			{
-				@"##[8]: extra
-	first
-",
+				"##[8]: extra\r\n\tfirst\r\n",
 				BasicAst.SequenceOfRawLines(
 					f => f.CommentDefinitionBlock(8, p => p.WithError(ParseError.IllegalContentAfterColonInPrelude(" extra")))
 						.WithBody(b => b.AddStatement("first")))
+			},
+			new object[]
+			{
+				"##[8]:\r\n\tfirst\r\n\t\tsecond\r\n",
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.CommentDefinitionBlock(8)
+							.WithBody(
+								b =>
+								{
+									b.AddStatement("first");
+									b.AddStatement("\tsecond");
+								});
+					})
 			}
-
-			//			new object[]
-			//			{
-			//				@"##[8]:
-			//	first
-			//		second
-			//",
-			//				BasicAst.SequenceOfRawLines(
-			//					f =>
-			//					{
-			//						f.CommentDefinitionBlockPrelude(8);
-			//						f.MultilineCommentBody("first");
-			//						f.MultilineCommentBody("	second");
-			//					})
-			//			},
 
 			//new object[]
 			//{
