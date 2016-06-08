@@ -262,8 +262,8 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				BasicAst.SequenceOfRawLines(
 					f =>
 					{
-						f.MultilineCommentPrelude(8);
-						f.MultilineCommentDefinitionStatement("first");
+						f.CommentDefinitionBlockPrelude(8);
+						f.CommentDefinitionBlockStatement("first");
 					})
 			},
 //			new object[]
@@ -275,7 +275,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 //				BasicAst.SequenceOfRawLines(
 //					f =>
 //					{
-//						f.MultilineCommentPrelude(8);
+//						f.CommentDefinitionBlockPrelude(8);
 //						f.MultilineCommentBody("first");
 //						f.MultilineCommentBody("	second");
 //					})

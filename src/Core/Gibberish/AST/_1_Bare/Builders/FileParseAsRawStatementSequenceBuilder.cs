@@ -34,20 +34,19 @@ namespace Gibberish.AST._1_Bare.Builders
 			return Block(prelude, x => { });
 		}
 
-		public override CommentBuilder CommentDefinition(int commentId, string content)
+		public override CommentDefinitionBuilder CommentDefinition(int commentId, string content)
 		{
-			return _Remember(new CommentBuilder(commentId, content));
+			return _Remember(new CommentDefinitionBuilder(commentId, content));
 		}
 
-		public override MultilineCommentPreludeBuilder MultilineCommentPrelude(int commentId)
+		public CommentDefinitionBlockPreludeBuilder CommentDefinitionBlockPrelude(int commentId)
 		{
-			return _Remember(new MultilineCommentPreludeBuilder(commentId));
+			return _Remember(new CommentDefinitionBlockPreludeBuilder(commentId));
 		}
 
-		public override MultilineCommentStatementBuilder MultilineCommentDefinitionStatement(string content)
+		public CommentDefinitionBlockStatementBuilder CommentDefinitionBlockStatement(string content)
 		{
-			return _Remember(new MultilineCommentStatementBuilder(content));
-
+			return _Remember(new CommentDefinitionBlockStatementBuilder(content));
 		}
 	}
 }

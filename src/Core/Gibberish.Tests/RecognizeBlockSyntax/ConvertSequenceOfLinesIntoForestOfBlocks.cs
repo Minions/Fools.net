@@ -440,7 +440,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		}
 
 		[Test]
-		public void MultiLineCommentPreludeFollowedByStatmentBecomesAMultiLineComment()
+		public void MultiLineCommentPreludeFollowedByStatementBecomesAMultiLineComment()
 		{
 			var testSubject = new AssembleBlocks();
 
@@ -448,8 +448,8 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				BasicAst.SequenceOfRawLines(
 					f =>
 					{
-						f.MultilineCommentPrelude(8);
-						f.MultilineCommentDefinitionStatement("first");
+						f.CommentDefinitionBlockPrelude(8);
+						f.CommentDefinitionBlockStatement("first");
 					})
 					.Build());
 
@@ -458,7 +458,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 					BasicAst.BlockTree(
 						f =>
 						{
-							f.MultiLineComment(8)
+							f.CommentDefinitionBlock(8)
 								.WithBody(b => { b.AddStatement("first"); })
 								.ThatStartsParagraph();
 						}));

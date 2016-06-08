@@ -6,7 +6,7 @@ namespace Gibberish.AST._1_Bare
 {
 	public class CommentDefinitionBlock : LanguageConstruct
 	{
-		public CommentDefinitionBlock(PossiblySpecified<bool> startsParagraph, MultilineCommentDefinitionPrelude prelude, IEnumerable<MultilineCommentDefinitionStatement> bodyContents, List<ParseError> errors)
+		public CommentDefinitionBlock(PossiblySpecified<bool> startsParagraph, CommentDefinitionBlockPrelude prelude, IEnumerable<CommentDefinitionBlockStatement> bodyContents, List<ParseError> errors)
 			: base(errors)
 		{
 			StartsParagraph = startsParagraph;
@@ -15,8 +15,8 @@ namespace Gibberish.AST._1_Bare
 		}
 
 		public PossiblySpecified<bool> StartsParagraph { get; }
-		public MultilineCommentDefinitionPrelude Prelude { get; }
+		public CommentDefinitionBlockPrelude Prelude { get; }
 		[NotNull]
-		public IEnumerable<MultilineCommentDefinitionStatement> BodyContents { get; }
+		public IEnumerable<CommentDefinitionBlockStatement> BodyContents { get; }
 	}
 }

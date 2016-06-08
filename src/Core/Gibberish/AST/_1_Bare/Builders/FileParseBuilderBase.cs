@@ -19,7 +19,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		public abstract TBlockBuilder Block(string prelude);
 
 		[NotNull]
-		public abstract CommentBuilder CommentDefinition(int commentId, string content);
+		public abstract CommentDefinitionBuilder CommentDefinition(int commentId, string content);
 
 		public override void BuildInto(List<LanguageConstruct> destination)
 		{
@@ -34,9 +34,5 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull] private readonly List<AstBuilderSupportingErrors<LanguageConstruct>> _contents = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
-
-		public abstract MultilineCommentPreludeBuilder MultilineCommentPrelude(int commentId);
-
-		public abstract MultilineCommentStatementBuilder MultilineCommentDefinitionStatement(string content);
 	}
 }

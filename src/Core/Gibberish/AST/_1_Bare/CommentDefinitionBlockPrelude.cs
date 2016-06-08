@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Gibberish.AST._1_Bare
 {
-	public class MultilineCommentDefinitionPrelude : LanguageConstruct
+	public class CommentDefinitionBlockPrelude : LanguageConstruct
 	{
-		public MultilineCommentDefinitionPrelude(PossiblySpecified<bool> startsParagraph, int commentId, List<ParseError> errors) : base(errors)
+		public CommentDefinitionBlockPrelude(PossiblySpecified<bool> startsParagraph, int commentId, List<ParseError> errors) : base(errors)
 		{
 			StartsParagraph = startsParagraph;
 			CommentId = commentId;

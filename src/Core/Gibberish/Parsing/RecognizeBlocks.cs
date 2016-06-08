@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
-using IronMeta.Matcher;
 using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
@@ -131,26 +130,23 @@ namespace Gibberish.Parsing
 			return commentNumber;
 		}
 
-		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
-
 		private LanguageConstruct _ExtractMultiLineCommentPrelude(int indentationDepth, string commentId)
 		{
 			var errors = new List<ParseError>();
 
 			int commentNumber;
-			if (!int.TryParse(commentId, out commentNumber))
-			{
-				errors.Add(ParseError.MissingIdInCommentDefinition(commentId.Substring(0, 8)));
-			}
+			if (!int.TryParse(commentId, out commentNumber)) { errors.Add(ParseError.MissingIdInCommentDefinition(commentId.Substring(0, 8))); }
 
-			return new MultilineCommentDefinitionPrelude(PossiblySpecified<bool>.Unspecifed, commentNumber, errors);
+			return new CommentDefinitionBlockPrelude(PossiblySpecified<bool>.Unspecifed, commentNumber, errors);
 		}
 
 		private LanguageConstruct _ExtractMultiLineCommentStatement(int indentationDepth, string content)
 		{
 			var errors = new List<ParseError>();
 
-			return new MultilineCommentDefinitionStatement(indentationDepth, content, errors);
+			return new CommentDefinitionBlockStatement(indentationDepth, content, errors);
 		}
+
+		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");
 	}
 }
