@@ -33,7 +33,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull]
-		public virtual CommentDefinitionBuilder CommentDefinition(int commentId, [NotNull] string content)
+		public CommentDefinitionBuilder CommentDefinition(int commentId, [NotNull] string content)
 		{
 			return _Remember(new CommentDefinitionBuilder(commentId, content));
 		}

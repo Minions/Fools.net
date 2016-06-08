@@ -67,7 +67,9 @@
     <Compile Include="AST\_1_Bare\Builders\BlankLineBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlockBuilderHierarchical.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlockBuilder.cs" />
+    <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockBodyBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockBuilder.cs" />
+    <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockBuilderHierarchical.cs" />
     <Compile Include="AST\_1_Bare\Builders\FileParseAsForestOfBlocksBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\FileParseBuilderBase.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockPreludeBuilder.cs" />
