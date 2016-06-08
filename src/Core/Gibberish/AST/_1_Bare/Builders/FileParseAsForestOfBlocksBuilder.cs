@@ -19,7 +19,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			return _Remember(new StatementBuilder(content, PossiblySpecified<int>.Unspecifed));
 		}
 
-		public override BlockBuilderHierarchical Block(string prelude, Action<BlockBuilderBase.PreludeBuilderBase> preludeOptions)
+		public override BlockBuilderHierarchical Block(string prelude, Action<BlockBuilder.PreludeBuilderBase> preludeOptions)
 		{
 			return _Remember(new BlockBuilderHierarchical(prelude, preludeOptions));
 		}

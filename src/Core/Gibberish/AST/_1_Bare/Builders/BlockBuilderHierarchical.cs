@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class BlockBuilderHierarchical : BlockBuilderBase
+	public class BlockBuilderHierarchical : BlockBuilder
 	{
 		public BlockBuilderHierarchical([NotNull] string prelude, [NotNull] Action<PreludeBuilderBase> preludeOptions) : base(preludeOptions, new PreludeBuilder(prelude)) {}
 
@@ -25,7 +25,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 			public override PossiblySpecified<int> IndentationDepth => PossiblySpecified<int>.Unspecifed;
 
-			protected override BlockBuilderBase CreateBlockBuilder(string prelude, Action<PreludeBuilderBase> preludeOptions)
+			protected override BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilderBase> preludeOptions)
 			{
 				return new BlockBuilderHierarchical(prelude, preludeOptions);
 			}

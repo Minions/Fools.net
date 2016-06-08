@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class BlockBuilderRaw : BlockBuilderBase
+	public class BlockBuilderRaw : BlockBuilder
 	{
 		public BlockBuilderRaw([NotNull] string prelude, [NotNull] Action<PreludeBuilderBase> preludeOptions, int indentationDepth)
 			: base(preludeOptions, new PreludeBuilder(prelude, indentationDepth))
@@ -35,7 +35,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 			public override PossiblySpecified<int> IndentationDepth => PossiblySpecified<int>.WithValue(((BlockBuilderRaw) _self).IndentationDepth + 1);
 
-			protected override BlockBuilderBase CreateBlockBuilder(string prelude, Action<PreludeBuilderBase> preludeOptions)
+			protected override BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilderBase> preludeOptions)
 			{
 				return new BlockBuilderRaw(prelude, preludeOptions, IndentationDepth.Value);
 			}

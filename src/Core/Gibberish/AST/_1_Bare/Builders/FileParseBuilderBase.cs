@@ -7,7 +7,7 @@ namespace Gibberish.AST._1_Bare.Builders
 	public abstract class FileParseBuilderBase<TBlockBuilder, TPreludeBuilder> : AstBuilder<LanguageConstruct>
 	{
 		[NotNull]
-		public abstract TBlockBuilder Block(string prelude, Action<BlockBuilderBase.PreludeBuilderBase> preludeOptions);
+		public abstract TBlockBuilder Block(string prelude, Action<BlockBuilder.PreludeBuilderBase> preludeOptions);
 
 		[NotNull]
 		public TBlockBuilder Block(string prelude)

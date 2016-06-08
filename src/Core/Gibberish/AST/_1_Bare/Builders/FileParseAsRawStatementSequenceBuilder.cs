@@ -9,7 +9,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			content(this);
 		}
 
-		public override BlockBuilderRaw Block(string prelude, Action<BlockBuilderBase.PreludeBuilderBase> preludeOptions)
+		public override BlockBuilderRaw Block(string prelude, Action<BlockBuilder.PreludeBuilderBase> preludeOptions)
 		{
 			return _Remember(new BlockBuilderRaw(prelude, preludeOptions, 0));
 		}
