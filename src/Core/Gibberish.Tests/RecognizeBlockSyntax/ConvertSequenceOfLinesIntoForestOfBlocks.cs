@@ -140,7 +140,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 						f =>
 						{
 							f.Statement(ArbitraryContent);
-							f.Statement(ArbitraryContent)
+							f.Statement(ArbitraryContent, 1)
 								.WithError(ParseError.IncorrectIndentation(0, 1));
 						}));
 		}
@@ -235,7 +235,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 							f.Block(ArbitraryContent)
 								.WithError(ParseError.IncorrectIndentation(0, 3))
 								.WithError(ParseError.MissingBody());
-							f.Statement(ArbitraryContent)
+							f.Statement(ArbitraryContent, 2)
 								.WithError(ParseError.IncorrectIndentation(0, 2));
 						}));
 		}

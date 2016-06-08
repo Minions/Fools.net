@@ -4,13 +4,13 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public abstract class FileParseBuilderBase<TBlockBuilder> : AstBuilder<LanguageConstruct>
+	public abstract class FileParseBuilderBase : AstBuilder<LanguageConstruct>
 	{
 		[NotNull]
-		public abstract TBlockBuilder Block(string prelude, Action<BlockBuilder.PreludeBuilder> preludeOptions);
+		public abstract BlockBuilder Block(string prelude, Action<BlockBuilder.PreludeBuilder> preludeOptions);
 
 		[NotNull]
-		public TBlockBuilder Block(string prelude)
+		public BlockBuilder Block(string prelude)
 		{
 			return Block(prelude, x => { });
 		}
@@ -21,21 +21,15 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull]
-		public virtual BlankLineBuilder BlankLine()
-		{
-			return _Remember(new BlankLineBuilder(PossiblySpecified<int>.Unspecifed));
-		}
-
-		[NotNull]
-		public BlankLineBuilder BlankLine(int indentationDepth)
+		public BlankLineBuilder BlankLine(int indentationDepth = 0)
 		{
 			return _Remember(new BlankLineBuilder(PossiblySpecified<int>.WithValue(indentationDepth)));
 		}
 
 		[NotNull]
-		public virtual StatementBuilder Statement([NotNull] string content)
+		public StatementBuilder Statement([NotNull] string content, int indentationDepth = 0)
 		{
-			return _Remember(new StatementBuilder(content, PossiblySpecified<int>.WithValue(0)));
+			return _Remember(new StatementBuilder(content, PossiblySpecified<int>.WithValue(indentationDepth)));
 		}
 
 		[NotNull]
