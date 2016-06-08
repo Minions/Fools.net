@@ -4,10 +4,9 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public abstract class BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder> : AstBuilderSupportingErrors<LanguageConstruct>
-		where TBlockBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder>
-		where TPreludeBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder>.PreludeBuilderBase
-		where TBodyBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder>.BodyBuilderBase
+	public abstract class BlockBuilderBase<TPreludeBuilder, TBodyBuilder> : AstBuilderSupportingErrors<LanguageConstruct>
+		where TPreludeBuilder : BlockBuilderBase<TPreludeBuilder, TBodyBuilder>.PreludeBuilderBase
+		where TBodyBuilder : BlockBuilderBase<TPreludeBuilder, TBodyBuilder>.BodyBuilderBase
 	{
 		protected BlockBuilderBase([NotNull] Action<TPreludeBuilder> preludeOptions, TPreludeBuilder preludeBuilder)
 		{
@@ -19,12 +18,13 @@ namespace Gibberish.AST._1_Bare.Builders
 		public TPreludeBuilder Prelude { get; }
 		[NotNull]
 		public List<AstBuilderSupportingErrors<LanguageConstruct>> Body { get; } = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
+		public bool StartsParagraph { get; private set; }
 
 		[NotNull]
-		public TBlockBuilder WithBody([NotNull] Action<TBodyBuilder> bodyOptions)
+		public BlockBuilderBase<TPreludeBuilder, TBodyBuilder> WithBody([NotNull] Action<TBodyBuilder> bodyOptions)
 		{
 			bodyOptions(CreateBodyBuilder());
-			return (TBlockBuilder) this;
+			return this;
 		}
 
 		public abstract class PreludeBuilderBase : AstBuilderSupportingErrors<LanguageConstruct>
@@ -49,19 +49,19 @@ namespace Gibberish.AST._1_Bare.Builders
 
 		public abstract class BodyBuilderBase
 		{
-			protected BodyBuilderBase([NotNull] TBlockBuilder self)
+			protected BodyBuilderBase([NotNull] BlockBuilderBase<TPreludeBuilder, TBodyBuilder> self)
 			{
 				_self = self;
 			}
 
 			[NotNull]
-			public TBlockBuilder AddBlock([NotNull] string prelude)
+			public BlockBuilderBase<TPreludeBuilder, TBodyBuilder> AddBlock([NotNull] string prelude)
 			{
 				return AddBlock(prelude, _ => { });
 			}
 
 			[NotNull]
-			public TBlockBuilder AddBlock([NotNull] string prelude, [NotNull] Action<TPreludeBuilder> preludeOptions)
+			public BlockBuilderBase<TPreludeBuilder, TBodyBuilder> AddBlock([NotNull] string prelude, [NotNull] Action<TPreludeBuilder> preludeOptions)
 			{
 				return _AddToBody(CreateBlockBuilder(prelude, preludeOptions));
 			}
@@ -80,7 +80,7 @@ namespace Gibberish.AST._1_Bare.Builders
 				return _AddToBody(new BlankLineBuilder(IndentationDepth));
 			}
 
-			protected abstract TBlockBuilder CreateBlockBuilder(string prelude, Action<TPreludeBuilder> preludeOptions);
+			protected abstract BlockBuilderBase<TPreludeBuilder, TBodyBuilder> CreateBlockBuilder(string prelude, Action<TPreludeBuilder> preludeOptions);
 
 			[NotNull]
 			private TBuilder _AddToBody<TBuilder>([NotNull] TBuilder result) where TBuilder : AstBuilderSupportingErrors<LanguageConstruct>
@@ -89,7 +89,7 @@ namespace Gibberish.AST._1_Bare.Builders
 				return result;
 			}
 
-			[NotNull] protected readonly TBlockBuilder _self;
+			[NotNull] protected readonly BlockBuilderBase<TPreludeBuilder, TBodyBuilder> _self;
 		}
 
 		protected abstract TBodyBuilder CreateBodyBuilder();
@@ -97,6 +97,12 @@ namespace Gibberish.AST._1_Bare.Builders
 		protected void _BuildBodyInto(List<LanguageConstruct> destination)
 		{
 			foreach (var builder in Body) { builder.BuildInto(destination); }
+		}
+
+		public BlockBuilderBase<TPreludeBuilder, TBodyBuilder> ThatStartsNewParagraph()
+		{
+			StartsParagraph = true;
+			return this;
 		}
 	}
 }

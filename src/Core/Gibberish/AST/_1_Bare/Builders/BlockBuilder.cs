@@ -5,11 +5,9 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class BlockBuilder : BlockBuilderBase<BlockBuilder, BlockBuilder.PreludeBuilder, BlockBuilder.BodyBuilder>
+	public class BlockBuilder : BlockBuilderBase<BlockBuilder.PreludeBuilder, BlockBuilder.BodyBuilder>
 	{
 		public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions) : base(preludeOptions, new PreludeBuilder(prelude)) {}
-
-		public bool StartsParagraph { get; private set; }
 
 		public class PreludeBuilder : PreludeBuilderBase
 		{
@@ -27,7 +25,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 			public override PossiblySpecified<int> IndentationDepth => PossiblySpecified<int>.Unspecifed;
 
-			protected override BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
+			protected override BlockBuilderBase<PreludeBuilder, BodyBuilder> CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
 			{
 				return new BlockBuilder(prelude, preludeOptions);
 			}
@@ -46,12 +44,6 @@ namespace Gibberish.AST._1_Bare.Builders
 						.Single(),
 					bodyConstructs,
 					Errors));
-		}
-
-		public BlockBuilder ThatStartsNewParagraph()
-		{
-			StartsParagraph = true;
-			return this;
 		}
 
 		protected override BodyBuilder CreateBodyBuilder()
