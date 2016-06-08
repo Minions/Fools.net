@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
-using IronMeta.Matcher;
 using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
@@ -129,6 +128,23 @@ namespace Gibberish.Parsing
 			}
 			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
 			return commentNumber;
+		}
+
+		private LanguageConstruct _ExtractMultiLineCommentPrelude(int indentationDepth, string commentId)
+		{
+			var errors = new List<ParseError>();
+
+			int commentNumber;
+			if (!int.TryParse(commentId, out commentNumber)) { errors.Add(ParseError.MissingIdInCommentDefinition(commentId.Substring(0, 8))); }
+
+			return new CommentDefinitionBlockPrelude(commentNumber, errors);
+		}
+
+		private LanguageConstruct _ExtractMultiLineCommentStatement(int indentationDepth, string content)
+		{
+			var errors = new List<ParseError>();
+
+			return new CommentDefinitionBlockStatement(indentationDepth, content, errors);
 		}
 
 		[NotNull] private static readonly Regex CommentMatcher = new Regex(@"^\[([0-9]+)\]$");

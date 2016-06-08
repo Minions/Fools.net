@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using JetBrains.Annotations;
@@ -29,18 +30,18 @@ namespace Gibberish.Parsing
 
 			public void ContinueToNextLine(bool nextItemStartsParagraph)
 			{
-				NextItemStartsParagraph = nextItemStartsParagraph && !_haveStartedCommentDefinitions;
+				NextItemStartsParagraph = nextItemStartsParagraph && !HaveStartedCommentDefinitions;
 				if (HasMore) { HasMore = _source.MoveNext(); }
 			}
 
 			public void HaveSeenAtLeastOneCommentDefinition()
 			{
-				NextItemStartsParagraph = !_haveStartedCommentDefinitions;
-				_haveStartedCommentDefinitions = true;
+				NextItemStartsParagraph = !HaveStartedCommentDefinitions;
+				HaveStartedCommentDefinitions = true;
 			}
 
 			public PossiblySpecified<bool> ShouldStartParagraph => PossiblySpecified<bool>.WithValue(NextItemStartsParagraph);
-			private bool _haveStartedCommentDefinitions;
+			public bool HaveStartedCommentDefinitions { get; private set; }
 
 			private List<LanguageConstruct>.Enumerator _source;
 		}
@@ -124,7 +125,33 @@ namespace Gibberish.Parsing
 
 			public bool Visit(UnknownBlock block, int level, List<LanguageConstruct> result)
 			{
-				throw new UnfixableError($"a block somehow made into input data for {typeof (AssembleBlocks).Name}. Found value {block}.");
+				throw new UnfixableError($"a block somehow made it into input data for {typeof (AssembleBlocks).Name}. Found value {block}.");
+			}
+
+			public bool Visit(CommentDefinitionBlockPrelude prelude, int level, List<LanguageConstruct> result)
+			{
+				if (0 != level) { return true; }
+				var errors = new List<ParseError>();
+				_sourceData.HaveSeenAtLeastOneCommentDefinition();
+				var startsParagraph = _sourceData.ShouldStartParagraph;
+				var contents = new List<CommentDefinitionBlockStatement>();
+				_sourceData.ContinueToNextLine(false);
+				while (_sourceData.Current is CommentDefinitionBlockStatement) {
+					contents.Add((CommentDefinitionBlockStatement) _sourceData.Current);
+					_sourceData.ContinueToNextLine(false);
+				}
+				result.Add(new CommentDefinitionBlock(startsParagraph, prelude, contents, errors));
+				return false;
+			}
+
+			public bool Visit(CommentDefinitionBlockStatement statement, int level, List<LanguageConstruct> result)
+			{
+				throw new System.NotImplementedException();
+			}
+
+			public bool Visit(CommentDefinitionBlock commentDefinition, int level, List<LanguageConstruct> result)
+			{
+				throw new System.NotImplementedException();
 			}
 
 			[NotNull] private readonly SourceData _sourceData;

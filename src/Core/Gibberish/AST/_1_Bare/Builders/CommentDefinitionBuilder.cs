@@ -3,9 +3,9 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class CommentBuilder : AstBuilderSupportingErrors<LanguageConstruct>
+	public class CommentDefinitionBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 	{
-		public CommentBuilder(int commentId, [NotNull] string content)
+		public CommentDefinitionBuilder(int commentId, [NotNull] string content)
 		{
 			CommentId = commentId;
 			Content = content;
@@ -21,7 +21,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			destination.Add(new CommentDefinition(PossiblySpecified<bool>.WithValue(StartsParagraph), CommentId, Content, Errors));
 		}
 
-		public CommentBuilder ThatStartsParagraph()
+		public CommentDefinitionBuilder ThatStartsParagraph()
 		{
 			StartsParagraph = true;
 			return this;
