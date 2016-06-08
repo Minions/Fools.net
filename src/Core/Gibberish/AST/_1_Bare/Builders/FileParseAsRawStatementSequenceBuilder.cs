@@ -2,16 +2,16 @@ using System;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class FileParseAsRawStatementSequenceBuilder : FileParseBuilderBase<RawBlockBuilder, RawBlockBuilder.PreludeBuilder>
+	public class FileParseAsRawStatementSequenceBuilder : FileParseBuilderBase<BlockBuilderRaw, BlockBuilderRaw.PreludeBuilder>
 	{
 		public FileParseAsRawStatementSequenceBuilder(Action<FileParseAsRawStatementSequenceBuilder> content)
 		{
 			content(this);
 		}
 
-		public override RawBlockBuilder Block(string prelude, Action<BlockBuilderBase.PreludeBuilderBase> preludeOptions)
+		public override BlockBuilderRaw Block(string prelude, Action<BlockBuilderBase.PreludeBuilderBase> preludeOptions)
 		{
-			return _Remember(new RawBlockBuilder(prelude, preludeOptions, 0));
+			return _Remember(new BlockBuilderRaw(prelude, preludeOptions, 0));
 		}
 
 		public CommentDefinitionBlockPreludeBuilder CommentDefinitionBlockPrelude(int commentId)

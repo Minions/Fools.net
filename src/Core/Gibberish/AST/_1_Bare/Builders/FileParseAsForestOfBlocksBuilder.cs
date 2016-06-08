@@ -2,7 +2,7 @@ using System;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class FileParseAsForestOfBlocksBuilder : FileParseBuilderBase<BlockBuilder, BlockBuilder.PreludeBuilder>
+	public class FileParseAsForestOfBlocksBuilder : FileParseBuilderBase<BlockBuilderHierarchical, BlockBuilderHierarchical.PreludeBuilder>
 	{
 		public FileParseAsForestOfBlocksBuilder(Action<FileParseAsForestOfBlocksBuilder> content)
 		{
@@ -19,9 +19,9 @@ namespace Gibberish.AST._1_Bare.Builders
 			return _Remember(new StatementBuilder(content, PossiblySpecified<int>.Unspecifed));
 		}
 
-		public override BlockBuilder Block(string prelude, Action<BlockBuilderBase.PreludeBuilderBase> preludeOptions)
+		public override BlockBuilderHierarchical Block(string prelude, Action<BlockBuilderBase.PreludeBuilderBase> preludeOptions)
 		{
-			return _Remember(new BlockBuilder(prelude, preludeOptions));
+			return _Remember(new BlockBuilderHierarchical(prelude, preludeOptions));
 		}
 
 		public override CommentDefinitionBuilder CommentDefinition(int commentId, string content)
