@@ -348,12 +348,10 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 
 		private static void ShouldTransformCodeFromLinesRepresentationIntoTreeRepresentation(Action<FileParseBuilder> code)
 		{
-			var testSubject = new AssembleBlocks();
-			var result = testSubject.Transform(
+			ShouldTransformLinesIntoTree(
 				BasicAst.SequenceOfRawLines(code)
-					.Build());
-			result.Should()
-				.BeRecognizedAs(BasicAst.BlockTree(code));
+					.Build(),
+				BasicAst.BlockTree(code));
 		}
 
 		private static void ShouldTransformLinesIntoTree(List<LanguageConstruct> lines, FileParseBuilder tree)
