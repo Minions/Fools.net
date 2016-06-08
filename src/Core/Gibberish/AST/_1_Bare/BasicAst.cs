@@ -7,15 +7,15 @@ namespace Gibberish.AST._1_Bare
 	public static class BasicAst
 	{
 		[NotNull]
-		public static FileParseAsRawStatementSequenceBuilder SequenceOfRawLines(Action<FileParseAsRawStatementSequenceBuilder> contents)
+		public static FileParseBuilder SequenceOfRawLines(Action<FileParseBuilder> contents)
 		{
-			return new FileParseAsRawStatementSequenceBuilder(contents);
+			return new FileParseBuilderRaw(contents);
 		}
 
 		[NotNull]
-		public static FileParseAsForestOfBlocksBuilder BlockTree(Action<FileParseAsForestOfBlocksBuilder> contents)
+		public static FileParseBuilder BlockTree(Action<FileParseBuilder> contents)
 		{
-			return new FileParseAsForestOfBlocksBuilder(contents);
+			return new FileParseBuilderHierarchical(contents);
 		}
 	}
 }

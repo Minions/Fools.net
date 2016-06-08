@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public abstract class FileParseBuilderBase : AstBuilder<LanguageConstruct>
+	public abstract class FileParseBuilder : AstBuilder<LanguageConstruct>
 	{
 		[NotNull]
 		public abstract BlockBuilder Block(string prelude, Action<BlockBuilder.PreludeBuilder> preludeOptions);

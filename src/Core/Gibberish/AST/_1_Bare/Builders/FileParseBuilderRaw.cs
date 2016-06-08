@@ -2,9 +2,9 @@ using System;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class FileParseAsRawStatementSequenceBuilder : FileParseBuilderBase
+	public class FileParseBuilderRaw : FileParseBuilder
 	{
-		public FileParseAsRawStatementSequenceBuilder(Action<FileParseAsRawStatementSequenceBuilder> content)
+		public FileParseBuilderRaw(Action<FileParseBuilder> content)
 		{
 			content(this);
 		}

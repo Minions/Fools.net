@@ -2,9 +2,9 @@ using System;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class FileParseAsForestOfBlocksBuilder : FileParseBuilderBase
+	public class FileParseBuilderHierarchical : FileParseBuilder
 	{
-		public FileParseAsForestOfBlocksBuilder(Action<FileParseAsForestOfBlocksBuilder> content)
+		public FileParseBuilderHierarchical(Action<FileParseBuilder> content)
 		{
 			content(this);
 		}

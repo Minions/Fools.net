@@ -71,14 +71,14 @@
     <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockBuilderHierarchical.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockBuilderRaw.cs" />
-    <Compile Include="AST\_1_Bare\Builders\FileParseAsForestOfBlocksBuilder.cs" />
-    <Compile Include="AST\_1_Bare\Builders\FileParseBuilderBase.cs" />
+    <Compile Include="AST\_1_Bare\Builders\FileParseBuilderHierarchical.cs" />
+    <Compile Include="AST\_1_Bare\Builders\FileParseBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockPreludeBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBlockStatementBuilder.cs" />
     <Compile Include="AST\_1_Bare\Builders\BlockBuilderRaw.cs" />
     <Compile Include="AST\_1_Bare\Builders\CommentDefinitionBuilder.cs" />
     <Compile Include="AST\_1_Bare\CommentDefinition.cs" />
-    <Compile Include="AST\_1_Bare\Builders\FileParseAsRawStatementSequenceBuilder.cs" />
+    <Compile Include="AST\_1_Bare\Builders\FileParseBuilderRaw.cs" />
     <Compile Include="AST\_1_Bare\LanguageConstruct.cs" />
     <Compile Include="AST\_1_Bare\Builders\StatementBuilder.cs" />
     <Compile Include="AST\PossiblySpecified.cs" />
