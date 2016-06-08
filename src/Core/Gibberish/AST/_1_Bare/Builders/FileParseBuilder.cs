@@ -38,6 +38,13 @@ namespace Gibberish.AST._1_Bare.Builders
 			return _Remember(new CommentDefinitionBuilder(commentId, content));
 		}
 
+		public CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId)
+		{
+			return CommentDefinitionBlock(commentId, delegate { });
+		}
+
+		public abstract CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId, Action<CommentDefinitionBlockPreludeBuilder> preludeOptions);
+
 		[NotNull]
 		protected TBuilder _Remember<TBuilder>([NotNull] TBuilder line) where TBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 		{
@@ -46,7 +53,5 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull] private readonly List<AstBuilderSupportingErrors<LanguageConstruct>> _contents = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
-
-		public abstract CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId);
 	}
 }

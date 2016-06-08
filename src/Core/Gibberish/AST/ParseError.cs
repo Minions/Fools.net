@@ -90,6 +90,11 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.MissingBody);
 		}
 
+		public static ParseError IllegalContentAfterColonInPrelude(string extra)
+		{
+			return new ParseError(UiStrings.IllegalContentAfterColonInPrelude, extra);
+		}
+
 		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();
 
 		[NotNull] private static readonly string[] KnownLanguages = {

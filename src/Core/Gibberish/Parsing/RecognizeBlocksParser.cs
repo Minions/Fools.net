@@ -48,33 +48,22 @@ namespace Gibberish.Parsing
 		[NotNull]
 		private LanguageConstruct _InterpretLine([NotNull] string line)
 		{
-			//if (_commentProgress.Any())
-			//{
-			//	if (line.Trim() == "##")
-			//	{
-			//		_SaveProgress(line);
-			//		var result = _ExtractMultiLineCommentDefinition();
-			//		_commentProgress.Clear();
-			//		return result;
-			//	}
-			//	return _SaveProgress(line);
-			//}
-
 			var content = line.TrimStart('\t');
 			var indentationDepth = line.Length - content.Length;
 			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content, CRLF); }
 			if (content.StartsWith("##"))
 			{
 				inCommentSection = true;
-				var match = _multiLineCommentPreludeRegex.Match(content);
-				if (!match.Success) { return _ExtractMultiLineCommentPrelude(indentationDepth, ""); }
+				var match = _commentDefinitionBlockPreludePattern.Match(content);
+				if (!match.Success) { return _ExtractCommentDefinitionBlockPrelude(indentationDepth, "", ""); }
 				var commentId = match.Groups["commentId"].Value;
-				return _ExtractMultiLineCommentPrelude(indentationDepth, commentId); 
+				var extra = match.Groups["extra"].Value;
+				return _ExtractCommentDefinitionBlockPrelude(indentationDepth, commentId, extra); 
 			}
 			if (content.StartsWith("#"))
 			{
 				inCommentSection = true;
-				var match = _singleLineCommentRegex.Match(content);
+				var match = _CommentDefinitionPattern.Match(content);
 				if (!match.Success) { return _ExtractSingleLineCommentDefinition("", content.Substring(1).TrimStart(), "", CRLF); }
 				var commentId = match.Groups["commentId"].Value;
 				var commentSeparator = match.Groups["commentSeparator"].Value;
@@ -102,13 +91,12 @@ namespace Gibberish.Parsing
 
 		bool inCommentSection = false;
 
-		private readonly Regex _multiLineCommentPreludeRegex = new Regex(@"(?x)
+		private readonly Regex _commentDefinitionBlockPreludePattern = new Regex(@"(?x)
 				^\#\#
-					\[(?<commentId>[0-9]+)\]\:
-				$
+					\[(?<commentId>[0-9]+)\]\:(?<extra>.*)
 ", RegexOptions.Compiled);
 
-		private readonly Regex _singleLineCommentRegex = new Regex(@"(?x)^\#
+		private readonly Regex _CommentDefinitionPattern = new Regex(@"(?x)^\#
 				\[(?<commentId>[0-9]+)\]\:
 				(?<commentSeparator>\s+)
 				(?<firstLineContent>.*)
@@ -118,7 +106,7 @@ namespace Gibberish.Parsing
 		//{
 		//	var commentEnd = _commentProgress.Last();
 		//	_commentProgress.RemoveAt(_commentProgress.Count - 1);
-		//	var match = _singleLineCommentRegex.Match(_commentProgress[0]);
+		//	var match = _CommentDefinitionPattern.Match(_commentProgress[0]);
 		//	if (!match.Success) { return _ExtractMultiLineCommentDefinition("", _commentProgress[0], "", commentEnd); }
 		//	var commentId = match.Groups["commentId"].Value;
 		//	var commentSeparator = match.Groups["commentSeparator"].Value;

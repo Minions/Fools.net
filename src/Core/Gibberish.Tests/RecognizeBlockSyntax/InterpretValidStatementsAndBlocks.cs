@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
@@ -260,22 +259,33 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 	first
 ",
 				BasicAst.SequenceOfRawLines(
-					f => f.CommentDefinitionBlock(8).WithBody(b=>b.AddStatement("first")))
+					f => f.CommentDefinitionBlock(8)
+						.WithBody(b => b.AddStatement("first")))
 			},
-//			new object[]
-//			{
-//				@"##[8]:
-//	first
-//		second
-//",
-//				BasicAst.SequenceOfRawLines(
-//					f =>
-//					{
-//						f.CommentDefinitionBlockPrelude(8);
-//						f.MultilineCommentBody("first");
-//						f.MultilineCommentBody("	second");
-//					})
-//			},
+			new object[]
+			{
+				@"##[8]: extra
+	first
+",
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinitionBlock(8, p => p.WithError(ParseError.IllegalContentAfterColonInPrelude(" extra")))
+						.WithBody(b => b.AddStatement("first")))
+			}
+
+			//			new object[]
+			//			{
+			//				@"##[8]:
+			//	first
+			//		second
+			//",
+			//				BasicAst.SequenceOfRawLines(
+			//					f =>
+			//					{
+			//						f.CommentDefinitionBlockPrelude(8);
+			//						f.MultilineCommentBody("first");
+			//						f.MultilineCommentBody("	second");
+			//					})
+			//			},
 
 			//new object[]
 			//{

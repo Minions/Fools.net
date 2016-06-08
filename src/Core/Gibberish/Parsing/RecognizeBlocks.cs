@@ -130,9 +130,11 @@ namespace Gibberish.Parsing
 			return commentNumber;
 		}
 
-		private LanguageConstruct _ExtractMultiLineCommentPrelude(int indentationDepth, string commentId)
+		private LanguageConstruct _ExtractCommentDefinitionBlockPrelude(int indentationDepth, string commentId, string extra)
 		{
 			var errors = new List<ParseError>();
+
+			if (!string.IsNullOrEmpty(extra)) { errors.Add(ParseError.IllegalContentAfterColonInPrelude(extra)); }
 
 			int commentNumber;
 			if (!int.TryParse(commentId, out commentNumber)) { errors.Add(ParseError.MissingIdInCommentDefinition(commentId.Substring(0, 8))); }

@@ -165,4 +165,7 @@
 	<data name="MissingBody" xml:space="preserve">
 		<value>We found a block prelude but couldn't find its body. Every block needs at least one line in its body. Most likely you either want an empty block or have an indentation error in the next line. We're going to continue parsing as if you wanted an empty body. If you do want an empty body, please add a body with a `pass` statement. If that wasn't your intention, please fix your indentation.</value>
 	</data>
+	<data name="IllegalContentAfterColonInPrelude" xml:space="preserve">
+		<value>We found extra content after the colon in a block prelude: `{0}`. Please remove it.</value>
+	</data>
 </root>
