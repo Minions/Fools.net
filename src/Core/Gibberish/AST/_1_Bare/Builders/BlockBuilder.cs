@@ -5,9 +5,9 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class BlockBuilder : BlockBuilderBase<BlockBuilder.PreludeBuilder>
+	public class BlockBuilder : BlockBuilderBase
 	{
-		public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions) : base(preludeOptions, new PreludeBuilder(prelude)) {}
+		public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilderBase> preludeOptions) : base(preludeOptions, new PreludeBuilder(prelude)) {}
 
 		public class PreludeBuilder : PreludeBuilderBase
 		{
@@ -25,7 +25,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 			public override PossiblySpecified<int> IndentationDepth => PossiblySpecified<int>.Unspecifed;
 
-			protected override BlockBuilderBase<PreludeBuilder> CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
+			protected override BlockBuilderBase CreateBlockBuilder(string prelude, Action<PreludeBuilderBase> preludeOptions)
 			{
 				return new BlockBuilder(prelude, preludeOptions);
 			}
