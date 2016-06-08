@@ -4,10 +4,10 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public abstract class BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang> : AstBuilderSupportingErrors<TLang>
-		where TBlockBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang>
-		where TPreludeBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang>.PreludeBuilderBase
-		where TBodyBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder, TLang>.BodyBuilderBase
+	public abstract class BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder> : AstBuilderSupportingErrors<LanguageConstruct>
+		where TBlockBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder>
+		where TPreludeBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder>.PreludeBuilderBase
+		where TBodyBuilder : BlockBuilderBase<TBlockBuilder, TPreludeBuilder, TBodyBuilder>.BodyBuilderBase
 	{
 		protected BlockBuilderBase([NotNull] Action<TPreludeBuilder> preludeOptions, TPreludeBuilder preludeBuilder)
 		{
@@ -18,7 +18,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		[NotNull]
 		public TPreludeBuilder Prelude { get; }
 		[NotNull]
-		public List<AstBuilderSupportingErrors<TLang>> Body { get; } = new List<AstBuilderSupportingErrors<TLang>>();
+		public List<AstBuilderSupportingErrors<LanguageConstruct>> Body { get; } = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
 
 		[NotNull]
 		public TBlockBuilder WithBody([NotNull] Action<TBodyBuilder> bodyOptions)
@@ -27,7 +27,7 @@ namespace Gibberish.AST._1_Bare.Builders
 			return (TBlockBuilder) this;
 		}
 
-		public abstract class PreludeBuilderBase : AstBuilderSupportingErrors<TLang>
+		public abstract class PreludeBuilderBase : AstBuilderSupportingErrors<LanguageConstruct>
 		{
 			protected PreludeBuilderBase(string content)
 			{
@@ -66,10 +66,24 @@ namespace Gibberish.AST._1_Bare.Builders
 				return _AddToBody(CreateBlockBuilder(prelude, preludeOptions));
 			}
 
+			public abstract PossiblySpecified<int> IndentationDepth { get; }
+
+			[NotNull]
+			public StatementBuilder AddStatement([NotNull] string content)
+			{
+				return _AddToBody(new StatementBuilder(content, IndentationDepth));
+			}
+
+			[NotNull]
+			public BlankLineBuilder AddBlankLine()
+			{
+				return _AddToBody(new BlankLineBuilder(IndentationDepth));
+			}
+
 			protected abstract TBlockBuilder CreateBlockBuilder(string prelude, Action<TPreludeBuilder> preludeOptions);
 
 			[NotNull]
-			protected TBuilder _AddToBody<TBuilder>([NotNull] TBuilder result) where TBuilder : AstBuilderSupportingErrors<TLang>
+			private TBuilder _AddToBody<TBuilder>([NotNull] TBuilder result) where TBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 			{
 				_self.Body.Add(result);
 				return result;
@@ -80,7 +94,7 @@ namespace Gibberish.AST._1_Bare.Builders
 
 		protected abstract TBodyBuilder CreateBodyBuilder();
 
-		protected void _BuildBodyInto(List<TLang> destination)
+		protected void _BuildBodyInto(List<LanguageConstruct> destination)
 		{
 			foreach (var builder in Body) { builder.BuildInto(destination); }
 		}

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class RawBlockBuilder : BlockBuilderBase<RawBlockBuilder, RawBlockBuilder.PreludeBuilder, RawBlockBuilder.BodyBuilder, LanguageConstruct>
+	public class RawBlockBuilder : BlockBuilderBase<RawBlockBuilder, RawBlockBuilder.PreludeBuilder, RawBlockBuilder.BodyBuilder>
 	{
 		public RawBlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions, int indentationDepth)
 			: base(preludeOptions, new PreludeBuilder(prelude, indentationDepth))
@@ -33,21 +33,11 @@ namespace Gibberish.AST._1_Bare.Builders
 		{
 			public BodyBuilder([NotNull] RawBlockBuilder self) : base(self) {}
 
-			[NotNull]
-			public StatementBuilder AddStatement([NotNull] string content)
-			{
-				return _AddToBody(new StatementBuilder(content, PossiblySpecified<int>.WithValue(_self.IndentationDepth + 1)));
-			}
-
-			[NotNull]
-			public AstBuilderSupportingErrors<LanguageConstruct> AddBlankLine()
-			{
-				return _AddToBody(new BlankLineBuilder(PossiblySpecified<int>.WithValue(_self.IndentationDepth)));
-			}
+			public override PossiblySpecified<int> IndentationDepth => PossiblySpecified<int>.WithValue(_self.IndentationDepth + 1);
 
 			protected override RawBlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
 			{
-				return new RawBlockBuilder(prelude, preludeOptions, _self.IndentationDepth + 1);
+				return new RawBlockBuilder(prelude, preludeOptions, IndentationDepth.Value);
 			}
 		}
 

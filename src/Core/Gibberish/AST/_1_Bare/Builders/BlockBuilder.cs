@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Gibberish.AST._1_Bare.Builders
 {
-	public class BlockBuilder : BlockBuilderBase<BlockBuilder, BlockBuilder.PreludeBuilder, BlockBuilder.BodyBuilder, LanguageConstruct>
+	public class BlockBuilder : BlockBuilderBase<BlockBuilder, BlockBuilder.PreludeBuilder, BlockBuilder.BodyBuilder>
 	{
 		public BlockBuilder([NotNull] string prelude, [NotNull] Action<PreludeBuilder> preludeOptions) : base(preludeOptions, new PreludeBuilder(prelude)) {}
 
@@ -25,17 +25,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		{
 			public BodyBuilder([NotNull] BlockBuilder self) : base(self) {}
 
-			[NotNull]
-			public StatementBuilder AddStatement([NotNull] string content)
-			{
-				return _AddToBody(new StatementBuilder(content, PossiblySpecified<int>.Unspecifed));
-			}
-
-			[NotNull]
-			public AstBuilderSupportingErrors<LanguageConstruct> AddBlankLine()
-			{
-				return _AddToBody(new BlankLineBuilder(PossiblySpecified<int>.Unspecifed));
-			}
+			public override PossiblySpecified<int> IndentationDepth => PossiblySpecified<int>.Unspecifed;
 
 			protected override BlockBuilder CreateBlockBuilder(string prelude, Action<PreludeBuilder> preludeOptions)
 			{
