@@ -137,7 +137,7 @@ namespace Gibberish.Parsing
 			int commentNumber;
 			if (!int.TryParse(commentId, out commentNumber)) { errors.Add(ParseError.MissingIdInCommentDefinition(commentId.Substring(0, 8))); }
 
-			return new CommentDefinitionBlockPrelude(PossiblySpecified<bool>.Unspecifed, commentNumber, errors);
+			return new CommentDefinitionBlockPrelude(commentNumber, errors);
 		}
 
 		private LanguageConstruct _ExtractMultiLineCommentStatement(int indentationDepth, string content)

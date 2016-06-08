@@ -260,11 +260,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 	first
 ",
 				BasicAst.SequenceOfRawLines(
-					f =>
-					{
-						f.CommentDefinitionBlockPrelude(8);
-						f.CommentDefinitionBlockStatement("first");
-					})
+					f => f.CommentDefinitionBlock(8).WithBody(b=>b.AddStatement("first")))
 			},
 //			new object[]
 //			{

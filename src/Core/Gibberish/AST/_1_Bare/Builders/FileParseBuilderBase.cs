@@ -46,5 +46,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull] private readonly List<AstBuilderSupportingErrors<LanguageConstruct>> _contents = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
+
+		public abstract CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId);
 	}
 }

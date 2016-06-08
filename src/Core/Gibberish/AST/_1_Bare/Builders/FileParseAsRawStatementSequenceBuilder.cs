@@ -14,14 +14,9 @@ namespace Gibberish.AST._1_Bare.Builders
 			return _Remember(new BlockBuilderRaw(prelude, preludeOptions, 0));
 		}
 
-		public CommentDefinitionBlockPreludeBuilder CommentDefinitionBlockPrelude(int commentId)
+		public override CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId)
 		{
-			return _Remember(new CommentDefinitionBlockPreludeBuilder(commentId));
-		}
-
-		public CommentDefinitionBlockStatementBuilder CommentDefinitionBlockStatement(string content)
-		{
-			return _Remember(new CommentDefinitionBlockStatementBuilder(content));
+			return _Remember(new CommentDefinitionBlockBuilderRaw(commentId, delegate { }));
 		}
 	}
 }

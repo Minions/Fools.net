@@ -4,16 +4,16 @@ namespace Gibberish.AST._1_Bare.Builders
 {
 	public class CommentDefinitionBlockPreludeBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 	{
-		public int CommentId { get; }
-
 		public CommentDefinitionBlockPreludeBuilder(int commentId)
 		{
 			CommentId = commentId;
 		}
 
+		public int CommentId { get; }
+
 		public override void BuildInto(List<LanguageConstruct> destination)
 		{
-			destination.Add(new CommentDefinitionBlockPrelude(PossiblySpecified<bool>.Unspecifed, CommentId, Errors));
+			destination.Add(new CommentDefinitionBlockPrelude(CommentId, Errors));
 		}
 	}
 }

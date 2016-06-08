@@ -448,11 +448,9 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				BasicAst.SequenceOfRawLines(
 					f =>
 					{
-						//f.CommentDefinitionBlock(8)
-						//	.WithBody(b => { b.AddStatement("first"); });
-
-						f.CommentDefinitionBlockPrelude(8);
-						f.CommentDefinitionBlockStatement("first");
+						f.CommentDefinitionBlock(8)
+							.WithBody(b => { b.AddStatement("first"); })
+							.ThatStartsParagraph();
 					})
 					.Build());
 
