@@ -101,6 +101,8 @@
     <Compile Include="AST\_1_Bare\LanguageConstructVisitor.cs" />
     <Compile Include="AST\ParseError.cs" />
     <Compile Include="AST\_1_Bare\CommentDefinitionBlock.cs" />
+    <Compile Include="Parsing\ParseCommentDefinitions.cs" />
+    <Compile Include="Parsing\ParseCommentDefinitionPreludes.cs" />
     <Compile Include="Parsing\ParsingExtensions.cs" />
     <Compile Include="AST\_1_Bare\UnknownPrelude.cs" />
     <Compile Include="Parsing\RecognizeLines.cs" />
