@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
@@ -134,24 +135,35 @@ namespace Gibberish.Parsing
 				var errors = new List<ParseError>();
 				_sourceData.HaveSeenAtLeastOneCommentDefinition();
 				var startsParagraph = _sourceData.ShouldStartParagraph;
-				var contents = new List<CommentDefinitionBlockStatement>();
-				_sourceData.ContinueToNextLine(false);
-				while (_sourceData.Current is CommentDefinitionBlockStatement) {
-					contents.Add((CommentDefinitionBlockStatement) _sourceData.Current);
-					_sourceData.ContinueToNextLine(false);
-				}
+				var contents = _GatherCommentDefinitionBlockBody(errors);
 				result.Add(new CommentDefinitionBlock(startsParagraph, prelude, contents, errors));
 				return false;
 			}
 
 			public bool Visit(CommentDefinitionBlockStatement statement, int level, List<LanguageConstruct> result)
 			{
-				throw new System.NotImplementedException();
+				statement.Errors.Add(ParseError.IllegalContentInCommentDefinitions());
+				result.Add(statement);
+				_sourceData.ContinueToNextLine(false);
+				return false;
 			}
 
 			public bool Visit(CommentDefinitionBlock commentDefinition, int level, List<LanguageConstruct> result)
 			{
-				throw new System.NotImplementedException();
+				throw new UnfixableError($"a comment definition block somehow made it into input data for {typeof(AssembleBlocks).Name}. Found value {commentDefinition}.");
+			}
+
+			private List<CommentDefinitionBlockStatement> _GatherCommentDefinitionBlockBody(List<ParseError> errors)
+			{
+				var contents = new List<CommentDefinitionBlockStatement>();
+				_sourceData.ContinueToNextLine(false);
+				while (_sourceData.Current is CommentDefinitionBlockStatement)
+				{
+					contents.Add((CommentDefinitionBlockStatement) _sourceData.Current);
+					_sourceData.ContinueToNextLine(false);
+				}
+				if (!contents.Any()) { errors.Add(ParseError.MissingCommentBlockBody()); }
+				return contents;
 			}
 
 			[NotNull] private readonly SourceData _sourceData;

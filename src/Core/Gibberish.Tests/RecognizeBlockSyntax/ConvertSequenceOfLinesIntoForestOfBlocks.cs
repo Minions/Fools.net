@@ -335,6 +335,57 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		}
 
 		[Test]
+		public void LoneCommentBodyStatementIsReportedAsMalformedCommentError()
+		{
+			var lines = new List<LanguageConstruct>
+			{
+				CommentStatementIndented(0, "invalid")
+			};
+			var tree = BasicAst.BlockTree(
+				f => f.IllegalCommentBlockStatement(0, "invalid")
+					.WithError(ParseError.IllegalContentInCommentDefinitions()));
+			ShouldTransformLinesIntoTree(lines, tree);
+		}
+
+		[Test]
+		public void CommentBodyStatementAfterCommentDefinitionIsReportedAsMalformedCommentError()
+		{
+			var lines = new List<LanguageConstruct>
+			{
+				Comment(22, "hi"),
+				CommentStatementIndented(0, "invalid")
+			};
+			var tree = BasicAst.BlockTree(
+				f =>
+				{
+					f.CommentDefinition(22, "hi")
+						.ThatStartsParagraph();
+					f.IllegalCommentBlockStatement(0, "invalid")
+						.WithError(ParseError.IllegalContentInCommentDefinitions());
+				});
+			ShouldTransformLinesIntoTree(lines, tree);
+		}
+
+		[Test]
+		public void BlockCommentWithNoBodyIsAnError()
+		{
+			var lines = new List<LanguageConstruct>
+			{
+				CommentPrelude(23),
+				Comment(24, "hi")
+			};
+			var tree = BasicAst.BlockTree(
+				f =>
+				{
+					f.CommentDefinitionBlock(23)
+						.ThatStartsParagraph()
+						.WithError(ParseError.MissingCommentBlockBody());
+					f.CommentDefinition(24, "hi");
+				});
+			ShouldTransformLinesIntoTree(lines, tree);
+		}
+
+		[Test]
 		public void MultiLineCommentPreludeFollowedByStatementBecomesAMultiLineComment()
 		{
 			Action<FileParseBuilder> code = f =>
@@ -362,22 +413,32 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 				.BeRecognizedAs(tree);
 		}
 
-		private LanguageConstruct BlankLineIndented(int indentation)
+		private static LanguageConstruct CommentStatementIndented(int indentationLevel, string content)
+		{
+			return new CommentDefinitionBlockStatement(indentationLevel, content, ParseError.NoErrors);
+		}
+
+		private static LanguageConstruct BlankLineIndented(int indentation)
 		{
 			return new BlankLine(PossiblySpecified<int>.WithValue(indentation), ParseError.NoErrors);
 		}
 
-		private static CommentDefinition Comment(int commentId, string content)
+		private static LanguageConstruct Comment(int commentId, string content)
 		{
 			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentId, content, ParseError.NoErrors);
 		}
 
-		private static UnknownStatement StatementIndented(int indentationLevel, string content)
+		private static LanguageConstruct CommentPrelude(int commentId)
+		{
+			return new CommentDefinitionBlockPrelude(commentId, ParseError.NoErrors);
+		}
+
+		private static LanguageConstruct StatementIndented(int indentationLevel, string content)
 		{
 			return new UnknownStatement(PossiblySpecified<bool>.Unspecifed, PossiblySpecified<int>.WithValue(indentationLevel), content, Enumerable.Empty<int>(), ParseError.NoErrors);
 		}
 
-		private static UnknownPrelude PreludeIndented(int indentationLevel, string content)
+		private static LanguageConstruct PreludeIndented(int indentationLevel, string content)
 		{
 			return new UnknownPrelude(PossiblySpecified<int>.WithValue(indentationLevel), content, Enumerable.Empty<int>(), ParseError.NoErrors);
 		}

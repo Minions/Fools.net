@@ -80,9 +80,19 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.MissingBody);
 		}
 
+		public static ParseError MissingCommentBlockBody()
+		{
+			return new ParseError(UiStrings.MissingCommentBlockBody);
+		}
+
 		public static ParseError IllegalContentAfterColonInPrelude(string extra)
 		{
 			return new ParseError(UiStrings.IllegalContentAfterColonInPrelude, extra);
+		}
+
+		public static ParseError IllegalContentInCommentDefinitions()
+		{
+			return new ParseError(UiStrings.IllegalContentInCommentDefinitions);
 		}
 
 		[NotNull] public static readonly IEnumerable<ParseError> NoErrors = Enumerable.Empty<ParseError>();

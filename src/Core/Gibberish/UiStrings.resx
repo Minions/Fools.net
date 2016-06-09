@@ -159,7 +159,13 @@
 	<data name="MissingBody" xml:space="preserve">
 		<value>We found a block prelude but couldn't find its body. Every block needs at least one line in its body. Most likely you either want an empty block or have an indentation error in the next line. We're going to continue parsing as if you wanted an empty body. If you do want an empty body, please add a body with a `pass` statement. If that wasn't your intention, please fix your indentation.</value>
 	</data>
+	<data name="MissingCommentBlockBody" xml:space="preserve">
+		<value>We found a comment definition block prelude but couldn't find its body. Every block needs at least one line in its body. If you want an empty comment definition, then use the single-statement comment definition form.</value>
+	</data>
 	<data name="IllegalContentAfterColonInPrelude" xml:space="preserve">
 		<value>We found extra content after the colon in a block prelude: `{0}`. Please remove it.</value>
+	</data>
+	<data name="IllegalContentInCommentDefinitions" xml:space="preserve">
+		<value>We found something in your comment definitions that is not a comment definition and is not part of the body of a block comment definition. Comment definitions operate like endnotes: once you define the first one, that's all you can do for the rest of the file. If this line is code, please move it to before the comment definitions. If is supposed to be the body of a block comment, then please ensure you start the comment prelude with two hashes. Block comment definition preludes must be formatted like `##[47]:`.</value>
 	</data>
 </root>

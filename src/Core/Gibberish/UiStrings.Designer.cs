@@ -70,6 +70,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We found something in your comment definitions that is not a comment definition and is not part of the body of a block comment definition. Comment definitions operate like endnotes: once you define the first one, that&apos;s all you can do for the rest of the file. If this line is code, please move it to before the comment definitions. If is supposed to be the body of a block comment, then please ensure you start the comment prelude with two hashes. Block comment definition preludes must be formatted like `##[47 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string IllegalContentInCommentDefinitions {
+            get {
+                return ResourceManager.GetString("IllegalContentInCommentDefinitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We were confused by a tab used for something other than indentation. Each line must start with the right number of indentations, each a single tab character. Tabs may also be used to separate the code line from a comment reference. Tabs are not allowed in any other place. Please clean up your tabs..
         /// </summary>
         internal static string IllegalTabInLine {
@@ -156,6 +165,15 @@ namespace Gibberish {
         internal static string MissingBody {
             get {
                 return ResourceManager.GetString("MissingBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We found a comment definition block prelude but couldn&apos;t find its body. Every block needs at least one line in its body. If you want an empty comment definition, then use the single-statement comment definition form..
+        /// </summary>
+        internal static string MissingCommentBlockBody {
+            get {
+                return ResourceManager.GetString("MissingCommentBlockBody", resourceCulture);
             }
         }
         
