@@ -3,7 +3,7 @@ using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.LineParsers
 {
 	internal static class ParseStatements
 	{

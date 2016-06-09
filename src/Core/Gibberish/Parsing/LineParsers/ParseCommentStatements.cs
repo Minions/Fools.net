@@ -3,9 +3,9 @@ using System.Text;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.LineParsers
 {
-	internal static class ParseCommentStatement
+	internal static class ParseCommentStatements
 	{
 		public static LanguageConstruct Interpret(int indentationDepth, string content)
 		{

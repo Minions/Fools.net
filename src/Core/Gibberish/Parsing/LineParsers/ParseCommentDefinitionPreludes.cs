@@ -4,9 +4,9 @@ using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.LineParsers
 {
-	static internal class ParseCommentDefinitionPreludes
+	internal static class ParseCommentDefinitionPreludes
 	{
 		public static LanguageConstruct Interpret(int indentationDepth, string content, RecognizeLines recognizeLines)
 		{

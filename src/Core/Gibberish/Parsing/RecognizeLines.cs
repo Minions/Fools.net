@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
+using Gibberish.Parsing.LineParsers;
 using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
@@ -57,7 +58,7 @@ namespace Gibberish.Parsing
 			var indentationDepth = line.Length - content.Length;
 			if (ParseCommentDefinitionPreludes.Matches(content)) { return ParseCommentDefinitionPreludes.Interpret(indentationDepth, content, this); }
 			if (ParseCommentDefinitions.Matches(content)) { return ParseCommentDefinitions.Interpret(content, this); }
-			if (InCommentSection) { return ParseCommentStatement.Interpret(indentationDepth, content); }
+			if (InCommentSection) { return ParseCommentStatements.Interpret(indentationDepth, content); }
 			if (ParseBlankLines.Matches(content)) { return ParseBlankLines.Interpret(indentationDepth, content); }
 			if (ParsePreludes.Matches(content)) { return ParsePreludes.Interpret(indentationDepth, content); }
 			return ParseStatements.Interpret(indentationDepth, content);

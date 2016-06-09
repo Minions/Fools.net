@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Gibberish.AST;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.LineParsers
 {
 	internal static class ParseCommentReferences
 	{

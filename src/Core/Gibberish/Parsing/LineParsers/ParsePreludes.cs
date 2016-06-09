@@ -3,9 +3,10 @@ using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.LineParsers
 {
-	internal static class ParsePreludes {
+	internal static class ParsePreludes
+	{
 		public static LanguageConstruct Interpret(int indentationDepth, string content)
 		{
 			var parts = content.Split(
