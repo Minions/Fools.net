@@ -34,7 +34,6 @@ namespace Gibberish.Parsing
 				},
 				StringSplitOptions.None)
 				.Select(_InterpretLine)
-				.Where(_ => _ != null)
 				.ToList();
 			if (!hasNewlineatEndOfFile) { result[result.Count - 1].Errors.Add(ParseError.MissingNewlineAtEndOfFile()); }
 			return result;
