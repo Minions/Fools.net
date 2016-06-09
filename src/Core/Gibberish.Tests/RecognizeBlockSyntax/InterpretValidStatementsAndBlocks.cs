@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
@@ -14,7 +13,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		[Test, TestCaseSource(nameof(valid_recognitions))]
 		public void should_recognize_as(string input, AstBuilder<LanguageConstruct> expected)
 		{
-			var subject = new RecognizeBlocks();
+			var subject = new RecognizeLines();
 			var result = subject.ParseWholeFile(input);
 
 			result.Should()
@@ -260,55 +259,56 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 	first
 ",
 				BasicAst.SequenceOfRawLines(
-					f => f.CommentDefinitionBlock(8).WithBody(b=>b.AddStatement("first")))
+					f => f.CommentDefinitionBlock(8)
+						.WithBody(b => b.AddStatement("first")))
 			},
-//			new object[]
-//			{
-//				@"##[8]:
-//	first
-//		second
-//",
-//				BasicAst.SequenceOfRawLines(
-//					f =>
-//					{
-//						f.CommentDefinitionBlockPrelude(8);
-//						f.MultilineCommentBody("first");
-//						f.MultilineCommentBody("	second");
-//					})
-//			},
-
-			//new object[]
-			//{
-			//	"##[8]: \r\n",
-			//	BasicAst.SequenceOfRawLines(f => f.CommentDefinition(8, "\r\n"))
-			//},
-			//new object[]
-			//{
-			//	"##[9]:\r\tfirst\r\r\tmore\n",
-			//	BasicAst.SequenceOfRawLines(
-			//		f => f.CommentDefinition(
-			//			9,
-			//			string.Join(
-			//				Environment.NewLine,
-			//				"first",
-			//				"",
-			//				"more",
-			//				"")))
-			//},
-			//new object[]
-			//{
-			//	"##[13]: \r\n ##\r\n",
-			//	BasicAst.SequenceOfRawLines(
-			//		f => f.CommentDefinition(13, "\r\n")
-			//			.WithError(ParseError.ErrorAtEndOfMultilineComment(" ##")))
-			//},
-			//new object[]
-			//{
-			//	"##[17]: \r\n## \r\n",
-			//	BasicAst.SequenceOfRawLines(
-			//		f => f.CommentDefinition(17, "\r\n")
-			//			.WithError(ParseError.ErrorAtEndOfMultilineComment("## ")))
-			//}
+			new object[]
+			{
+				"##[81]: extra\r\n\tfirst\r\n",
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinitionBlock(81, p => p.WithError(ParseError.IllegalContentAfterColonInPrelude(" extra")))
+						.WithBody(b => b.AddStatement("first")))
+			},
+			new object[]
+			{
+				"##[82]:\r\n\tfirst\r\n\t\tsecond\r\n",
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.CommentDefinitionBlock(82)
+							.WithBody(
+								b =>
+								{
+									b.AddStatement("first");
+									b.AddStatement("\tsecond");
+								});
+					})
+			},
+			new object[]
+			{
+				"##[9]:\r\tfirst\n\r\tmore\n",
+				BasicAst.SequenceOfRawLines(
+					f => f.CommentDefinitionBlock(9)
+						.WithBody(
+							b =>
+							{
+								b.AddStatement("first");
+								b.AddStatement("").WithIndentationDepth(0);
+								b.AddStatement("more");
+							}))
+			},
+			new object[]
+			{
+				"#[29]: hi\r\n\tfirst\r\nmore\r\n\t\r\n",
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.CommentDefinition(29, "hi");
+						f.IllegalCommentBlockStatement(1, "first");
+						f.IllegalCommentBlockStatement(0, "more");
+						f.IllegalCommentBlockStatement(1, "");
+					})
+			}
 		};
 	}
 }

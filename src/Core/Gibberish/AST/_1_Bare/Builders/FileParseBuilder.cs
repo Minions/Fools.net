@@ -39,6 +39,19 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull]
+		public CommentDefinitionBlockStatementBuilder IllegalCommentBlockStatement(int indentationDepth, [NotNull] string content)
+		{
+			return _Remember(new CommentDefinitionBlockStatementBuilder(content).WithIndentationDepth(indentationDepth));
+		}
+
+		public CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId)
+		{
+			return CommentDefinitionBlock(commentId, delegate { });
+		}
+
+		public abstract CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId, Action<CommentDefinitionBlockPreludeBuilder> preludeOptions);
+
+		[NotNull]
 		protected TBuilder _Remember<TBuilder>([NotNull] TBuilder line) where TBuilder : AstBuilderSupportingErrors<LanguageConstruct>
 		{
 			_contents.Add(line);
@@ -46,7 +59,5 @@ namespace Gibberish.AST._1_Bare.Builders
 		}
 
 		[NotNull] private readonly List<AstBuilderSupportingErrors<LanguageConstruct>> _contents = new List<AstBuilderSupportingErrors<LanguageConstruct>>();
-
-		public abstract CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId);
 	}
 }

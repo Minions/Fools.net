@@ -11,7 +11,7 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 		[Test]
 		public void should_accept_multiple_language_constructs()
 		{
-			var subject = new RecognizeBlocks();
+			var subject = new RecognizeLines();
 			var input = @"
 using language fasm
 

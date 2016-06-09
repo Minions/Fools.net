@@ -25,9 +25,10 @@ namespace Gibberish.AST._1_Bare.Builders
 			return this;
 		}
 
-		public void ThatStartsParagraph()
+		public CommentDefinitionBlockBuilder ThatStartsParagraph()
 		{
 			StartsParagraph = true;
+			return this;
 		}
 	}
 }

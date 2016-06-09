@@ -61,11 +61,20 @@ namespace Gibberish {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We might have found the end of your multi-line comment, but we can&apos;t be sure. A multi-line comment must end with `##` on its own line. We found something similar: `{0}`. Please end the comment properly..
+        ///   Looks up a localized string similar to We found extra content after the colon in a block prelude: `{0}`. Please remove it..
         /// </summary>
-        internal static string ErrorAtEndOfMultilineComment {
+        internal static string IllegalContentAfterColonInPrelude {
             get {
-                return ResourceManager.GetString("ErrorAtEndOfMultilineComment", resourceCulture);
+                return ResourceManager.GetString("IllegalContentAfterColonInPrelude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We found something in your comment definitions that is not a comment definition and is not part of the body of a block comment definition. Comment definitions operate like endnotes: once you define the first one, that&apos;s all you can do for the rest of the file. If this line is code, please move it to before the comment definitions. If is supposed to be the body of a block comment, then please ensure you start the comment prelude with two hashes. Block comment definition preludes must be formatted like `##[47 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string IllegalContentInCommentDefinitions {
+            get {
+                return ResourceManager.GetString("IllegalContentInCommentDefinitions", resourceCulture);
             }
         }
         
@@ -160,6 +169,15 @@ namespace Gibberish {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We found a comment definition block prelude but couldn&apos;t find its body. Every block needs at least one line in its body. If you want an empty comment definition, then use the single-statement comment definition form..
+        /// </summary>
+        internal static string MissingCommentBlockBody {
+            get {
+                return ResourceManager.GetString("MissingCommentBlockBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to We found a comment defintion but couldn&apos;t find its ID. Each comment must begin with an ID in the form `#[23]: `. Your comment starts with `{0}`..
         /// </summary>
         internal static string MissingIdInCommentDefinition {
@@ -183,15 +201,6 @@ namespace Gibberish {
         internal static string MissingNewlineAtEndOfFile {
             get {
                 return ResourceManager.GetString("MissingNewlineAtEndOfFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to We tried our best, but just couldn&apos;t find the end of this multi-line comment. Multi-line comments must end with a line containing just `##`. Please end your comment..
-        /// </summary>
-        internal static string MultilineCommentWithoutEnd {
-            get {
-                return ResourceManager.GetString("MultilineCommentWithoutEnd", resourceCulture);
             }
         }
         
