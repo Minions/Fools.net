@@ -38,6 +38,12 @@ namespace Gibberish.AST._1_Bare.Builders
 			return _Remember(new CommentDefinitionBuilder(commentId, content));
 		}
 
+		[NotNull]
+		public CommentDefinitionBlockStatementBuilder IllegalCommentBlockStatement(int indentationDepth, [NotNull] string content)
+		{
+			return _Remember(new CommentDefinitionBlockStatementBuilder(content).WithIndentationDepth(indentationDepth));
+		}
+
 		public CommentDefinitionBlockBuilder CommentDefinitionBlock(int commentId)
 		{
 			return CommentDefinitionBlock(commentId, delegate { });

@@ -296,6 +296,18 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 								b.AddStatement("").WithIndentationDepth(0);
 								b.AddStatement("more");
 							}))
+			},
+			new object[]
+			{
+				"#[29]: hi\r\n\tfirst\r\nmore\r\n\t\r\n",
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.CommentDefinition(29, "hi");
+						f.IllegalCommentBlockStatement(1, "first");
+						f.IllegalCommentBlockStatement(0, "more");
+						f.IllegalCommentBlockStatement(1, "");
+					})
 			}
 
 			//new object[]
