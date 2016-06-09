@@ -309,21 +309,6 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 						f.IllegalCommentBlockStatement(1, "");
 					})
 			}
-
-			//new object[]
-			//{
-			//	"##[13]: \r\n ##\r\n",
-			//	BasicAst.SequenceOfRawLines(
-			//		f => f.CommentDefinition(13, "\r\n")
-			//			.WithError(ParseError.ErrorAtEndOfMultilineComment(" ##")))
-			//},
-			//new object[]
-			//{
-			//	"##[17]: \r\n## \r\n",
-			//	BasicAst.SequenceOfRawLines(
-			//		f => f.CommentDefinition(17, "\r\n")
-			//			.WithError(ParseError.ErrorAtEndOfMultilineComment("## ")))
-			//}
 		};
 	}
 }

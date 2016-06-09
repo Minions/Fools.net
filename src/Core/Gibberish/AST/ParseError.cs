@@ -60,16 +60,6 @@ namespace Gibberish.AST
 			return new ParseError(UiStrings.IllegalWhitespaceOnBlankLine, whitespace);
 		}
 
-		public static ParseError ErrorAtEndOfMultilineComment(string endingFound)
-		{
-			return new ParseError(UiStrings.ErrorAtEndOfMultilineComment, endingFound);
-		}
-
-		public static ParseError MultilineCommentWithoutEnd()
-		{
-			return new ParseError(UiStrings.MultilineCommentWithoutEnd);
-		}
-
 		public static ParseError MissingNewlineAtEndOfFile()
 		{
 			return new ParseError(UiStrings.MissingNewlineAtEndOfFile);
