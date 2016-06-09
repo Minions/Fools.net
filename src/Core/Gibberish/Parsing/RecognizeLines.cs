@@ -14,12 +14,6 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
-			return ParseWholeFileNewImpl(input);
-		}
-
-		[NotNull]
-		private IEnumerable<LanguageConstruct> ParseWholeFileNewImpl([NotNull] string input)
-		{
 			var hasNewlineatEndOfFile = false;
 			if (input.EndsWith(CRLF))
 			{
