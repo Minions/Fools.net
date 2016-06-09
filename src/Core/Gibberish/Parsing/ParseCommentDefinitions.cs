@@ -23,21 +23,19 @@ namespace Gibberish.Parsing
 					"",
 					content.Substring(1)
 						.TrimStart(),
-					"",
-					RecognizeLines.CRLF);
+					"");
 			}
 			var commentId = match.Groups["commentId"].Value;
 			var commentSeparator = match.Groups["commentSeparator"].Value;
 			var firstLineContent = match.Groups["firstLineContent"].Value;
 
-			return _ExtractSingleLineCommentDefinition(commentId, firstLineContent, commentSeparator, RecognizeLines.CRLF);
+			return _ExtractSingleLineCommentDefinition(commentId, firstLineContent, commentSeparator);
 		}
 
 		[NotNull]
-		private static LanguageConstruct _ExtractSingleLineCommentDefinition(string commentId, string content, string commentSeparator, string newline)
+		private static LanguageConstruct _ExtractSingleLineCommentDefinition(string commentId, string content, string commentSeparator)
 		{
 			var errors = new List<ParseError>();
-			RecognizeLines.RequireNewline(newline, errors);
 			var commentNumber = _ExtractCommentNumber(commentId, content, commentSeparator, errors);
 			return new CommentDefinition(PossiblySpecified<bool>.Unspecifed, commentNumber, content, errors);
 		}

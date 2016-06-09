@@ -34,12 +34,7 @@ namespace Gibberish.Parsing
 			InCommentSection = true;
 		}
 
-		public static void RequireNewline(string newline, List<ParseError> errors)
-		{
-			if (newline.Length == 0) { errors.Add(ParseError.MissingNewlineAtEndOfFile()); }
-		}
-
-		public const string CRLF = CR + LF;
+		private const string CRLF = CR + LF;
 		public bool InCommentSection { get; private set; }
 
 		private static bool DetectAndHandleNewlineAtFileEnd([NotNull] ref string input)
@@ -66,7 +61,7 @@ namespace Gibberish.Parsing
 			if (ParseCommentDefinitionPreludes.IsCommentDefinitionBlock(content)) { return ParseCommentDefinitionPreludes.InterpretCommentDefinitionBlock(this, content, indentationDepth); }
 			if (ParseCommentDefinitions.IsCommentDefinition(content)) { return ParseCommentDefinitions.InterpretCommentDefinition(this, content); }
 			if (InCommentSection) { return _ExtractMultiLineCommentStatement(indentationDepth, content); }
-			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content, CRLF); }
+			if (string.IsNullOrWhiteSpace(content)) { return _ExtractBlankLine(indentationDepth, content); }
 
 			if (content.Contains(":"))
 			{
@@ -76,43 +71,40 @@ namespace Gibberish.Parsing
 						':'
 					},
 					2);
-				return _ExtractPreludeAndErrors(indentationDepth, parts[0], parts[1], CRLF);
+				return _ExtractPreludeAndErrors(indentationDepth, parts[0], parts[1]);
 			}
-			return _ExtractStatementAndErrors(indentationDepth, content, CRLF);
+			return _ExtractStatementAndErrors(indentationDepth, content);
 		}
 
 		[NotNull]
-		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace, string newline)
+		private LanguageConstruct _ExtractBlankLine(int indentationDepth, string illegalWhitespace)
 		{
 			var errors = new List<ParseError>();
-			RequireNewline(newline, errors);
 			if (illegalWhitespace.Length > 0) { errors.Add(ParseError.IllegalWhitespaceOnBlankLine(illegalWhitespace)); }
 			return new BlankLine(PossiblySpecified<int>.WithValue(indentationDepth), errors);
 		}
 
 		[NotNull]
-		private static UnknownStatement _ExtractStatementAndErrors(int indentationDepth, string content, string newline)
+		private static UnknownStatement _ExtractStatementAndErrors(int indentationDepth, string content)
 		{
 			var coreContent = content.TrimEnd();
 			var extraAtEnd = content.Substring(coreContent.Length);
 
 			var errors = new List<ParseError>();
 			var comments = new List<int>();
-			RequireNewline(newline, errors);
 			var statement = _ExtractCommentsAndReturnEverythingBeforeThem(errors, coreContent, comments);
 			_CheckForWhitespaceErrors(errors, statement, extraAtEnd);
 			return new UnknownStatement(PossiblySpecified<bool>.Unspecifed, PossiblySpecified<int>.WithValue(indentationDepth), statement, comments, errors);
 		}
 
 		[NotNull]
-		private UnknownPrelude _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon, string newline)
+		private UnknownPrelude _ExtractPreludeAndErrors(int indentationDepth, string content, string contentAfterColon)
 		{
 			var extraAtEnd = contentAfterColon;
 			var possibleComment = extraAtEnd.TrimEnd();
 			extraAtEnd = extraAtEnd.Substring(possibleComment.Length);
 			var errors = new List<ParseError>();
 			var comments = new List<int>();
-			RequireNewline(newline, errors);
 			_ExtractCommentsAndReturnEverythingBeforeThem(errors, possibleComment, comments);
 			_CheckForWhitespaceErrors(errors, content, extraAtEnd);
 			return new UnknownPrelude(PossiblySpecified<int>.WithValue(indentationDepth), content, comments, errors);
