@@ -8,12 +8,12 @@ namespace Gibberish.Parsing
 {
 	public static class ParseCommentDefinitions
 	{
-		public static bool IsCommentDefinition(string content)
+		public static bool Matches(string content)
 		{
 			return content.StartsWith("#");
 		}
 
-		public static LanguageConstruct InterpretCommentDefinition(RecognizeLines recognizeLines, string content)
+		public static LanguageConstruct Interpret(string content, RecognizeLines recognizeLines)
 		{
 			recognizeLines.RememberThatHaveFoundCommentSection();
 			var match = CommentDefinitionPattern.Match(content);

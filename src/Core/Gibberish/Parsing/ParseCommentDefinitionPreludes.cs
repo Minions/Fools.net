@@ -8,7 +8,7 @@ namespace Gibberish.Parsing
 {
 	static internal class ParseCommentDefinitionPreludes
 	{
-		public static LanguageConstruct InterpretCommentDefinitionBlock(RecognizeLines recognizeLines, string content, int indentationDepth)
+		public static LanguageConstruct Interpret(int indentationDepth, string content, RecognizeLines recognizeLines)
 		{
 			recognizeLines.RememberThatHaveFoundCommentSection();
 			var match = CommentDefinitionBlockPreludePattern.Match(content);
@@ -18,7 +18,7 @@ namespace Gibberish.Parsing
 			return _ExtractCommentDefinitionBlockPrelude(indentationDepth, commentId, extra);
 		}
 
-		public static bool IsCommentDefinitionBlock(string content)
+		public static bool Matches(string content)
 		{
 			return content.StartsWith("##");
 		}
