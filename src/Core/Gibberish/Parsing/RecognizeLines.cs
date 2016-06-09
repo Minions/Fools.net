@@ -14,17 +14,7 @@ namespace Gibberish.Parsing
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
-			var hasNewlineatEndOfFile = false;
-			if (input.EndsWith(CRLF))
-			{
-				hasNewlineatEndOfFile = true;
-				input = input.Substring(0, input.Length - 2);
-			}
-			else if (input.EndsWith(LF) || input.EndsWith(CR))
-			{
-				hasNewlineatEndOfFile = true;
-				input = input.Substring(0, input.Length - 1);
-			}
+			var hasNewlineatEndOfFile = DetectAndHandleNewlineAtFileEnd(ref input);
 			var result = input.Split(
 				new[]
 				{
@@ -37,6 +27,22 @@ namespace Gibberish.Parsing
 				.ToList();
 			if (!hasNewlineatEndOfFile) { result[result.Count - 1].Errors.Add(ParseError.MissingNewlineAtEndOfFile()); }
 			return result;
+		}
+
+		private static bool DetectAndHandleNewlineAtFileEnd([NotNull] ref string input)
+		{
+			var hasNewlineatEndOfFile = false;
+			if (input.EndsWith(CRLF))
+			{
+				hasNewlineatEndOfFile = true;
+				input = input.Substring(0, input.Length - 2);
+			}
+			else if (input.EndsWith(LF) || input.EndsWith(CR))
+			{
+				hasNewlineatEndOfFile = true;
+				input = input.Substring(0, input.Length - 1);
+			}
+			return hasNewlineatEndOfFile;
 		}
 
 		[NotNull]
