@@ -12,7 +12,7 @@ namespace Gibberish.AST._1_Bare.Builders
 		public override void BuildInto(List<LanguageConstruct> destination)
 		{
 			var body = new List<LanguageConstruct>();
-			Body.ForEach(b => b.BuildInto(body));
+			foreach (var builder in Body) { builder.BuildInto(body); }
 			destination.Add(
 				new CommentDefinitionBlock(
 					PossiblySpecified<bool>.WithValue(StartsParagraph),

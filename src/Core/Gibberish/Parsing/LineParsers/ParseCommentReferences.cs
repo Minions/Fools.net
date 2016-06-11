@@ -32,7 +32,7 @@ namespace Gibberish.Parsing.LineParsers
 		public static void CheckForWhitespaceErrors(List<ParseError> errors, string coreContent, string extraAtEnd)
 		{
 			if (extraAtEnd.Length != 0) { errors.Add(ParseError.IllegalWhitespaceAtEnd(extraAtEnd)); }
-			if (coreContent.Contains('\t')) { errors.Add(ParseError.IllegalTabInLine()); }
+			if (coreContent.Contains("\t")) { errors.Add(ParseError.IllegalTabInLine()); }
 		}
 
 		private static void _ExtractCommmentRefs(List<ParseError> errors, string remainingCommentToParse, List<int> comments)
