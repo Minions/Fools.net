@@ -1,4 +1,4 @@
 language: csharp
 solution: src/Core/Core.sln
 script:
-  - xbuild /p:Configuration=Debug;Platform=x64 src/Core/Core.sln
+  - xbuild /p:Configuration=Debug /p:Platform=x64 src/Core/Core.sln
