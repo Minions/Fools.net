@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ide.Tests
 {
@@ -9,10 +8,10 @@ namespace Ide.Tests
         [TestMethod]
         public void RaisesPropertyChanged()
         {
-            TestViewModel subject = new TestViewModel();
-            subject.MonitorEvents();
-            subject.Value = "foo";
-            subject.ShouldRaisePropertyChangeFor(_ => _.Value);
+            var subject = new TestViewModel();
+            subject.MonitoringEvents(
+                _ => _.Value = "foo"
+                ).ShouldRaisePropertyChangeFor(_ => _.Value);
         }
 
         class TestViewModel : NotifyPropertyChanged

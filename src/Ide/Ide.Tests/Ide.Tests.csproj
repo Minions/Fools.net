@@ -75,6 +75,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EventMonitoringAssertionExtensions.cs" />
     <Compile Include="MainWindowTests.cs" />
     <Compile Include="NotifyPropertyChangedTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

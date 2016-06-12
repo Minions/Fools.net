@@ -66,10 +66,10 @@ namespace Ide.Tests
 
 
         [TestMethod]
-        public void Format()
+        public async Task Format()
         {
             var subject = new Main(_ => "blah blah", null);
-            subject.OnFormatAll();
+            await subject.OnFormatAll();
             subject.ViewModel.Code.Should().Be("blah blah");
         }
     }
