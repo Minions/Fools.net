@@ -38,6 +38,6 @@ namespace Gibberish.Parsing.LineParsers
 		[NotNull] private static readonly Regex CommentDefinitionBlockPreludePattern = new Regex(@"(?x)
 				^\#\#
 					\[(?<commentId>[0-9]+)\]\:(?<extra>.*)
-", RegexOptions.Compiled);
+");
 	}
 }

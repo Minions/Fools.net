@@ -54,6 +54,6 @@ namespace Gibberish.Parsing.LineParsers
 				\[(?<commentId>[0-9]+)\]\:
 				(?<commentSeparator>\s+)
 				(?<firstLineContent>.*)
-", RegexOptions.Compiled);
+");
 	}
 }
