@@ -1,4 +1,4 @@
 language: csharp
 solution: src/Core/Core.sln
 script:
-  - xbuild /p:Configuration=Debug;Platform=x64 TRAVIS_SOLUTION
+  - xbuild /p:Configuration=Debug;Platform=x64 src/Core/Core.sln
