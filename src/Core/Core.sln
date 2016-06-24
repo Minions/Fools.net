@@ -27,9 +27,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World", "World\World.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform", "Platform\Platform.csproj", "{69C2530F-7C74-42D9-B4AD-4BEFA2941963}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinionHq", "MinionHq\MinionHq.csproj", "{176413E3-D448-44E1-B39C-2C27B18E89E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lair", "MinionHq\Lair.csproj", "{176413E3-D448-44E1-B39C-2C27B18E89E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinionHq.Tests", "MinionHq.Tests\MinionHq.Tests.csproj", "{9627C57A-173D-49C2-83B6-E4DCC751AFD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lair.Tests", "MinionHq.Tests\Lair.Tests.csproj", "{9627C57A-173D-49C2-83B6-E4DCC751AFD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

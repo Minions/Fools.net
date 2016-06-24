@@ -85,9 +85,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MinionHq\MinionHq.csproj">
+    <ProjectReference Include="..\MinionHq\Lair.csproj">
       <Project>{176413E3-D448-44E1-B39C-2C27B18E89E5}</Project>
-      <Name>MinionHq</Name>
+      <Name>Lair</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
