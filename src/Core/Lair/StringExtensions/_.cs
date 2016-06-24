@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Ide.StringExtensions
+namespace Lair.StringExtensions
 {
     static class _
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using static System.Char;
 
-namespace Ide
+namespace Lair
 {
     public class CaseSwappingFormatter
     {

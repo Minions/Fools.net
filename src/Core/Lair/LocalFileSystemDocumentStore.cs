@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using Ide.StringExtensions;
+using Lair.StringExtensions;
 
-namespace Ide
+namespace Lair
 {
     public class LocalFileSystemDocumentStore : IDocumentStore
     {

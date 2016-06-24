@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using static System.Char;
 
-namespace Ide
+namespace Lair
 {
     public class Main
     {

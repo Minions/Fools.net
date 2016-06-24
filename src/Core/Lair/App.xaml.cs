@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Ide
+namespace Lair
 {
     public partial class App
     {

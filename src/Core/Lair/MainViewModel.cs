@@ -1,4 +1,4 @@
-﻿namespace Ide
+﻿namespace Lair
 {
     public class MainViewModel : NotifyPropertyChanged
     {

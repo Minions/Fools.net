@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ide.Properties
+namespace Lair.Properties
 {
 
 

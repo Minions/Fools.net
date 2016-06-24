@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Ide
+namespace Lair
 {
     public interface IDocumentStore
     {

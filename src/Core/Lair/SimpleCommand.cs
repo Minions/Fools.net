@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Ide
+namespace Lair
 {
     public class SimpleCommand : ICommand
     {

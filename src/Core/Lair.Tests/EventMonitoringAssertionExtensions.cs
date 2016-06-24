@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using FluentAssertions;
 
-namespace Ide.Tests
+namespace Lair.Tests
 {
     static class EventMonitoringAssertionExtensions
     {

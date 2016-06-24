@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Ide
+namespace Lair
 {
     public abstract class NotifyPropertyChanged : INotifyPropertyChanged
     {
