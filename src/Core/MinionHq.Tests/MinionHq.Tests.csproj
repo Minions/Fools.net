@@ -6,8 +6,8 @@
     <ProjectGuid>{9627C57A-173D-49C2-83B6-E4DCC751AFD7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ide.Tests</RootNamespace>
-    <AssemblyName>Ide.Tests</AssemblyName>
+    <RootNamespace>MinionHq.Tests</RootNamespace>
+    <AssemblyName>MinionHq.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -85,9 +85,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ide\Ide.csproj">
+    <ProjectReference Include="..\MinionHq\MinionHq.csproj">
       <Project>{176413E3-D448-44E1-B39C-2C27B18E89E5}</Project>
-      <Name>Ide</Name>
+      <Name>MinionHq</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
