@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lair", "Lair\Lair.csproj", "{176413E3-D448-44E1-B39C-2C27B18E89E5}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibberish", "Gibberish\Gibberish.csproj", "{706A822C-C45E-4B09-BCAE-34A71DED812D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gibberish.Tests", "Gibberish.Tests\Gibberish.Tests.csproj", "{9F4E7D7A-4155-4B01-8FD3-9156E7FF1FDA}"
@@ -26,8 +28,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World", "World\World.csproj", "{F36927AC-B09F-472E-8C6D-775BA48007E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platform", "Platform\Platform.csproj", "{69C2530F-7C74-42D9-B4AD-4BEFA2941963}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lair", "Lair\Lair.csproj", "{176413E3-D448-44E1-B39C-2C27B18E89E5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lair.Tests", "Lair.Tests\Lair.Tests.csproj", "{9627C57A-173D-49C2-83B6-E4DCC751AFD7}"
 EndProject
