@@ -1,4 +1,7 @@
 os: Visual Studio 2015
 
 before_build:
+- ps: New-Item HKCU:Software\Microsoft\Tracing\
+- ps: New-Item HKCU:Software\Microsoft\Tracing\Wpf
+- ps: Set-ItemProperty HKCU:Software\Microsoft\Tracing\Wpf ManagedTracing 1
 - cmd: nuget restore src\Core
