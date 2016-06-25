@@ -56,24 +56,17 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
     <Compile Include="CaseSwappingFormatter.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="IDocumentStore.cs" />
     <Compile Include="LocalFileSystemDocumentStore.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="SimpleCommand.cs" />
     <Compile Include="StringExtensions\_.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />

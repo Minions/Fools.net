@@ -1,17 +1,18 @@
-﻿using System.Windows;
+﻿using System;
 
 namespace Lair
 {
-	public partial class App
+	public static class Program
 	{
-		protected override void OnStartup(StartupEventArgs _)
+		[STAThread]
+		public static void Main()
 		{
 			var main = new Main(new CaseSwappingFormatter().Format, new LocalFileSystemDocumentStore());
 			var mainView = new MainWindow
 			{
 				DataContext = main.ViewModel
 			};
-			mainView.Show();
+			mainView.ShowDialog();
 		}
 	}
 }
