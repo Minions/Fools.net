@@ -3,27 +3,20 @@ using static System.Char;
 
 namespace Lair
 {
-    public class CaseSwappingFormatter
-    {
-        public string Format(string value)
-        {
-            return new string(value.Select(SwapCase).ToArray());
-        }
+	public class CaseSwappingFormatter
+	{
+		public string Format(string value)
+		{
+			return new string(
+				value.Select(SwapCase)
+					.ToArray());
+		}
 
-        static char SwapCase(char c)
-        {
-            if (c != ToUpper(c))
-            {
-                return ToUpper(c);
-            }
-            else if (c != ToLower(c))
-            {
-                return ToLower(c);
-            }
-            else
-            {
-                return c;
-            }
-        }
-    }
+		private static char SwapCase(char c)
+		{
+			if (c != ToUpper(c)) { return ToUpper(c); }
+			if (c != ToLower(c)) { return ToLower(c); }
+			return c;
+		}
+	}
 }

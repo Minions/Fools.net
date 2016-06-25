@@ -1,7 +1,7 @@
 namespace Lair
 {
-    public interface IDocument
-    {
-        string Contents { get; set; }
-    }
+	public interface IDocument
+	{
+		string Contents { get; set; }
+	}
 }
