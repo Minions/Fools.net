@@ -1,2 +1,4 @@
 language: csharp
 solution: src/Core/Core.sln
+script:
+ +   - xbuild /p:Configuration=Mono_Debug /p:Platform=AnyCpu %TRAVIS_SOLUTION%
