@@ -7,7 +7,7 @@ namespace Lair
 		[STAThread]
 		public static void Main()
 		{
-			var main = new Main(new CaseSwappingFormatter().Format, new LocalFileSystemDocumentStore());
+			var main = new Model(new CaseSwappingFormatter().Format, new LocalFileSystemDocumentStore());
 			var mainView = new MainWindow
 			{
 				DataContext = main.ViewModel

@@ -20,7 +20,7 @@ namespace Lair.Tests
 		[Test]
 		public void MainCreatesAViewModel()
 		{
-			var subject = new Main(null, null);
+			var subject = new Model(null, null);
 			subject.ViewModel.Should()
 				.NotBeNull();
 		}
@@ -28,7 +28,7 @@ namespace Lair.Tests
 		[Test]
 		public async Task OpenFillsInTheCode()
 		{
-			var subject = new Main(
+			var subject = new Model(
 				null,
 				new InMemorySingleDocumentStore
 				{
@@ -43,7 +43,7 @@ namespace Lair.Tests
 		public async Task SaveWritesOutTheCode()
 		{
 			var inMemorySingleDocumentStore = new InMemorySingleDocumentStore();
-			var subject = new Main(null, inMemorySingleDocumentStore);
+			var subject = new Model(null, inMemorySingleDocumentStore);
 			await subject.OnOpen();
 			subject.ViewModel.Code = "Do you take me for a fool?";
 			await subject.OnSave();
@@ -54,7 +54,7 @@ namespace Lair.Tests
 		[Test]
 		public async Task Format()
 		{
-			var subject = new Main(_ => "blah blah", null);
+			var subject = new Model(_ => "blah blah", null);
 			await subject.OnFormatAll();
 			subject.ViewModel.Code.Should()
 				.Be("blah blah");

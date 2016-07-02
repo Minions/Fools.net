@@ -4,9 +4,9 @@ using JetBrains.Annotations;
 
 namespace Lair
 {
-	public class Main
+	public class Model
 	{
-		public Main(Func<string, string> formatter, IDocumentStore documentStore)
+		public Model(Func<string, string> formatter, IDocumentStore documentStore)
 		{
 			_formatter = formatter;
 			_documentStore = documentStore;
