@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.AST
 {
 	internal static class ParsingExtensions
 	{
