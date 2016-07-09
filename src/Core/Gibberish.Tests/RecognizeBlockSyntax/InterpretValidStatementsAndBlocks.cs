@@ -309,6 +309,15 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 						f.IllegalCommentBlockStatement(0, "more");
 						f.IllegalCommentBlockStatement(1, "");
 					})
+			},
+			new object[]
+			{
+				"#[\r\n",
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.CommentDefinition(0, "[").WithError(ParseError.MissingIdInCommentDefinition("["));
+					})
 			}
 		};
 	}

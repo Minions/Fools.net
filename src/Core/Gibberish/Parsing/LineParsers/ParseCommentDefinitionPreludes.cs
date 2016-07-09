@@ -31,7 +31,7 @@ namespace Gibberish.Parsing.LineParsers
 			if (!string.IsNullOrEmpty(extra)) { errors.Add(ParseError.IllegalContentAfterColonInPrelude(extra)); }
 
 			int commentNumber;
-			if (!int.TryParse(commentId, out commentNumber)) { errors.Add(ParseError.MissingIdInCommentDefinition(commentId.Substring(0, 8))); }
+			if (!int.TryParse(commentId, out commentNumber)) { errors.Add(ParseError.MissingIdInCommentDefinition(commentId.FirstUpToNChars(8))); }
 
 			return new CommentDefinitionBlockPrelude(commentNumber, errors);
 		}
