@@ -19,6 +19,7 @@ namespace Gibberish.Parsing.Passes
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
+			InCommentSection = false;
 			var hasNewlineatEndOfFile = _DetectAndHandleNewlineAtFileEnd(ref input);
 			var result = input.Split(
 				new[]

@@ -36,7 +36,7 @@ namespace Lair.Tests
 				});
 			subject.ViewModel.Code.Should()
 				.BeEmpty();
-			await subject.OnOpen();
+			await subject.ReplaceCurrentCodeWithFileContents();
 			subject.ViewModel.Code.Should()
 				.Be("Look at me! I am a Minion!");
 		}
@@ -52,7 +52,7 @@ namespace Lair.Tests
 				});
 			subject.ViewModel.Errors.Should()
 				.BeEmpty();
-			await subject.OnOpen();
+			await subject.ReplaceCurrentCodeWithFileContents();
 			subject.ViewModel.Errors.Should()
 				.Be(BugsFoundInBugFreeFoolsCode);
 		}
@@ -62,9 +62,9 @@ namespace Lair.Tests
 		{
 			var inMemorySingleDocumentStore = new InMemorySingleDocumentStore();
 			var subject = new Model(null, inMemorySingleDocumentStore);
-			await subject.OnOpen();
+			await subject.ReplaceCurrentCodeWithFileContents();
 			subject.ViewModel.Code = "Do you take me for a fool?";
-			await subject.OnSave();
+			await subject.SaveCurrentCodeToFile();
 			inMemorySingleDocumentStore.Contents.Should()
 				.Be("Do you take me for a fool?");
 		}
@@ -75,7 +75,7 @@ namespace Lair.Tests
 			var subject = new Model(_ => BugFreeFoolsCode, null);
 			subject.ViewModel.Code.Should()
 				.BeEmpty();
-			await subject.OnFormatAll();
+			await subject.AutoformatCurrentCode();
 			subject.ViewModel.Code.Should()
 				.Be(BugFreeFoolsCode);
 		}
@@ -86,7 +86,7 @@ namespace Lair.Tests
 			var subject = new Model(_ => BugFreeFoolsCode, null);
 			subject.ViewModel.Errors.Should()
 				.BeEmpty();
-			await subject.OnFormatAll();
+			await subject.AutoformatCurrentCode();
 			subject.ViewModel.Errors.Should()
 				.Be(BugsFoundInBugFreeFoolsCode);
 		}

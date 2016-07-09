@@ -16,9 +16,9 @@
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
-			<TextBox Grid.Column="0" Text="{Binding Path=Code, Mode=TwoWay}" FontFamily="Palatino Linotype, Serif" FontSize="16" />
+			<TextBox Grid.Column="0" Text="{Binding Path=Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontFamily="Palatino Linotype, Serif" FontSize="21.333" />
 			<GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="True" Width="3" />
-			<TextBox Grid.Column="2" Text="{Binding Path=Errors, Mode=TwoWay}" />
+			<TextBox Grid.Column="2" Text="{Binding Path=Errors, Mode=OneWay}" FontFamily="Palatino Linotype, Serif" FontSize="21.333"/>
 		</Grid>
 	</DockPanel>
 </Window>

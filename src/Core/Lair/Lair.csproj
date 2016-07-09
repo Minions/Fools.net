@@ -61,6 +61,7 @@
     <Compile Include="ErrorFinder.cs" />
     <Compile Include="IDocument.cs" />
     <Compile Include="IDocumentStore.cs" />
+    <Compile Include="InitiallyEmptyDocument.cs" />
     <Compile Include="LocalFileSystemDocumentStore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="SimpleCommand.cs" />
