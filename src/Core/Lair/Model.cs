@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
+using ICSharpCode.AvalonEdit.Document;
 using JetBrains.Annotations;
 
 namespace Lair
@@ -37,7 +38,7 @@ namespace Lair
 
 		public async Task SaveCurrentCodeToFile()
 		{
-			_currentDocument.Contents = ViewModel.Code;
+			_currentDocument.Contents = ViewModel.Code.Text;
 			if (_documentStore != null) await _documentStore.Save(_currentDocument);
 		}
 
@@ -45,19 +46,19 @@ namespace Lair
 		{
 			if (_documentStore == null) { return; }
 			_currentDocument = await _documentStore.Open();
-			ViewModel.Code = _currentDocument.Contents;
+			ViewModel.Code = new TextDocument(_currentDocument.Contents);
 		}
 
 		public async Task AutoformatCurrentCode()
 		{
-			ViewModel.Code = _formatter(ViewModel.Code);
+			ViewModel.Code.Text = _formatter(ViewModel.Code.Text);
 		}
 
 		private async Task UpdateErrors()
 		{
 			try
 			{
-				if (ViewModel.Code != null) _pipelineStart.Analyze(ViewModel.Code);
+				if (ViewModel.Code != null) _pipelineStart.Analyze(ViewModel.Code.Text);
 			}
 			catch (Exception ex) {
 				ViewModel.Errors = $"Unhandled exception crashed the parser!\r\n\r\n{ex}";
