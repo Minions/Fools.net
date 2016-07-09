@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
@@ -7,15 +6,8 @@ using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
-	public class AssembleBlocks
+	public class AssembleBlocks : Transform<List<LanguageConstruct>, List<LanguageConstruct>>
 	{
-		[NotNull]
-		public List<LanguageConstruct> Transform([NotNull] List<LanguageConstruct> source)
-		{
-			var sourceData = new SourceData(source);
-			return _CollectBodyAtLevel(new BlockRecognizer(sourceData), 0, sourceData);
-		}
-
 		public class SourceData
 		{
 			public SourceData([NotNull] List<LanguageConstruct> source)
@@ -45,6 +37,12 @@ namespace Gibberish.Parsing
 			public bool HaveStartedCommentDefinitions { get; private set; }
 
 			private List<LanguageConstruct>.Enumerator _source;
+		}
+
+		public List<LanguageConstruct> Transform(List<LanguageConstruct> source)
+		{
+			var sourceData = new SourceData(source);
+			return _CollectBodyAtLevel(new BlockRecognizer(sourceData), 0, sourceData);
 		}
 
 		private static List<LanguageConstruct> _CollectBodyAtLevel(LanguageConstructVisitor worker, int level, SourceData sourceData)
@@ -126,7 +124,7 @@ namespace Gibberish.Parsing
 
 			public bool Visit(UnknownBlock block, int level, List<LanguageConstruct> result)
 			{
-				throw new UnfixableError($"a block somehow made it into input data for {typeof (AssembleBlocks).Name}. Found value {block}.");
+				throw new UnfixableError($"a block somehow made it into input data for {typeof(AssembleBlocks).Name}. Found value {block}.");
 			}
 
 			public bool Visit(CommentDefinitionBlockPrelude prelude, int level, List<LanguageConstruct> result)

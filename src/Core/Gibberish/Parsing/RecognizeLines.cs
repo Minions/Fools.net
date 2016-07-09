@@ -8,8 +8,13 @@ using JetBrains.Annotations;
 
 namespace Gibberish.Parsing
 {
-	public class RecognizeLines
+	public class RecognizeLines : Transform<string, List<LanguageConstruct>>
 	{
+		public List<LanguageConstruct> Transform(string input)
+		{
+			return ParseWholeFile(input).ToList();
+		}
+
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
