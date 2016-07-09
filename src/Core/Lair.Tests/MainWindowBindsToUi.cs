@@ -34,10 +34,10 @@ namespace Lair.Tests
 				{
 					Contents = "Look at me! I am a Minion!"
 				});
-			subject.ViewModel.Code.Should()
+			subject.ViewModel.Code.Text.Should()
 				.BeEmpty();
 			await subject.ReplaceCurrentCodeWithFileContents();
-			subject.ViewModel.Code.Should()
+			subject.ViewModel.Code.Text.Should()
 				.Be("Look at me! I am a Minion!");
 		}
 
@@ -63,7 +63,7 @@ namespace Lair.Tests
 			var inMemorySingleDocumentStore = new InMemorySingleDocumentStore();
 			var subject = new Model(null, inMemorySingleDocumentStore);
 			await subject.ReplaceCurrentCodeWithFileContents();
-			subject.ViewModel.Code = "Do you take me for a fool?";
+			subject.ViewModel.Code.Text = "Do you take me for a fool?";
 			await subject.SaveCurrentCodeToFile();
 			inMemorySingleDocumentStore.Contents.Should()
 				.Be("Do you take me for a fool?");
@@ -73,10 +73,10 @@ namespace Lair.Tests
 		public async Task FormatShouldReplaceCodeWithFormatterResult()
 		{
 			var subject = new Model(_ => BugFreeFoolsCode, null);
-			subject.ViewModel.Code.Should()
+			subject.ViewModel.Code.Text.Should()
 				.BeEmpty();
 			await subject.AutoformatCurrentCode();
-			subject.ViewModel.Code.Should()
+			subject.ViewModel.Code.Text.Should()
 				.Be(BugFreeFoolsCode);
 		}
 
@@ -96,7 +96,7 @@ namespace Lair.Tests
 
 		private class InMemorySingleDocumentStore : IDocumentStore
 		{
-			public string Contents;
+			public string Contents = string.Empty;
 
 			public async Task<IDocument> Open()
 			{
@@ -113,7 +113,7 @@ namespace Lair.Tests
 
 			private class Document : IDocument
 			{
-				public string Contents { get; set; }
+				public string Contents { get; set; } = string.Empty;
 			}
 		}
 	}
