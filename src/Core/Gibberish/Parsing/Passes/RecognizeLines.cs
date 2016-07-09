@@ -4,15 +4,22 @@ using System.Linq;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing.LineParsers;
+using Gibberish.Parsing.TransformPipeline;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.Passes
 {
-	public class RecognizeLines
+	public class RecognizeLines : Transform<string, List<LanguageConstruct>>
 	{
+		public List<LanguageConstruct> Transform(string input)
+		{
+			return ParseWholeFile(input).ToList();
+		}
+
 		[NotNull]
 		public IEnumerable<LanguageConstruct> ParseWholeFile([NotNull] string input)
 		{
+			InCommentSection = false;
 			var hasNewlineatEndOfFile = _DetectAndHandleNewlineAtFileEnd(ref input);
 			var result = input.Split(
 				new[]

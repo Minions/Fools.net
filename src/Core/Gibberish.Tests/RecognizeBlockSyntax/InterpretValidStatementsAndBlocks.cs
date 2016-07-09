@@ -2,6 +2,7 @@
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
+using Gibberish.Parsing.Passes;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
 
@@ -307,6 +308,15 @@ namespace Gibberish.Tests.RecognizeBlockSyntax
 						f.IllegalCommentBlockStatement(1, "first");
 						f.IllegalCommentBlockStatement(0, "more");
 						f.IllegalCommentBlockStatement(1, "");
+					})
+			},
+			new object[]
+			{
+				"#[\r\n",
+				BasicAst.SequenceOfRawLines(
+					f =>
+					{
+						f.CommentDefinition(0, "[").WithError(ParseError.MissingIdInCommentDefinition("["));
 					})
 			}
 		};

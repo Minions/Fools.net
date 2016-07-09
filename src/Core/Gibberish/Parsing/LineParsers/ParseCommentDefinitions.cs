@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
+using Gibberish.Parsing.Passes;
 using JetBrains.Annotations;
 
 namespace Gibberish.Parsing.LineParsers
@@ -44,7 +46,7 @@ namespace Gibberish.Parsing.LineParsers
 		{
 			int commentNumber;
 			if (!int.TryParse(commentId, out commentNumber)) {
-				errors.Add(ParseError.MissingIdInCommentDefinition(content.Substring(0, 8)));
+				errors.Add(ParseError.MissingIdInCommentDefinition(content.FirstUpToNChars(8)));
 			}
 			else if (!" ".Equals(commentSeparator)) { errors.Add(ParseError.IncorrectCommentDefinitionSeparator(commentSeparator)); }
 			return commentNumber;

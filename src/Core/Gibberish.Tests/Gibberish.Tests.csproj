@@ -77,6 +77,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComposeStepsIntoTools\CreatePipelinesFromSteps.cs" />
+    <Compile Include="ZzTestHelpers\ResultSpy.cs" />
     <Compile Include="RecognizeBlockSyntax\ConvertSequenceOfLinesIntoForestOfBlocks.cs" />
     <Compile Include="RecognizeBlockSyntax\InterpretValidStatementsAndBlocks.cs" />
     <Compile Include="RecognizeBlockSyntax\InterpretWholeFile.cs" />

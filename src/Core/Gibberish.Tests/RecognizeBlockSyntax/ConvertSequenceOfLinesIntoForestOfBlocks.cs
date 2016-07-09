@@ -7,6 +7,7 @@ using Gibberish.AST._1_Bare;
 using Gibberish.AST._1_Bare.Builders;
 using Gibberish.Execution;
 using Gibberish.Parsing;
+using Gibberish.Parsing.Passes;
 using Gibberish.Tests.ZzTestHelpers;
 using JetBrains.Annotations;
 using NUnit.Framework;

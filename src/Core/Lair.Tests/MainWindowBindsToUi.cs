@@ -34,9 +34,27 @@ namespace Lair.Tests
 				{
 					Contents = "Look at me! I am a Minion!"
 				});
-			await subject.OnOpen();
+			subject.ViewModel.Code.Should()
+				.BeEmpty();
+			await subject.ReplaceCurrentCodeWithFileContents();
 			subject.ViewModel.Code.Should()
 				.Be("Look at me! I am a Minion!");
+		}
+
+		[Test]
+		public async Task OpenLooksForBugs()
+		{
+			var subject = new Model(
+				null,
+				new InMemorySingleDocumentStore
+				{
+					Contents = BugFreeFoolsCode
+				});
+			subject.ViewModel.Errors.Should()
+				.BeEmpty();
+			await subject.ReplaceCurrentCodeWithFileContents();
+			subject.ViewModel.Errors.Should()
+				.Be(BugsFoundInBugFreeFoolsCode);
 		}
 
 		[Test]
@@ -44,21 +62,37 @@ namespace Lair.Tests
 		{
 			var inMemorySingleDocumentStore = new InMemorySingleDocumentStore();
 			var subject = new Model(null, inMemorySingleDocumentStore);
-			await subject.OnOpen();
+			await subject.ReplaceCurrentCodeWithFileContents();
 			subject.ViewModel.Code = "Do you take me for a fool?";
-			await subject.OnSave();
+			await subject.SaveCurrentCodeToFile();
 			inMemorySingleDocumentStore.Contents.Should()
 				.Be("Do you take me for a fool?");
 		}
 
 		[Test]
-		public async Task Format()
+		public async Task FormatShouldReplaceCodeWithFormatterResult()
 		{
-			var subject = new Model(_ => "blah blah", null);
-			await subject.OnFormatAll();
+			var subject = new Model(_ => BugFreeFoolsCode, null);
 			subject.ViewModel.Code.Should()
-				.Be("blah blah");
+				.BeEmpty();
+			await subject.AutoformatCurrentCode();
+			subject.ViewModel.Code.Should()
+				.Be(BugFreeFoolsCode);
 		}
+
+		[Test]
+		public async Task FormatShouldReevaluateForBugsAfterResult()
+		{
+			var subject = new Model(_ => BugFreeFoolsCode, null);
+			subject.ViewModel.Errors.Should()
+				.BeEmpty();
+			await subject.AutoformatCurrentCode();
+			subject.ViewModel.Errors.Should()
+				.Be(BugsFoundInBugFreeFoolsCode);
+		}
+
+		private const string BugFreeFoolsCode = "use language fools\r\nthat's not right\r\n";
+		private const string BugsFoundInBugFreeFoolsCode = "Zaro Boogs Foond.\r\n\r\nYou're all good, boss!";
 
 		private class InMemorySingleDocumentStore : IDocumentStore
 		{
