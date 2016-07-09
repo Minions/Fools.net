@@ -84,6 +84,7 @@
     <Compile Include="AST\PossiblySpecified.cs" />
     <Compile Include="AST\_1_Bare\CommentDefinitionBlockStatement.cs" />
     <Compile Include="AST\_1_Bare\CommentDefinitionBlockPrelude.cs" />
+    <Compile Include="AST\_1_Bare\LanguageConstructStatefulVisitor.cs" />
     <Compile Include="AST\_1_Bare\UnknownBlock.cs" />
     <Compile Include="AST\_1_Bare\FasmOrLanguageConstruct.cs" />
     <Compile Include="AST\_2_Fasm\Builders\UnknownStatementBuilder.cs" />

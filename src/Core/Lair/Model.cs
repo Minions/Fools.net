@@ -51,9 +51,11 @@ namespace Lair
 			UpdateErrors();
 		}
 
-		private void _HandleResults(List<LanguageConstruct> obj)
+		private void _HandleResults(List<LanguageConstruct> results)
 		{
-			ViewModel.Errors = "Zaro Boogs Foond.\r\n\r\nYou're all good, boss!";
+			var errors = new ErrorFinder();
+			results.ForEach(block => block.Accept(errors));
+			ViewModel.Errors = errors.Errors.Count > 0 ? string.Join("\r\n\r\n", errors.Errors) : "Zaro Boogs Foond.\r\n\r\nYou're all good, boss!";
 		}
 
 		private void UpdateErrors()
