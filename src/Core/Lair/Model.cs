@@ -36,11 +36,18 @@ namespace Lair
 		{
 			_currentDocument = await _documentStore.Open();
 			ViewModel.Code = _currentDocument.Contents;
+			UpdateErrors();
 		}
 
 		public async Task OnFormatAll()
 		{
 			ViewModel.Code = _formatter(ViewModel.Code);
+			UpdateErrors();
+		}
+
+		private void UpdateErrors()
+		{
+			ViewModel.Errors = "Zaro Boogs Foond.\r\n\r\nYou're all good, boss!";
 		}
 
 		private readonly IDocumentStore _documentStore;

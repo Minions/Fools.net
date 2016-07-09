@@ -15,6 +15,16 @@
 				RaisePropertyChanged();
 			}
 		}
-		private string _code;
+		public string Errors
+		{
+			get { return _errors; }
+			set
+			{
+				_errors = value;
+				RaisePropertyChanged();
+			}
+		}
+		private string _code = string.Empty;
+		private string _errors = string.Empty;
 	}
 }

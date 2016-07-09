@@ -34,9 +34,27 @@ namespace Lair.Tests
 				{
 					Contents = "Look at me! I am a Minion!"
 				});
+			subject.ViewModel.Code.Should()
+				.BeEmpty();
 			await subject.OnOpen();
 			subject.ViewModel.Code.Should()
 				.Be("Look at me! I am a Minion!");
+		}
+
+		[Test]
+		public async Task OpenLooksForBugs()
+		{
+			var subject = new Model(
+				null,
+				new InMemorySingleDocumentStore
+				{
+					Contents = BuggyFoolsCode
+				});
+			subject.ViewModel.Errors.Should()
+				.BeEmpty();
+			await subject.OnOpen();
+			subject.ViewModel.Errors.Should()
+				.Be(BugsFoundInBuggyFoolsCode);
 		}
 
 		[Test]
@@ -52,13 +70,29 @@ namespace Lair.Tests
 		}
 
 		[Test]
-		public async Task Format()
+		public async Task FormatShouldReplaceCodeWithFormatterResult()
 		{
 			var subject = new Model(_ => "blah blah", null);
+			subject.ViewModel.Code.Should()
+				.BeEmpty();
 			await subject.OnFormatAll();
 			subject.ViewModel.Code.Should()
 				.Be("blah blah");
 		}
+
+		[Test]
+		public async Task FormatShouldReevaluateForBugsAfterResult()
+		{
+			var subject = new Model(_ => BuggyFoolsCode, null);
+			subject.ViewModel.Errors.Should()
+				.BeEmpty();
+			await subject.OnFormatAll();
+			subject.ViewModel.Errors.Should()
+				.Be(BugsFoundInBuggyFoolsCode);
+		}
+
+		private const string BuggyFoolsCode = "use language fools\r\nthat's not right";
+		private const string BugsFoundInBuggyFoolsCode = "Zaro Boogs Foond.\r\n\r\nYou're all good, boss!";
 
 		private class InMemorySingleDocumentStore : IDocumentStore
 		{
