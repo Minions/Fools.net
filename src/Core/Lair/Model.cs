@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Gibberish.AST._1_Bare;
+using Gibberish.Parsing;
 using JetBrains.Annotations;
 
 namespace Lair
@@ -8,6 +11,9 @@ namespace Lair
 	{
 		public Model(Func<string, string> formatter, IDocumentStore documentStore)
 		{
+			_pipelineStart = LanguageTools.Pipeline()
+				.WithResultListener(_HandleResults)
+				.Build();
 			_formatter = formatter;
 			_documentStore = documentStore;
 			ViewModel = new MainViewModel
@@ -45,6 +51,11 @@ namespace Lair
 			UpdateErrors();
 		}
 
+		private void _HandleResults(List<LanguageConstruct> obj)
+		{
+			throw new NotImplementedException();
+		}
+
 		private void UpdateErrors()
 		{
 			ViewModel.Errors = "Zaro Boogs Foond.\r\n\r\nYou're all good, boss!";
@@ -52,6 +63,7 @@ namespace Lair
 
 		private readonly IDocumentStore _documentStore;
 		private readonly Func<string, string> _formatter;
+		private readonly LanguagePipelineStart _pipelineStart;
 		[CanBeNull] private IDocument _currentDocument;
 	}
 }

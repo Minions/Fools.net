@@ -4,6 +4,7 @@ using System.Linq;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing.LineParsers;
+using Gibberish.Parsing.TransformPipeline;
 using JetBrains.Annotations;
 
 namespace Gibberish.Parsing.Passes

@@ -97,6 +97,8 @@
     <Compile Include="AST\Parse.cs" />
     <Compile Include="AST\PassStatement.cs" />
     <Compile Include="AST\_1_Bare\UnknownStatement.cs" />
+    <Compile Include="Parsing\TransformPipeline\FunctionCaller.cs" />
+    <Compile Include="Parsing\LanguageTools.cs" />
     <Compile Include="Parsing\Passes\AssembleBlocks.cs" />
     <Compile Include="AST\_1_Bare\LanguageConstructVisitor.cs" />
     <Compile Include="AST\ParseError.cs" />
@@ -111,7 +113,10 @@
     <Compile Include="AST\ParsingExtensions.cs" />
     <Compile Include="AST\_1_Bare\UnknownPrelude.cs" />
     <Compile Include="Parsing\Passes\RecognizeLines.cs" />
-    <Compile Include="Parsing\Passes\Transform.cs" />
+    <Compile Include="Parsing\TransformPipeline\PipeHead.cs" />
+    <Compile Include="Parsing\TransformPipeline\PipeSection.cs" />
+    <Compile Include="Parsing\TransformPipeline\PipeTail.cs" />
+    <Compile Include="Parsing\TransformPipeline\Transform.cs" />
     <Compile Include="Parsing\UnfixableError.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AST\Statement.cs" />
