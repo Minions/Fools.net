@@ -45,5 +45,10 @@ namespace Gibberish.Parsing
 		}
 
 		[NotNull] private readonly PipeHead<string> _source;
+
+		public void Analyze([NotNull] string code)
+		{
+			_source.Consume(code);
+		}
 	}
 }

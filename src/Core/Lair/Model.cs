@@ -53,12 +53,12 @@ namespace Lair
 
 		private void _HandleResults(List<LanguageConstruct> obj)
 		{
-			throw new NotImplementedException();
+			ViewModel.Errors = "Zaro Boogs Foond.\r\n\r\nYou're all good, boss!";
 		}
 
 		private void UpdateErrors()
 		{
-			ViewModel.Errors = "Zaro Boogs Foond.\r\n\r\nYou're all good, boss!";
+			if (ViewModel.Code != null) _pipelineStart.Analyze(ViewModel.Code);
 		}
 
 		private readonly IDocumentStore _documentStore;
