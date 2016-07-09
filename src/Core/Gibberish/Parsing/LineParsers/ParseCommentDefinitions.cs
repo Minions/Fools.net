@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
+using Gibberish.Parsing.Passes;
 using JetBrains.Annotations;
 
 namespace Gibberish.Parsing.LineParsers

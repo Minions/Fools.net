@@ -2,6 +2,7 @@
 using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using Gibberish.Parsing;
+using Gibberish.Parsing.Passes;
 using Gibberish.Tests.ZzTestHelpers;
 using NUnit.Framework;
 

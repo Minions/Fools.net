@@ -4,7 +4,7 @@ using Gibberish.AST;
 using Gibberish.AST._1_Bare;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.Passes
 {
 	public class AssembleBlocks : Transform<List<LanguageConstruct>, List<LanguageConstruct>>
 	{

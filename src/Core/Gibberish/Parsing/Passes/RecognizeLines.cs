@@ -6,7 +6,7 @@ using Gibberish.AST._1_Bare;
 using Gibberish.Parsing.LineParsers;
 using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.Passes
 {
 	public class RecognizeLines : Transform<string, List<LanguageConstruct>>
 	{

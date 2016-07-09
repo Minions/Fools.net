@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace Gibberish.Parsing
+namespace Gibberish.Parsing.Passes
 {
 	public interface Transform<in TInput, out TOutput>
 	{
