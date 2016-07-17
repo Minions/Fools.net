@@ -27,5 +27,8 @@
     <NamedTestSelector>
       <TestName>Ide.Tests.MainWindowTests.MainWindowBindsToViewModelWithoutError</TestName>
     </NamedTestSelector>
+    <NamedTestSelector>
+      <TestName>Lair.Tests.MainWindowBindsToUi.MainWindowBindsToViewModelWithoutError</TestName>
+    </NamedTestSelector>
   </IgnoredTests>
 </ProjectConfiguration>
