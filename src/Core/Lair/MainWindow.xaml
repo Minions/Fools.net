@@ -1,25 +1,29 @@
 ﻿<Window x:Class="Lair.MainWindow"
-				xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-				xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
-				Title="Welcome to your Lair, Overlord"
-				Height="850">
-	<x:Code>public MainWindow(){InitializeComponent();}</x:Code>
-	<DockPanel>
-		<ToolBar DockPanel.Dock="Top">
-			<Button Command="{Binding Path=Open}">Open</Button>
-			<Button Command="{Binding Path=Save}">Save</Button>
-			<Button Command="{Binding Path=FormatAll}">Format All</Button>
-		</ToolBar>
-		<Grid>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="2*" />
-				<ColumnDefinition Width="Auto" />
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>
-			<avalonedit:TextEditor Grid.Column="0" Document="{Binding Path=Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontFamily="Palatino Linotype, Serif" FontSize="21.333" />
-			<GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="True" Width="3" />
-			<TextBox Grid.Column="2" Text="{Binding Path=Errors, Mode=OneWay}" FontFamily="Palatino Linotype, Serif" FontSize="21.333"/>
-		</Grid>
-	</DockPanel>
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lair="clr-namespace:Lair"
+        Title="Welcome to your Lair, Overlord"
+        Height="850">
+    <x:Code>public MainWindow(){InitializeComponent();}</x:Code>
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top">
+            <Button Command="{Binding Path=Open}">Open</Button>
+            <Button Command="{Binding Path=Save}">Save</Button>
+            <Button Command="{Binding Path=FormatAll}">Format All</Button>
+        </ToolBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <lair:MinionsCodeEditor Grid.Column="0"
+                                   Document="{Binding Path=Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   FontFamily="Palatino Linotype, Serif" FontSize="21.333" />
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" ShowsPreview="True"
+                          Width="3" />
+            <lair:ErrorsTextBox Grid.Column="2" Text="{Binding Path=Errors, Mode=OneWay}" FontFamily="Palatino Linotype, Serif"
+                     FontSize="21.333" />
+        </Grid>
+    </DockPanel>
 </Window>
