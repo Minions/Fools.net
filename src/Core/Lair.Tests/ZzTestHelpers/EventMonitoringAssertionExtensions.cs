@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using FluentAssertions;
 
-namespace Lair.Tests
+namespace Lair.Tests.ZzTestHelpers
 {
 	internal static class EventMonitoringAssertionExtensions
 	{
