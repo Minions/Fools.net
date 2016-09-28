@@ -1,9 +1,10 @@
-﻿using NUnit.Framework;
+﻿using Lair.Tests.ZzTestHelpers;
+using NUnit.Framework;
 
 namespace Lair.Tests
 {
 	[TestFixture]
-	public class ViewModelPropogatesChanges
+	public class NotifyPropertyChanged
 	{
 		[Test]
 		public void ValueRaisesPropertyChanged()
@@ -13,7 +14,7 @@ namespace Lair.Tests
 				.ShouldRaisePropertyChangeFor(_ => _.Value);
 		}
 
-		private class TestViewModel : NotifyPropertyChanged
+		private class TestViewModel : Lair.NotifyPropertyChanged
 		{
 			public string Value
 			{
